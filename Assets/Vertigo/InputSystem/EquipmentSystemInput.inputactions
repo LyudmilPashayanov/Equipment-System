@@ -1,0 +1,178 @@
+{
+    "name": "EquipmentSystemInput",
+    "maps": [
+        {
+            "name": "PlayerControls",
+            "id": "26eb0921-3ecb-45c9-b51b-9d2761704d62",
+            "actions": [
+                {
+                    "name": "HeadMovement",
+                    "type": "Value",
+                    "id": "c255d242-6727-4f63-99c2-ae23791e0c73",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "MoveStraight",
+                    "type": "Button",
+                    "id": "2ba60ab8-cbd9-4981-81aa-fc662eb5a1fe",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "R-hand (Un)EquipItem",
+                    "type": "Button",
+                    "id": "a0ee9495-66c7-4190-8aac-62555b3c9996",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "R-hand UseItem",
+                    "type": "Button",
+                    "id": "7f83b09c-4f2d-4b1f-9fab-261cf12632e8",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "L-hand (Un)EquipItem",
+                    "type": "Button",
+                    "id": "72d1f122-c3b0-4d53-978a-ca8f3a2a442d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "L-hand UseItem",
+                    "type": "Button",
+                    "id": "92804baf-1905-4cd4-bad3-50cf179eee21",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "8f5d8d0d-b801-4238-ab27-2a25ed2500ee",
+                    "path": "<Mouse>/delta",
+                    "interactions": "",
+                    "processors": "NormalizeVector2",
+                    "groups": "",
+                    "action": "HeadMovement",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "78028206-0b3b-42ab-a760-5edcb305aa3b",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "L-hand UseItem",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "One Modifier",
+                    "id": "4d748297-2c26-448d-b947-2aa0a0f08715",
+                    "path": "OneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "L-hand (Un)EquipItem",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "105b8afa-ec3a-4c2f-9bfc-183d37aa8a5c",
+                    "path": "<Keyboard>/leftCtrl",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "L-hand (Un)EquipItem",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "binding",
+                    "id": "4133524b-9bd7-4b0a-b8eb-fc85a73753a9",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "L-hand (Un)EquipItem",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "1f93d690-fde1-448c-b49b-5ff4a4269f79",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "R-hand UseItem",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "One Modifier",
+                    "id": "c7912419-82c8-42fd-b92f-0cfbc5b0e2e5",
+                    "path": "OneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "R-hand (Un)EquipItem",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "e1259119-f5e1-47f6-8993-ef81a0132322",
+                    "path": "<Keyboard>/leftCtrl",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "R-hand (Un)EquipItem",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "binding",
+                    "id": "e04a7032-cb78-44d9-bd6c-2ac14a654d12",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "R-hand (Un)EquipItem",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "462fdb11-2634-425c-9764-7ca5be2a6946",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MoveStraight",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
