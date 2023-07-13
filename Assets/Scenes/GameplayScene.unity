@@ -935,7 +935,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 389537539}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 2
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -2292,11 +2292,16 @@ MonoBehaviour:
     type: 3}
   _inputEquip: {fileID: -3704798430305152012, guid: 1d06cb3410b94e54385e071791e08cfd,
     type: 3}
+  _inputHandMovement: {fileID: -1719953389113178215, guid: 1d06cb3410b94e54385e071791e08cfd,
+    type: 3}
   lineRenderer: {fileID: 1339141071}
   targetLayerMask:
     serializedVersion: 2
     m_Bits: 64
   _palm: {fileID: 1653019992}
+  _throwSidesSensitivity: 1.3
+  _throwForce: 4
+  _throwForwardSensitivity: 2
 --- !u!1 &1415387763
 GameObject:
   m_ObjectHideFlags: 0
@@ -2701,11 +2706,16 @@ MonoBehaviour:
     type: 3}
   _inputEquip: {fileID: -8092672811267632305, guid: 1d06cb3410b94e54385e071791e08cfd,
     type: 3}
+  _inputHandMovement: {fileID: -7700391594892905063, guid: 1d06cb3410b94e54385e071791e08cfd,
+    type: 3}
   lineRenderer: {fileID: 1578294014}
   targetLayerMask:
     serializedVersion: 2
     m_Bits: 64
   _palm: {fileID: 997251192}
+  _throwSidesSensitivity: 1.3
+  _throwForce: 4
+  _throwForwardSensitivity: 2
 --- !u!120 &1578294014
 LineRenderer:
   serializedVersion: 2
@@ -3094,7 +3104,7 @@ MonoBehaviour:
   _cameraPivot: {fileID: 330585546}
   _player: {fileID: 1760823569}
   _sensitivityX: 100
-  _sensitivityY: 75
+  _sensitivityY: 100
 --- !u!1001 &2031686192
 PrefabInstance:
   m_ObjectHideFlags: 0
