@@ -24,18 +24,27 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "R-hand Movement",
+                    "type": "Value",
+                    "id": "8452baf2-b671-4f94-ab39-4c56985f4198",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "L-hand Movement",
+                    "type": "Value",
+                    "id": "e1460af2-7c63-4349-938e-929f6f715581",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
                     "name": "R-hand (Un)EquipItem",
                     "type": "Button",
                     "id": "a0ee9495-66c7-4190-8aac-62555b3c9996",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "R-hand UseItem",
-                    "type": "Button",
-                    "id": "7f83b09c-4f2d-4b1f-9fab-261cf12632e8",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -51,6 +60,24 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "L-hand ToggleMode",
+                    "type": "Button",
+                    "id": "bb34774c-2cc1-4320-84af-2f97575ee942",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "R-hand ToggleMode",
+                    "type": "Button",
+                    "id": "cbc47b70-da4d-4515-b6ed-c4f352cd8b74",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "L-hand UseItem",
                     "type": "Button",
                     "id": "92804baf-1905-4cd4-bad3-50cf179eee21",
@@ -60,22 +87,13 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "L-hand Movement",
-                    "type": "Value",
-                    "id": "e1460af2-7c63-4349-938e-929f6f715581",
-                    "expectedControlType": "Vector2",
+                    "name": "R-hand UseItem",
+                    "type": "Button",
+                    "id": "7f83b09c-4f2d-4b1f-9fab-261cf12632e8",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": true
-                },
-                {
-                    "name": "R-hand Movement",
-                    "type": "Value",
-                    "id": "8452baf2-b671-4f94-ab39-4c56985f4198",
-                    "expectedControlType": "Vector2",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -87,61 +105,6 @@
                     "processors": "NormalizeVector2",
                     "groups": "",
                     "action": "HeadMovement",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "78028206-0b3b-42ab-a760-5edcb305aa3b",
-                    "path": "<Mouse>/leftButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "L-hand UseItem",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "One Modifier",
-                    "id": "4d748297-2c26-448d-b947-2aa0a0f08715",
-                    "path": "OneModifier",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "L-hand (Un)EquipItem",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "modifier",
-                    "id": "105b8afa-ec3a-4c2f-9bfc-183d37aa8a5c",
-                    "path": "<Keyboard>/leftCtrl",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "L-hand (Un)EquipItem",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "binding",
-                    "id": "4133524b-9bd7-4b0a-b8eb-fc85a73753a9",
-                    "path": "<Mouse>/leftButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "L-hand (Un)EquipItem",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "",
-                    "id": "1f93d690-fde1-448c-b49b-5ff4a4269f79",
-                    "path": "<Mouse>/rightButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "R-hand UseItem",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -190,13 +153,123 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "",
-                    "id": "1eb32473-b38e-4303-bc10-34fdba68e1ee",
-                    "path": "<Mouse>/delta",
+                    "name": "One Modifier",
+                    "id": "3d31273a-f1f6-44a0-ad75-3c234c39bca1",
+                    "path": "OneModifier",
                     "interactions": "",
-                    "processors": "NormalizeVector2",
+                    "processors": "",
                     "groups": "",
-                    "action": "L-hand Movement",
+                    "action": "R-hand ToggleMode",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "67ea161b-949c-4fd7-acd8-15444fc3ec0a",
+                    "path": "<Keyboard>/leftAlt",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "R-hand ToggleMode",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "binding",
+                    "id": "9018a7cc-c4d5-4758-9668-379bd774db45",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "R-hand ToggleMode",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "One Modifier",
+                    "id": "aa9fc79a-252f-45e3-9c9b-d3761e5e49af",
+                    "path": "OneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "L-hand ToggleMode",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "302f7bdc-5494-4562-8aff-50ab84770d39",
+                    "path": "<Keyboard>/leftAlt",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "L-hand ToggleMode",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "binding",
+                    "id": "ec0dc094-1bdd-466e-b579-d6077d0c8b87",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "L-hand ToggleMode",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "One Modifier",
+                    "id": "4d748297-2c26-448d-b947-2aa0a0f08715",
+                    "path": "OneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "L-hand (Un)EquipItem",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "105b8afa-ec3a-4c2f-9bfc-183d37aa8a5c",
+                    "path": "<Keyboard>/leftCtrl",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "L-hand (Un)EquipItem",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "binding",
+                    "id": "4133524b-9bd7-4b0a-b8eb-fc85a73753a9",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "L-hand (Un)EquipItem",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "1f93d690-fde1-448c-b49b-5ff4a4269f79",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "R-hand UseItem",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "78028206-0b3b-42ab-a760-5edcb305aa3b",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "L-hand UseItem",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -208,6 +281,17 @@
                     "processors": "NormalizeVector2",
                     "groups": "",
                     "action": "R-hand Movement",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1eb32473-b38e-4303-bc10-34fdba68e1ee",
+                    "path": "<Mouse>/delta",
+                    "interactions": "",
+                    "processors": "NormalizeVector2",
+                    "groups": "",
+                    "action": "L-hand Movement",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
