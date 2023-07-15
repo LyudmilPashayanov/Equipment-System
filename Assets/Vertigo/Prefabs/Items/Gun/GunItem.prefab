@@ -413,7 +413,7 @@ Transform:
   - {fileID: 6955664268142425002}
   - {fileID: 2627699510005550258}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5427599193038288823
 MonoBehaviour:
@@ -428,6 +428,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rb: {fileID: 7113562606833790585}
+  _pickUpCollider: {fileID: 662105365214470816}
   _view: {fileID: 7684249890461501346}
   _bulletSpawnPoint: {fileID: 4760953059830135200}
   _bulletFactory: {fileID: 6326640552664146478}
@@ -461,7 +462,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _bulletPrefab: {fileID: 5558786311985533731, guid: fb129b5fcda96ae4eb41e7a1849f6d8c,
     type: 3}
-  _maxBulletCount: 15
 --- !u!135 &662105365214470816
 SphereCollider:
   m_ObjectHideFlags: 0

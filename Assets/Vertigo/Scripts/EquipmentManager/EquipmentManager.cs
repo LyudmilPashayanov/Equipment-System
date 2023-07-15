@@ -1,18 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EquipmentManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] private Hand _leftHand;
+    [SerializeField] private Hand _rightHand;
 
-    // Update is called once per frame
-    void Update()
+    public Item GetOtherHandItem(Hand _currentHand)
     {
-        
+        return (_currentHand == _leftHand ? _rightHand : _leftHand).GetItem();
     }
 }

@@ -1,20 +1,21 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using DG.Tweening;
-using System;
 
 public class Hand : MonoBehaviour
 {
     private const float RAY_DISTANCE = 3.9f;
     private const float PICK_UP_DURATION = 0.5f;
 
+    [SerializeField] private EquipmentManager _equipmentManager;
+
     [SerializeField] private InputActionReference _inputUse;
     [SerializeField] private InputActionReference _inputEquip;
     [SerializeField] private InputActionReference _inputHandMovement;
     [SerializeField] private InputActionReference _inputToggleMode;
 
-    [SerializeField] private LineRenderer lineRenderer;
-    [SerializeField] private LayerMask targetLayerMask; // Item
+    [SerializeField] private LineRenderer _lineRenderer;
+    [SerializeField] private LayerMask _itemLayerMask;
     [SerializeField] private Transform _palm;
     
     [SerializeField] private float _throwSidesSensitivity = 1.3f;
@@ -31,18 +32,18 @@ public class Hand : MonoBehaviour
     private Sequence _pickUpSequence;
     private GameObject _rayHitObject;
 
-    public event Action<Item> OnItemEquipped; // EquipmentManager will listen to this
-    public event Action<Item> OnItemUnequipped; // EquipmentManager will listen to this
+    public Item GetItem()
+    {
+        return _equippedItem;
+    }
+
+    public EquipmentManager GetEquipmentManager() 
+    {
+        return _equipmentManager;
+    }
+
     private void Start()
     {
-        // TODO: Maybe move this to the actual object so that code looks more clean.
-        lineRenderer.startWidth = 0.02f;
-        lineRenderer.endWidth = 0.1f;
-        lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
-        lineRenderer.startColor = Color.red;
-        lineRenderer.endColor = Color.red;
-        lineRenderer.positionCount = 2;
-
         _inputEquip.action.started += PerformEquip;
         _inputToggleMode.action.started += ToggleItemMode;
         _inputUse.action.started += StartUse;
@@ -57,11 +58,11 @@ public class Hand : MonoBehaviour
     private void RaycastHands()
     {
         _ray = new Ray(transform.position, transform.forward);
-        lineRenderer.SetPosition(0, _ray.origin);
-        if (Physics.Raycast(_ray, out HandsRayHit, RAY_DISTANCE, targetLayerMask))
+        _lineRenderer.SetPosition(0, _ray.origin);
+        if (Physics.Raycast(_ray, out HandsRayHit, RAY_DISTANCE, _itemLayerMask))
         {
             _rayHitObject = HandsRayHit.collider.gameObject;
-            lineRenderer.SetPosition(1, HandsRayHit.point);
+            _lineRenderer.SetPosition(1, HandsRayHit.point);
             _lookingAtItem = true;
             // TODO: Maybe add an indicator what you are hitting
         }
@@ -69,22 +70,30 @@ public class Hand : MonoBehaviour
         {
             _lookingAtItem = false;
             _rayHitObject = null;
-            lineRenderer.SetPosition(1, _ray.origin + _ray.direction * RAY_DISTANCE);
+            _lineRenderer.SetPosition(1, _ray.origin + _ray.direction * RAY_DISTANCE);
         }
         ChangeLineColor();
     }
 
     private void ChangeLineColor() // change colors once, not every frame 
     {
+        if (_lineRenderer.enabled == false && _equippedItem == null) 
+        {
+            _lineRenderer.enabled = true;
+        }
+        else if(_lineRenderer.enabled == true && _equippedItem) 
+        {
+            _lineRenderer.enabled = false;
+        }
         if (_lookingAtItem)
         {
-            lineRenderer.startColor = Color.green;
-            lineRenderer.endColor = Color.green;
+            _lineRenderer.startColor = Color.green;
+            _lineRenderer.endColor = Color.green;
         }
         else
         {
-            lineRenderer.startColor = Color.red;
-            lineRenderer.endColor = Color.red;
+            _lineRenderer.startColor = Color.red;
+            _lineRenderer.endColor = Color.red;
         }
     }
 
@@ -102,24 +111,19 @@ public class Hand : MonoBehaviour
                 _equippedItem = _rayHitObject.GetComponent<Item>();
                 EquipItem();
             }
-            else
-            {
-                Debug.Log("nothing is selected ");
-            }
         }
     }
 
     private void EquipItem()
     {
-        _equippedItem.Equip();
+        _equippedItem.Equip(this);
         _equippedItem.transform.SetParent(_palm.transform, true);
         _pickUpSequence = DOTween.Sequence();
         _pickUpSequence.Append(_equippedItem.transform.DOLocalMove(Vector3.zero, PICK_UP_DURATION));
         _pickUpSequence.Insert(0, _equippedItem.transform.DOLocalRotate(new Vector3(0, -90, 0), PICK_UP_DURATION));
-        OnItemEquipped?.Invoke(_equippedItem);
     }
 
-    private void UnequipCurrentItem()
+    public void UnequipCurrentItem()
     {
         if (_pickUpSequence.active)
         {
@@ -127,7 +131,6 @@ public class Hand : MonoBehaviour
         }
         _equippedItem.transform.SetParent(null);
         _equippedItem.Unequip(GetThrowDirection(), _throwForce);
-        OnItemUnequipped?.Invoke(_equippedItem);
         _equippedItem = null;
     }
 
@@ -138,15 +141,11 @@ public class Hand : MonoBehaviour
         Vector3 throwDirection = Vector3.zero;
         if (mouseMovement.y > 0)
         {
-            throwDirection += Vector3.forward * _throwForwardSensitivity;
+            throwDirection += (Vector3.forward * mouseMovement.y) * _throwForwardSensitivity;
         }
-        if (mouseMovement.x > 0f)
+        if (mouseMovement.x != 0f)
         {
-            throwDirection += Vector3.right * _throwSidesSensitivity;
-        }
-        else if (mouseMovement.x < 0)
-        {
-            throwDirection += Vector3.left * _throwSidesSensitivity;
+            throwDirection += (Vector3.right * mouseMovement.x)* _throwSidesSensitivity;
         }
         
         return Quaternion.Euler(0f, transform.parent.rotation.eulerAngles.y, 0f) * throwDirection;
@@ -156,7 +155,6 @@ public class Hand : MonoBehaviour
     {
         if (_modifierPressed) 
         {
-            Debug.Log("ignoring StartUse, because a modifier key was pressed.");
             _modifierPressed = false;
             return;       
         }
@@ -170,7 +168,6 @@ public class Hand : MonoBehaviour
     {
         if (_modifierPressed)
         {
-            Debug.Log("ignoring StopUse, because a modifier key was pressed.");
             _modifierPressed = false;
             return;
         }

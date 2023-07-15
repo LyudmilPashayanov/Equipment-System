@@ -1,30 +1,18 @@
+using UnityEngine;
 
 public class FlashlightController : Item
 {
+    [SerializeField] FlashlightView _view;
+    
+    private bool _isFlashOn;
     public override void StartUse()
     {
-        throw new System.NotImplementedException();
-    }
-
-    public override void StopUse()
-    {
-        throw new System.NotImplementedException();
+        _isFlashOn = !_isFlashOn;
+        _view.ToggleFlashlight(_isFlashOn);
     }
 
     public override void ToggleMode()
     {
-        throw new System.NotImplementedException();
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        _view.ChangeIntensity();
     }
 }

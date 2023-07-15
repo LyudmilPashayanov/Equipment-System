@@ -3,6 +3,7 @@ using UnityEngine;
 public class GunController : Item
 {
     private const int MAGAZINE_SIZE = 10;
+
     [SerializeField] private GunView _view;
     [SerializeField] private Transform _bulletSpawnPoint;
     [SerializeField] private BulletFactory _bulletFactory;
@@ -12,11 +13,12 @@ public class GunController : Item
     private bool _isShooting;
     private float _fireTimer;
     private int _magazine = MAGAZINE_SIZE;
-    private bool _automaticShoot=false;
+    private bool _automaticShoot = true;
 
     private void Start()
     {
         _view.SetRemainingBullets(_magazine.ToString());
+        _view.ToggleAutomaticModeText(_automaticShoot);
     }
 
     private void Update()
@@ -51,8 +53,6 @@ public class GunController : Item
             bulletRigidbody.velocity = bullet.transform.forward * _bulletSpeed;
         }
         _view.SetRemainingBullets((--_magazine).ToString());
-        if(_magazine == 0)
-            ReloadBullets();
         if (!_automaticShoot) 
         {
             StopShooting();
@@ -69,9 +69,11 @@ public class GunController : Item
         _isShooting = false;
     }
 
-    public void ReloadBullets()
+    public void ReloadBullets(int bulletsBeingReloaded)
     {
-        _magazine = MAGAZINE_SIZE;
+        _magazine += bulletsBeingReloaded;
+        if (_magazine > MAGAZINE_SIZE)
+            _magazine = MAGAZINE_SIZE;
         _view.SetRemainingBullets(_magazine.ToString());
     }
 
@@ -91,9 +93,9 @@ public class GunController : Item
         StopShooting();
     }
 
-    public override void Equip()
+    public override void Equip(Hand _currentHand)
     {
-        base.Equip();
+        base.Equip(_currentHand);
     }
 
     public override void Unequip(Vector3 throwDirection, float throwForce)

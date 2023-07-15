@@ -1,6 +1,5 @@
 using UnityEngine;
 using TMPro;
-using System.Security.Cryptography;
 
 public class GunView : MonoBehaviour
 {
@@ -17,6 +16,6 @@ public class GunView : MonoBehaviour
 
     public void ToggleAutomaticModeText(bool automaticEnabled) 
     {
-            _shootingModeText.text = automaticEnabled ? AUTOMATIC_MODE_TEXT : SINGLE_MODE_TEXT;
+        _shootingModeText.text = automaticEnabled ? AUTOMATIC_MODE_TEXT : SINGLE_MODE_TEXT;
     }
 }

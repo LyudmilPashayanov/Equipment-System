@@ -4,49 +4,37 @@ using UnityEngine;
 public class BulletFactory : MonoBehaviour
 {
     [SerializeField] private GameObject _bulletPrefab;
-    [SerializeField] private int _maxBulletCount = 15;
+    
+    private GameObject _bulletParent;
+    private Queue<GameObject> _bulletPool = new Queue<GameObject>();
 
-    private Queue<GameObject> _bulletPool;
-    private Transform _bulletParent;
-
-    private void Awake()
+    private void Start()
     {
-        _bulletPool = new Queue<GameObject>(_maxBulletCount);
-        _bulletParent = new GameObject("BulletParent").transform;
-
-        for (int i = 0; i < _maxBulletCount; i++)
-        {
-            GameObject bullet = InstantiateBullet();
-            ReturnBulletToPool(bullet);
-        }
-    }
-
-    private GameObject InstantiateBullet()
-    {
-        GameObject bullet = Instantiate(_bulletPrefab, _bulletParent);
-        bullet.SetActive(false);
-        return bullet;
+        _bulletParent = new GameObject("BulletsParent");
     }
 
     public GameObject GetBullet()
     {
-        if (_bulletPool.Count > 0)
+        if (_bulletPool.Count == 0)
         {
-            GameObject bullet = _bulletPool.Dequeue();
-            bullet.SetActive(true);
-            StartCoroutine(DelayedReturnToPool(bullet, 3f));
-            return bullet;
+            InstantiateBullet();
         }
-        else
-        {
-            return InstantiateBullet();
-        }
+        GameObject bullet = _bulletPool.Dequeue();
+        bullet.SetActive(true);
+        StartCoroutine(DelayedReturnToPool(bullet, 3f));
+        return bullet;
     }
 
-    public void ReturnBulletToPool(GameObject bullet)
+    private void InstantiateBullet()
+    {
+        GameObject bullet = Instantiate(_bulletPrefab);
+        ReturnBulletToPool(bullet);
+    }
+
+    private void ReturnBulletToPool(GameObject bullet)
     {
         bullet.SetActive(false);
-        bullet.transform.SetParent(_bulletParent);
+        bullet.transform.SetParent(_bulletParent.transform);
         _bulletPool.Enqueue(bullet);
     }
 

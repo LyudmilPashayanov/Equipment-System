@@ -1,30 +1,32 @@
+using UnityEngine;
 
 public class AmmoClipController : Item
 {
+    [SerializeField] private AmmoClipView _view;
+    [SerializeField] private AmmoClipModel _model;
+    private bool _usable = true;
+
     public override void StartUse()
     {
-        throw new System.NotImplementedException();
+        if (_usable)
+        {
+            Item otherHandItem = _handHoldingIt.GetEquipmentManager().GetOtherHandItem(_handHoldingIt);
+            if (otherHandItem is GunController)
+            {
+                GunController gun = (GunController)otherHandItem;
+                _view.ReloadAnimation(_model.reloadTime, gun.transform, () => ReloadGun(gun));
+                _usable = false;
+            }
+            else
+            {
+                _view.UnusableIndication();
+            }
+        }
     }
 
-    public override void StopUse()
+    private void ReloadGun(GunController gun) 
     {
-        throw new System.NotImplementedException();
-    }
-
-    public override void ToggleMode()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        gun.ReloadBullets(_model.ammoCount);
+        Destroy(gameObject);
     }
 }
