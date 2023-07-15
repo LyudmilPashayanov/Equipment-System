@@ -1,12 +1,27 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class HatController : Item
+namespace Player.Items
 {
-    public override void StartUse()
+    public class HatController : Item, IHat
     {
-        // If not other hat is on the head -> Equip Hat
-        // else -> Do Nothing
+        [SerializeField] private HatView _view;
+
+        public GameObject GetGameObject()
+        {
+            return gameObject;
+        }
+
+        public override void StartUse()
+        {
+            bool hatEquipped = _handHolder.GetEquipmentManager().TryEquipHat(this);
+            if (hatEquipped)
+            {
+                _handHolder.UnequipCurrentItem(false);
+            }
+            else
+            {
+                _view.UnusableIndication();
+            }
+        }
     }
 }

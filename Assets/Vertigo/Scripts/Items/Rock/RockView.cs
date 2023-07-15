@@ -1,18 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class RockView : MonoBehaviour
+namespace Player.Items
 {
-    // Start is called before the first frame update
-    void Start()
+    public class RockView : ItemView
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+       
     }
 }

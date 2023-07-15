@@ -1,18 +1,21 @@
 using UnityEngine;
 
-public class FlashlightController : Item
+namespace Player.Items
 {
-    [SerializeField] FlashlightView _view;
-    
-    private bool _isFlashOn;
-    public override void StartUse()
+    public class FlashlightController : Item
     {
-        _isFlashOn = !_isFlashOn;
-        _view.ToggleFlashlight(_isFlashOn);
-    }
+        [SerializeField] FlashlightView _view;
 
-    public override void ToggleMode()
-    {
-        _view.ChangeIntensity();
+        private bool _isFlashOn;
+        public override void StartUse()
+        {
+            _isFlashOn = !_isFlashOn;
+            _view.ToggleFlashlight(_isFlashOn);
+        }
+
+        public override void ToggleMode()
+        {
+            _view.ChangeIntensity();
+        }
     }
 }

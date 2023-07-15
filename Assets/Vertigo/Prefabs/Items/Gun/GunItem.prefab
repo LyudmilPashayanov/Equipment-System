@@ -446,6 +446,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bad22c3036d13db45bb50d1650b48bef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _meshRenderer: {fileID: 2925593573979136952}
   _remainingBulletsText: {fileID: 421861617073603621}
   _shootingModeText: {fileID: 8012241854965454006}
 --- !u!114 &6326640552664146478
@@ -612,6 +613,12 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1041972891523145880}
   m_SourcePrefab: {fileID: 100100000, guid: a13056cd9d1539d479fd8ed421883f6d, type: 3}
+--- !u!23 &2925593573979136952 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: a13056cd9d1539d479fd8ed421883f6d,
+    type: 3}
+  m_PrefabInstance: {fileID: 4564502105596084028}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &3718064174155072109 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: a13056cd9d1539d479fd8ed421883f6d,

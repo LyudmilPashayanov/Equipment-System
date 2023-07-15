@@ -1,21 +1,24 @@
 using UnityEngine;
 using TMPro;
 
-public class GunView : MonoBehaviour
+namespace Player.Items
 {
-    private const string AUTOMATIC_MODE_TEXT = "a";
-    private const string SINGLE_MODE_TEXT = "s";
-
-    [SerializeField] private TextMeshPro _remainingBulletsText;
-    [SerializeField] private TextMeshPro _shootingModeText;
-    
-    public void SetRemainingBullets(string remainingBullet) 
+    public class GunView : ItemView
     {
-        _remainingBulletsText.text = remainingBullet;
-    }
+        private const string AUTOMATIC_MODE_TEXT = "a";
+        private const string SINGLE_MODE_TEXT = "s";
 
-    public void ToggleAutomaticModeText(bool automaticEnabled) 
-    {
-        _shootingModeText.text = automaticEnabled ? AUTOMATIC_MODE_TEXT : SINGLE_MODE_TEXT;
+        [SerializeField] private TextMeshPro _remainingBulletsText;
+        [SerializeField] private TextMeshPro _shootingModeText;
+
+        public void SetRemainingBullets(string remainingBullet)
+        {
+            _remainingBulletsText.text = remainingBullet;
+        }
+
+        public void ToggleAutomaticModeText(bool automaticEnabled)
+        {
+            _shootingModeText.text = automaticEnabled ? AUTOMATIC_MODE_TEXT : SINGLE_MODE_TEXT;
+        }
     }
 }

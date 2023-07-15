@@ -1,32 +1,35 @@
 using UnityEngine;
 
-public class AmmoClipController : Item
+namespace Player.Items
 {
-    [SerializeField] private AmmoClipView _view;
-    [SerializeField] private AmmoClipModel _model;
-    private bool _usable = true;
-
-    public override void StartUse()
+    public class AmmoClipController : Item
     {
-        if (_usable)
+        [SerializeField] private AmmoClipView _view;
+        [SerializeField] private AmmoClipModel _model;
+        private bool _usable = true;
+
+        public override void StartUse()
         {
-            Item otherHandItem = _handHoldingIt.GetEquipmentManager().GetOtherHandItem(_handHoldingIt);
-            if (otherHandItem is GunController)
+            if (_usable)
             {
-                GunController gun = (GunController)otherHandItem;
-                _view.ReloadAnimation(_model.reloadTime, gun.transform, () => ReloadGun(gun));
-                _usable = false;
-            }
-            else
-            {
-                _view.UnusableIndication();
+                Item otherHandItem = _handHolder.GetEquipmentManager().GetOtherHandItem(_handHolder);
+                if (otherHandItem is GunController)
+                {
+                    GunController gun = (GunController)otherHandItem;
+                    _view.ReloadAnimation(_model.reloadTime, gun.transform, () => ReloadGun(gun));
+                    _usable = false;
+                }
+                else
+                {
+                    _view.UnusableIndication();
+                }
             }
         }
-    }
 
-    private void ReloadGun(GunController gun) 
-    {
-        gun.ReloadBullets(_model.ammoCount);
-        Destroy(gameObject);
+        private void ReloadGun(GunController gun)
+        {
+            gun.ReloadBullets(_model.ammoCount);
+            Destroy(gameObject);
+        }
     }
 }

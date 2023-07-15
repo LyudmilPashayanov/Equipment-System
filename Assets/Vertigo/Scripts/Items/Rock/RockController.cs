@@ -1,7 +1,10 @@
-public class RockController : Item
+namespace Player.Items
 {
-    public override void StartUse()
+    public class RockController : Item
     {
-        _handHoldingIt.UnequipCurrentItem();
+        public override void StartUse()
+        {
+            _handHolder.UnequipCurrentItem();
+        }
     }
 }

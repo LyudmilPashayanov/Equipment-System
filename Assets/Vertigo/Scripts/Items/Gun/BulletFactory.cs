@@ -1,46 +1,49 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BulletFactory : MonoBehaviour
+namespace Player.Items
 {
-    [SerializeField] private GameObject _bulletPrefab;
-    
-    private GameObject _bulletParent;
-    private Queue<GameObject> _bulletPool = new Queue<GameObject>();
-
-    private void Start()
+    public class BulletFactory : MonoBehaviour
     {
-        _bulletParent = new GameObject("BulletsParent");
-    }
+        [SerializeField] private GameObject _bulletPrefab;
 
-    public GameObject GetBullet()
-    {
-        if (_bulletPool.Count == 0)
+        private GameObject _bulletParent;
+        private Queue<GameObject> _bulletPool = new Queue<GameObject>();
+
+        private void Start()
         {
-            InstantiateBullet();
+            _bulletParent = new GameObject("BulletsParent");
         }
-        GameObject bullet = _bulletPool.Dequeue();
-        bullet.SetActive(true);
-        StartCoroutine(DelayedReturnToPool(bullet, 3f));
-        return bullet;
-    }
 
-    private void InstantiateBullet()
-    {
-        GameObject bullet = Instantiate(_bulletPrefab);
-        ReturnBulletToPool(bullet);
-    }
+        public GameObject GetBullet()
+        {
+            if (_bulletPool.Count == 0)
+            {
+                InstantiateBullet();
+            }
+            GameObject bullet = _bulletPool.Dequeue();
+            bullet.SetActive(true);
+            StartCoroutine(DelayedReturnToPool(bullet, 3f));
+            return bullet;
+        }
 
-    private void ReturnBulletToPool(GameObject bullet)
-    {
-        bullet.SetActive(false);
-        bullet.transform.SetParent(_bulletParent.transform);
-        _bulletPool.Enqueue(bullet);
-    }
+        private void InstantiateBullet()
+        {
+            GameObject bullet = Instantiate(_bulletPrefab);
+            ReturnBulletToPool(bullet);
+        }
 
-    private System.Collections.IEnumerator DelayedReturnToPool(GameObject bullet, float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        ReturnBulletToPool(bullet);
+        private void ReturnBulletToPool(GameObject bullet)
+        {
+            bullet.SetActive(false);
+            bullet.transform.SetParent(_bulletParent.transform);
+            _bulletPool.Enqueue(bullet);
+        }
+
+        private System.Collections.IEnumerator DelayedReturnToPool(GameObject bullet, float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            ReturnBulletToPool(bullet);
+        }
     }
 }

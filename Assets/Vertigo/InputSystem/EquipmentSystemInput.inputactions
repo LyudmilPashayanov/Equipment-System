@@ -9,7 +9,7 @@
                     "name": "HeadMovement",
                     "type": "Value",
                     "id": "c255d242-6727-4f63-99c2-ae23791e0c73",
-                    "expectedControlType": "Vector2",
+                    "expectedControlType": "Vector3",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
@@ -94,6 +94,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "HandsMovement",
+                    "type": "Value",
+                    "id": "9a08d762-5e83-45fe-8040-8f88bcf878f1",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -102,7 +111,18 @@
                     "id": "8f5d8d0d-b801-4238-ab27-2a25ed2500ee",
                     "path": "<Mouse>/delta",
                     "interactions": "",
-                    "processors": "NormalizeVector2",
+                    "processors": "",
+                    "groups": "",
+                    "action": "HeadMovement",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "910ccc9a-d687-4574-9751-72d419bf5d71",
+                    "path": "<ViveTracker>/devicePosition",
+                    "interactions": "",
+                    "processors": "",
                     "groups": "",
                     "action": "HeadMovement",
                     "isComposite": false,
@@ -292,6 +312,17 @@
                     "processors": "NormalizeVector2",
                     "groups": "",
                     "action": "L-hand Movement",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1e690de9-3f7e-47e6-8526-9df4f5e9944c",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "HandsMovement",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
