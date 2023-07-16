@@ -1,4 +1,5 @@
 using Player.Items;
+using System;
 using UnityEngine;
 
 namespace Player
@@ -14,9 +15,14 @@ namespace Player
             return (_currentHand == _leftHand ? _rightHand : _leftHand).GetItem();
         }
 
-        public bool TryEquipHat(IHat hatItem) 
+        public bool TryEquipHat(HatItem hatItem) 
         {
             return _head.TryEquipHat(hatItem);
+        }
+
+        internal void UnequipHat()
+        {
+            _head.UnequipHat();
         }
     }
 }

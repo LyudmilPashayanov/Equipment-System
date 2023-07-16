@@ -1,25 +1,27 @@
-using Player;
+using Player.Items;
 using UnityEngine;
 
-public class Head : MonoBehaviour
+namespace Player
 {
-    private GameObject _equippedHat;
-    
-    internal bool TryEquipHat(IHat hatItem)
+    public class Head : MonoBehaviour
     {
-        if (_equippedHat == null)
-        {
-            _equippedHat = hatItem.GetGameObject();
-            _equippedHat.transform.SetParent(transform, false);    
-            return true;
-        }
-        else
-            return false;
-    }
+        private GameObject _equippedHat;
 
-    public void UnequipHat(Hand grabbingHand)
-    {
-        _equippedHat.transform.SetParent(grabbingHand.transform, false);
-        _equippedHat = null;
+        internal bool TryEquipHat(HatItem hatItem)
+        {
+            if (_equippedHat == null)
+            {
+                _equippedHat = hatItem.gameObject;
+                _equippedHat.transform.SetParent(transform, false);
+                return true;
+            }
+            else
+                return false;
+        }
+
+        public void UnequipHat()
+        {
+            _equippedHat = null;
+        }
     }
 }

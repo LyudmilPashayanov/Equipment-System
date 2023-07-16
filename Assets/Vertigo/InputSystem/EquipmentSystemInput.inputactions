@@ -88,18 +88,18 @@
                 },
                 {
                     "name": "R-hand UseItem",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "7f83b09c-4f2d-4b1f-9fab-261cf12632e8",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "Delta",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 },
                 {
                     "name": "HandsMovement",
                     "type": "Value",
                     "id": "9a08d762-5e83-45fe-8040-8f88bcf878f1",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
@@ -317,8 +317,8 @@
                 },
                 {
                     "name": "",
-                    "id": "1e690de9-3f7e-47e6-8526-9df4f5e9944c",
-                    "path": "",
+                    "id": "41956892-3190-4bdd-b7ed-b69f016767d9",
+                    "path": "<Mouse>/scroll",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
