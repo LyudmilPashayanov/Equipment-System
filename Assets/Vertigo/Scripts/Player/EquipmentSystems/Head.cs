@@ -1,4 +1,4 @@
-using Player.Items;
+using Player.Interactables;
 using UnityEngine;
 
 namespace Player

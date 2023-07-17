@@ -1,53 +1,77 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using DG.Tweening;
-using Player.Items;
+using System;
+using Player.Movement;
+using Player.Interactables;
 
 namespace Player
 {
     public class Hand : MonoBehaviour
     {
         private const float RAY_DISTANCE = 3.9f;
-        private const float PICK_UP_DURATION = 0.5f;
 
         [SerializeField] private EquipmentManager _equipmentManager;
+        [SerializeField] private HandMovement _handMovement;
 
         [SerializeField] private InputActionReference _inputUse;
         [SerializeField] private InputActionReference _inputEquip;
-        [SerializeField] private InputActionReference _inputHandMovement;
         [SerializeField] private InputActionReference _inputToggleMode;
 
         [SerializeField] private LineRenderer _lineRenderer;
         [SerializeField] private LayerMask _itemLayerMask;
         [SerializeField] private Transform _palm;
 
-        [SerializeField] private float _throwSidesSensitivity = 1.3f;
-        [SerializeField] private float _throwForce = 5f;
-        [SerializeField] private float _throwForwardSensitivity = 2;
+        [SerializeField] private float _releaseForce = 5f;
+
+        private bool _lookingAtItem;
+        private bool _modifierPressed = false;
 
         private Ray _ray;
         private RaycastHit HandsRayHit;
-
-        bool _lookingAtItem;
-        bool _modifierPressed = false;
-
-        private Item _equippedItem;
-        private Sequence _pickUpSequence;
         private GameObject _rayHitObject;
 
-        public Item GetItem()
+        private Grabable _itemInHand;
+
+        private event Action OnUse;
+        private event Action OnStopUse;
+        private event Action OnToggleMode;
+
+        public Grabable GetItem()
         {
-            return _equippedItem;
+            return _itemInHand;
         }
 
         public EquipmentManager GetEquipmentManager()
         {
             return _equipmentManager;
         }
+        public Transform GetPalm()
+        {
+            return _palm;
+        }
+
+        public float GetHandStrength() 
+        {
+            return _releaseForce;
+        }
+
+        public void Subscribe(Action onUse, Action onStopUse, Action onToggle)
+        {
+            OnUse += onUse;
+            OnStopUse += onStopUse;
+            OnToggleMode += onToggle;
+        }
+        
+        public void Unsubscribe(Action onUse, Action onStopUse, Action onToggle)
+        {
+            OnUse -= onUse;
+            OnStopUse -= onStopUse;
+            OnToggleMode -= onToggle;
+        }
 
         private void Start()
         {
-            _inputEquip.action.started += PerformEquip;
+            _inputEquip.action.started += PerformGrab;
             _inputToggleMode.action.started += ToggleItemMode;
             _inputUse.action.started += StartUse;
             _inputUse.action.canceled += StopUse;
@@ -56,6 +80,24 @@ namespace Player
         private void Update()
         {
             RaycastHands();
+            if(_itemInHand != null) 
+            {
+                CheckIfItemInRange();
+            }
+        }
+
+        public Vector3 GetMovementDirection(bool normalized = true) 
+        {
+            return _handMovement.GetMovementDirection(normalized);
+        }
+
+        private void CheckIfItemInRange()
+        {
+            if(Vector3.Distance(_itemInHand.transform.position, transform.position) > 5) 
+            {
+                Debug.Log("Item out of range, releasing it.");
+                ReleaseCurrentItem();
+            }
         }
 
         private void RaycastHands()
@@ -80,11 +122,11 @@ namespace Player
 
         private void ChangeLineColor() // change colors once, not every frame 
         {
-            if (_lineRenderer.enabled == false && _equippedItem == null)
+            if (_lineRenderer.enabled == false && _itemInHand == null)
             {
                 _lineRenderer.enabled = true;
             }
-            else if (_lineRenderer.enabled == true && _equippedItem)
+            else if (_lineRenderer.enabled == true && _itemInHand != null)
             {
                 _lineRenderer.enabled = false;
             }
@@ -100,62 +142,32 @@ namespace Player
             }
         }
 
-        private void PerformEquip(InputAction.CallbackContext context)
+        private void PerformGrab(InputAction.CallbackContext context)
         {
             _modifierPressed = true;
-            if (_equippedItem != null)
+            if (_itemInHand != null)
             {
-                UnequipCurrentItem();
+                ReleaseCurrentItem();
             }
             else
             {
-                if (_rayHitObject != null)
+                if (_rayHitObject != null && _rayHitObject.TryGetComponent<Grabable>(out _itemInHand))
                 {
-                    _equippedItem = _rayHitObject.GetComponent<Item>();
-                    EquipItem();
+                    _itemInHand.Grab(this);
                 }
             }
         }
 
-        private void EquipItem()
+        public void ReleaseCurrentItem(bool throwItem = true)
         {
-            _equippedItem.Equip(this);
-            _equippedItem.transform.SetParent(_palm.transform, true);
-            _pickUpSequence = DOTween.Sequence();
-            _pickUpSequence.Append(_equippedItem.transform.DOLocalMove(Vector3.zero, PICK_UP_DURATION));
-            _pickUpSequence.Insert(0, _equippedItem.transform.DOLocalRotate(new Vector3(0, -90, 0), PICK_UP_DURATION));
-        }
-
-        public void UnequipCurrentItem(bool throwItem = true)
-        {
-            if (_pickUpSequence.active)
-            {
-                _pickUpSequence.Kill();
-            }
             if(throwItem) 
             {
-                _equippedItem.transform.SetParent(null);
-                _equippedItem.Unequip(GetThrowDirection(), _throwForce);
+                _itemInHand.Release();
             }
-            _equippedItem = null;
+            _itemInHand = null;
         }
 
-        private Vector3 GetThrowDirection()
-        {
-            // Calculate the throw direction based on the mouse delta position
-            Vector2 mouseMovement = _inputHandMovement.action.ReadValue<Vector2>();
-            Vector3 throwDirection = Vector3.zero;
-            if (mouseMovement.y > 0)
-            {
-                throwDirection += (Vector3.forward * mouseMovement.y) * _throwForwardSensitivity;
-            }
-            if (mouseMovement.x != 0f)
-            {
-                throwDirection += (Vector3.right * mouseMovement.x) * _throwSidesSensitivity;
-            }
-
-            return Quaternion.Euler(0f, transform.parent.rotation.eulerAngles.y, 0f) * throwDirection;
-        }
+        #region Event Handlers
 
         private void StartUse(InputAction.CallbackContext context)
         {
@@ -164,9 +176,9 @@ namespace Player
                 _modifierPressed = false;
                 return;
             }
-            if (_equippedItem != null)
+            if (_itemInHand != null)
             {
-                _equippedItem.StartUse();
+                OnUse?.Invoke();
             }
         }
 
@@ -177,19 +189,20 @@ namespace Player
                 _modifierPressed = false;
                 return;
             }
-            if (_equippedItem != null)
+            if (_itemInHand != null)
             {
-                _equippedItem.StopUse();
+                OnStopUse?.Invoke();
             }
         }
 
         private void ToggleItemMode(InputAction.CallbackContext context)
         {
             _modifierPressed = true;
-            if (_equippedItem != null)
+            if (_itemInHand != null)
             {
-                _equippedItem.ToggleMode();
+                OnToggleMode?.Invoke();
             }
         }
+#endregion
     }
 }

@@ -427,8 +427,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bc33b10511e4ba47b7f9ddc816f8017, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _interactableCollider: {fileID: 662105365214470816}
   _rb: {fileID: 7113562606833790585}
-  _pickUpCollider: {fileID: 662105365214470816}
   _view: {fileID: 7684249890461501346}
   _bulletSpawnPoint: {fileID: 4760953059830135200}
   _bulletFactory: {fileID: 6326640552664146478}

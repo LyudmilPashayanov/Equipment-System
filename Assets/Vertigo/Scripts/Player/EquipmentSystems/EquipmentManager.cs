@@ -1,5 +1,4 @@
-using Player.Items;
-using System;
+using Player.Interactables;
 using UnityEngine;
 
 namespace Player
@@ -10,7 +9,7 @@ namespace Player
         [SerializeField] private Hand _rightHand;
         [SerializeField] private Head _head;
 
-        public Item GetOtherHandItem(Hand _currentHand)
+        public Grabable GetOtherHandItem(Hand _currentHand)
         {
             return (_currentHand == _leftHand ? _rightHand : _leftHand).GetItem();
         }
