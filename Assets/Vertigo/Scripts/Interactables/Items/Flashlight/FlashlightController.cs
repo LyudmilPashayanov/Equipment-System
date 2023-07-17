@@ -2,12 +2,12 @@ using UnityEngine;
 
 namespace Player.Interactables
 {
-    public class FlashlightController : Item
+    public class FlashlightController : ItemController
     {
         [SerializeField] FlashlightView _view;
 
         private bool _isFlashOn;
-        public override void StartUse()
+        public override void StartUse(Hand handUsingIt)
         {
             _isFlashOn = !_isFlashOn;
             _view.ToggleFlashlight(_isFlashOn);

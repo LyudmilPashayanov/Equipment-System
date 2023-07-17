@@ -10,7 +10,6 @@ namespace Player
     {
         private const float RAY_DISTANCE = 3.9f;
 
-        [SerializeField] private EquipmentManager _equipmentManager;
         [SerializeField] private HandMovement _handMovement;
 
         [SerializeField] private InputActionReference _inputUse;
@@ -32,7 +31,7 @@ namespace Player
 
         private Grabable _itemInHand;
 
-        private event Action OnUse;
+        public event Action<Hand> OnItemUse;
         private event Action OnStopUse;
         private event Action OnToggleMode;
 
@@ -41,10 +40,6 @@ namespace Player
             return _itemInHand;
         }
 
-        public EquipmentManager GetEquipmentManager()
-        {
-            return _equipmentManager;
-        }
         public Transform GetPalm()
         {
             return _palm;
@@ -55,16 +50,16 @@ namespace Player
             return _releaseForce;
         }
 
-        public void Subscribe(Action onUse, Action onStopUse, Action onToggle)
+        public void Subscribe(Action<Hand> onUse, Action onStopUse, Action onToggle)
         {
-            OnUse += onUse;
+            OnItemUse += onUse;
             OnStopUse += onStopUse;
             OnToggleMode += onToggle;
         }
         
-        public void Unsubscribe(Action onUse, Action onStopUse, Action onToggle)
+        public void Unsubscribe(Action<Hand> onUse, Action onStopUse, Action onToggle)
         {
-            OnUse -= onUse;
+            OnItemUse -= onUse;
             OnStopUse -= onStopUse;
             OnToggleMode -= onToggle;
         }
@@ -178,7 +173,7 @@ namespace Player
             }
             if (_itemInHand != null)
             {
-                OnUse?.Invoke();
+                OnItemUse?.Invoke(this);
             }
         }
 

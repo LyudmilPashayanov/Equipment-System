@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Player.Interactables
@@ -5,21 +6,21 @@ namespace Player.Interactables
     /// <summary>
     /// Base class marking a HatController as a Hat item.
     /// </summary>
-    public abstract class HatItem : Item
+    public abstract class HatItem : ItemController
     {
         [SerializeField] private ItemView _view;
         [SerializeField] protected Collider _onHeadCollider;
-        private bool _onHead;
+        
+        public event Action OnUnequipped;
 
         private void Start()
         {
             _onHeadCollider.enabled = false;
         }
 
-        public override void StartUse()
+        public void TryEquipOnHead(bool successfulEquip) 
         {
-            bool hatEquipped = _handHolder.GetEquipmentManager().TryEquipHat(this);
-            if (hatEquipped)
+            if (successfulEquip)
             {
                 EquipOnHead();
             }
@@ -34,8 +35,7 @@ namespace Player.Interactables
         {
             base.Grab(Hand);
             _onHeadCollider.enabled = false;
-            if (_onHead)
-                _handHolder.GetEquipmentManager().UnequipHat();
+            OnUnequipped?.Invoke();
         }
 
         private void EquipOnHead()
@@ -44,7 +44,6 @@ namespace Player.Interactables
             UnsubscribeHand();
             _handHolder = null;
             _onHeadCollider.enabled = true;
-            _onHead = true;
         }
     }
 }

@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Player.Interactables
 {
-    public class GunController : Item
+    public class GunController : ItemController
     {
         private const int MAGAZINE_SIZE = 10;
 
@@ -16,6 +16,10 @@ namespace Player.Interactables
         private float _fireTimer;
         private int _magazine = MAGAZINE_SIZE;
         private bool _automaticShoot = true;
+
+ /*       public GunController(Rigidbody rb) : base(rb)
+        {
+        }*/
 
         private void Start()
         {
@@ -85,7 +89,7 @@ namespace Player.Interactables
             _view.ToggleAutomaticModeText(_automaticShoot);
         }
 
-        public override void StartUse()
+        public override void StartUse(Hand handUsingIt)
         {
             StartShooting();
         }

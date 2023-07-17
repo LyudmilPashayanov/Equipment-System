@@ -1,8 +1,14 @@
+using UnityEngine;
+
 namespace Player.Interactables
 {
-    public class RockController : Item
+    public class RockController : ItemController
     {
-        public override void StartUse()
+/*        public RockController(Rigidbody rb) : base(rb)
+        {
+        }*/
+
+        public override void StartUse(Hand handUsingIt)
         {
             _handHolder.ReleaseCurrentItem();
         }

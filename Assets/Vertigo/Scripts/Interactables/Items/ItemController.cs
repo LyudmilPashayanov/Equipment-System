@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Player.Interactables
 {
-    public abstract class Item : Grabable
+    public abstract class ItemController : Grabable
     {
         private const float PICK_UP_DURATION = 0.5f;
 
@@ -12,7 +12,7 @@ namespace Player.Interactables
         protected Hand _handHolder;
         private Sequence _pickUpSequence;
 
-        public virtual void StartUse() { }
+        public virtual void StartUse(Hand handUsingIt) { }
         public virtual void StopUse() { }
         public virtual void ToggleMode() { }
 

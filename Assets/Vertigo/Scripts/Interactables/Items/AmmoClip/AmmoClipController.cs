@@ -2,20 +2,24 @@ using UnityEngine;
 
 namespace Player.Interactables
 {
-    public class AmmoClipController : Item
+    public interface ICombinableItemm 
+    {
+        public void TryCombineWithItem(Grabable otherItem);
+    }
+
+    public class AmmoClipController : ItemController, ICombinableItemm
     {
         [SerializeField] private AmmoClipView _view;
         [SerializeField] private AmmoClipModel _model;
         private bool _usable = true;
 
-        public override void StartUse()
+        public void TryCombineWithItem(Grabable otherItem)
         {
             if (_usable)
             {
-                Grabable otherHandItem = _handHolder.GetEquipmentManager().GetOtherHandItem(_handHolder);
-                if (otherHandItem is GunController)
+                if (otherItem is GunController)
                 {
-                    GunController gun = (GunController)otherHandItem;
+                    GunController gun = (GunController)otherItem;
                     _view.ReloadAnimation(_model.reloadTime, gun.transform, () => ReloadGun(gun));
                     _usable = false;
                 }

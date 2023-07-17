@@ -1,5 +1,7 @@
 using DG.Tweening;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Player.Interactables
@@ -31,7 +33,7 @@ namespace Player.Interactables
         private float _xRotation;
 
         private LeverState _currentState;
-        private event Action OnSuccessfulPullCallback;
+        private HashSet<Action> OnSuccessfulPullCallbacks = new HashSet<Action>();
 
         private void Start()
         {
@@ -105,7 +107,7 @@ namespace Player.Interactables
         private void OnSuccessfulPull() 
         {
             UpdateState(LeverState.successfulPull);
-            OnSuccessfulPullCallback?.Invoke();
+            InvokeCallbacks();
             ReturnLeverToDefault();
         }
 
@@ -128,26 +130,28 @@ namespace Player.Interactables
                 UpdateState(LeverState.ungrabbed);
             });
         }
+        
+        private void InvokeCallbacks() 
+        {
+            foreach (Action callback in OnSuccessfulPullCallbacks)
+            {
+                callback?.Invoke();
+            }
+        }
 
         public void AddListener(Action onSuccessfulPullCallback)
         {
-            OnSuccessfulPullCallback += onSuccessfulPullCallback;
+            OnSuccessfulPullCallbacks.Add(onSuccessfulPullCallback);
         }
 
         public void RemoveListener(Action onSuccessfulPullCallback)
         {
-            OnSuccessfulPullCallback -= onSuccessfulPullCallback;
+            OnSuccessfulPullCallbacks.Remove(onSuccessfulPullCallback);
         }
 
         public void RemoveAllListener()
-        {
-            if (OnSuccessfulPullCallback != null)
-            {
-                foreach (Delegate d in OnSuccessfulPullCallback.GetInvocationList())
-                {
-                    OnSuccessfulPullCallback -= (Action)d;
-                }
-            }
+        {                
+            OnSuccessfulPullCallbacks.Clear();
         }
     }
 }

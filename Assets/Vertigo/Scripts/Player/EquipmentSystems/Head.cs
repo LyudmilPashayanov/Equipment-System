@@ -12,6 +12,7 @@ namespace Player
             if (_equippedHat == null)
             {
                 _equippedHat = hatItem;
+                _equippedHat.OnUnequipped += UnequipHat;
                 _equippedHat.transform.SetParent(transform, false);
                 return true;
             }
@@ -22,6 +23,7 @@ namespace Player
 
         public void UnequipHat()
         {
+            _equippedHat.OnUnequipped -= UnequipHat;
             _equippedHat = null;
         }
     }
