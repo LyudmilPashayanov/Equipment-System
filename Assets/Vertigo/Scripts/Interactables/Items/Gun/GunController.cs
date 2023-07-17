@@ -1,35 +1,44 @@
+using System;
 using UnityEngine;
 
 namespace Player.Interactables
 {
     public class GunController : ItemController
     {
-        private const int MAGAZINE_SIZE = 10;
-
-        [SerializeField] private GunView _view;
-        [SerializeField] private Transform _bulletSpawnPoint;
-        [SerializeField] private BulletFactory _bulletFactory;
-        [SerializeField] private float _bulletSpeed = 10f;
-        [SerializeField] private float _fireRate = 0.333f; // 3 bullets per second
+        private GunView _view;
+        private Transform _bulletSpawnPoint;
+        private BulletFactory _bulletFactory;
+        private float _bulletSpeed;
+        private float _fireRate;
 
         private bool _isShooting;
         private float _fireTimer;
-        private int _magazine = MAGAZINE_SIZE;
-        private bool _automaticShoot = true;
+        public int _magazineSize;
 
- /*       public GunController(Rigidbody rb) : base(rb)
-        {
-        }*/
+        public bool AutomaticShoot {get; set;}
+        public int Magazine { get; set; }
 
-        private void Start()
+        public GunController(GunView View, Transform BulletSpawnPoint, float BulletSpeed, float FireRate,int MagazineSize)
         {
-            _view.SetRemainingBullets(_magazine.ToString());
-            _view.ToggleAutomaticModeText(_automaticShoot);
+            _view = View;
+            _bulletSpawnPoint = BulletSpawnPoint;
+            _bulletSpeed = BulletSpeed;
+            _fireRate = FireRate;
+            _magazineSize = MagazineSize;
+            _bulletFactory = new BulletFactory();
+            AutomaticShoot = true;
+        }
+
+        public override void Subscribe(Action onUsed, Action onStoppedUse, Action onToggle)
+        {
+            onUsed += StartShooting;
+            onStoppedUse += StopShooting;
+            onToggle += ToggleAutomaticMode;
         }
 
         private void Update()
         {
-            if (_itemEquipped)
+            if (_handHolder != null)
             {
                 ShootingTick();
             }
@@ -41,7 +50,7 @@ namespace Player.Interactables
             {
                 _fireTimer -= Time.deltaTime;
             }
-            if (_isShooting && _fireTimer <= 0 && _magazine > 0)
+            if (_isShooting && _fireTimer <= 0 && Magazine > 0)
             {
                 FireBullet();
                 _fireTimer = _fireRate;
@@ -58,8 +67,8 @@ namespace Player.Interactables
             {
                 bulletRigidbody.velocity = bullet.transform.forward * _bulletSpeed;
             }
-            _view.SetRemainingBullets((--_magazine).ToString());
-            if (!_automaticShoot)
+            _view.SetRemainingBullets((--Magazine).ToString());
+            if (!AutomaticShoot)
             {
                 StopShooting();
             }
@@ -70,43 +79,31 @@ namespace Player.Interactables
             _isShooting = true;
         }
 
-        private void StopShooting()
+        public void StopShooting()
         {
             _isShooting = false;
         }
 
         public void ReloadBullets(int bulletsBeingReloaded)
         {
-            _magazine += bulletsBeingReloaded;
-            if (_magazine > MAGAZINE_SIZE)
-                _magazine = MAGAZINE_SIZE;
-            _view.SetRemainingBullets(_magazine.ToString());
+            Magazine += bulletsBeingReloaded;
+            if (Magazine > _magazineSize)
+                Magazine = _magazineSize;
+            _view.SetRemainingBullets(Magazine.ToString());
         }
 
-        public override void ToggleMode()
+        public void ToggleAutomaticMode()
         {
-            _automaticShoot = !_automaticShoot;
-            _view.ToggleAutomaticModeText(_automaticShoot);
+            AutomaticShoot = !AutomaticShoot;
         }
 
-        public override void StartUse(Hand handUsingIt)
+        public override void OnStartUse(Hand handUsingIt)
         {
             StartShooting();
         }
 
-        public override void StopUse()
+        public override void OnStopUse()
         {
-            StopShooting();
-        }
-
-        public override void Grab(Hand _currentHand)
-        {
-            base.Grab(_currentHand);
-        }
-
-        public override void Release()
-        {
-            base.Release();
             StopShooting();
         }
     }

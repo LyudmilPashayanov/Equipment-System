@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Player.Interactables
 {
-    public class BulletFactory : MonoBehaviour
+    public class BulletFactory
     {
         [SerializeField] private GameObject _bulletPrefab;
 
@@ -29,7 +29,7 @@ namespace Player.Interactables
 
         private void InstantiateBullet()
         {
-            GameObject bullet = Instantiate(_bulletPrefab);
+            GameObject bullet = Object.Instantiate(_bulletPrefab);
             ReturnBulletToPool(bullet);
         }
 

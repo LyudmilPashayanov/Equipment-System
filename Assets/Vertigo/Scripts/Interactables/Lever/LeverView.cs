@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 namespace Player.Interactables
 {
-    public class LeverView : MonoBehaviour
+    public class LeverView : Grabable
     {
         private string _onThresholdReachedText;
         private string _onGrabbedText;
@@ -58,6 +58,16 @@ namespace Player.Interactables
                 default:
                     break;
             }
+        }
+
+        public override void Grab(Hand Hand)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override void Release()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

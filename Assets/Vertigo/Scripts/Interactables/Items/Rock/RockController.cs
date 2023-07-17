@@ -8,7 +8,7 @@ namespace Player.Interactables
         {
         }*/
 
-        public override void StartUse(Hand handUsingIt)
+        public override void OnStartUse(Hand handUsingIt)
         {
             _handHolder.ReleaseCurrentItem();
         }

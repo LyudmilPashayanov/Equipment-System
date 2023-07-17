@@ -7,13 +7,13 @@ namespace Player.Interactables
         [SerializeField] FlashlightView _view;
 
         private bool _isFlashOn;
-        public override void StartUse(Hand handUsingIt)
+        public override void OnStartUse(Hand handUsingIt)
         {
             _isFlashOn = !_isFlashOn;
             _view.ToggleFlashlight(_isFlashOn);
         }
 
-        public override void ToggleMode()
+        public override void OnToggleMode()
         {
             _view.ChangeIntensity();
         }

@@ -14,7 +14,7 @@ namespace Player.Interactables
         successfulPull
     }
 
-    public class LeverController : Grabable
+    public class LeverController
     {
         private const float GOAL_VALUE = 155;
         private const float RELEASED_VALUE = 35;
