@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 3779664979045534321}
   - component: {fileID: 2440965193469643482}
   - component: {fileID: 6809698973849606971}
-  - component: {fileID: 953120375515534462}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -36,7 +35,7 @@ Transform:
   m_Children:
   - {fileID: 2429528213438570072}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!136 &1091331044379189355
 CapsuleCollider:
@@ -138,24 +137,6 @@ MonoBehaviour:
   _player: {fileID: 8059054544072892567}
   _sensitivityX: 1.5
   _sensitivityY: 1.5
---- !u!114 &953120375515534462
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 298209862087450845}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0625d43e9399b0e4289859d844841929, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _inputHands: {fileID: -346809732582321701, guid: 1d06cb3410b94e54385e071791e08cfd,
-    type: 3}
-  _hands:
-  - {fileID: 9084609645490643909}
-  - {fileID: 58760717417373232}
-  _sensitivityHands: 1.5
 --- !u!1 &3999357528075203916
 GameObject:
   m_ObjectHideFlags: 0
@@ -241,6 +222,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3662249114315943406}
   - component: {fileID: 9084609645490643909}
+  - component: {fileID: 5250882571743168420}
   - component: {fileID: 1030609258492696141}
   m_Layer: 0
   m_Name: L-hand
@@ -279,11 +261,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _equipmentManager: {fileID: 3779664979045534321}
+  _handMovement: {fileID: 5250882571743168420}
   _inputUse: {fileID: 6925533622116751204, guid: 1d06cb3410b94e54385e071791e08cfd,
     type: 3}
   _inputEquip: {fileID: -3704798430305152012, guid: 1d06cb3410b94e54385e071791e08cfd,
-    type: 3}
-  _inputHandMovement: {fileID: -1719953389113178215, guid: 1d06cb3410b94e54385e071791e08cfd,
     type: 3}
   _inputToggleMode: {fileID: 4377835152438046039, guid: 1d06cb3410b94e54385e071791e08cfd,
     type: 3}
@@ -292,9 +273,26 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   _palm: {fileID: 2515950521259780025}
-  _throwSidesSensitivity: 1.3
-  _throwForce: 4
-  _throwForwardSensitivity: 2
+  _releaseForce: 5
+--- !u!114 &5250882571743168420
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6530219004545759480}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0625d43e9399b0e4289859d844841929, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _inputScrollHands: {fileID: -346809732582321701, guid: 1d06cb3410b94e54385e071791e08cfd,
+    type: 3}
+  _inputHandMovement: {fileID: -1719953389113178215, guid: 1d06cb3410b94e54385e071791e08cfd,
+    type: 3}
+  _sensitivityRotationHand: 4
+  _sideMovementSensitivity: 50
+  _forwardMovementSensitivity: 50
 --- !u!120 &1030609258492696141
 LineRenderer:
   serializedVersion: 2
@@ -418,6 +416,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1588112503151569086}
   - component: {fileID: 58760717417373232}
+  - component: {fileID: 3038665599578379020}
   - component: {fileID: 1136542991053529974}
   m_Layer: 0
   m_Name: R-hand
@@ -456,11 +455,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _equipmentManager: {fileID: 3779664979045534321}
+  _handMovement: {fileID: 3038665599578379020}
   _inputUse: {fileID: -3932663192171668953, guid: 1d06cb3410b94e54385e071791e08cfd,
     type: 3}
   _inputEquip: {fileID: -8092672811267632305, guid: 1d06cb3410b94e54385e071791e08cfd,
-    type: 3}
-  _inputHandMovement: {fileID: -7700391594892905063, guid: 1d06cb3410b94e54385e071791e08cfd,
     type: 3}
   _inputToggleMode: {fileID: -3052528485540249672, guid: 1d06cb3410b94e54385e071791e08cfd,
     type: 3}
@@ -469,9 +467,26 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   _palm: {fileID: 5391889646088190354}
-  _throwSidesSensitivity: 1.3
-  _throwForce: 4
-  _throwForwardSensitivity: 2
+  _releaseForce: 5
+--- !u!114 &3038665599578379020
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7575452496595690594}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0625d43e9399b0e4289859d844841929, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _inputScrollHands: {fileID: -346809732582321701, guid: 1d06cb3410b94e54385e071791e08cfd,
+    type: 3}
+  _inputHandMovement: {fileID: -7700391594892905063, guid: 1d06cb3410b94e54385e071791e08cfd,
+    type: 3}
+  _sensitivityRotationHand: 4
+  _sideMovementSensitivity: 50
+  _forwardMovementSensitivity: 50
 --- !u!120 &1136542991053529974
 LineRenderer:
   serializedVersion: 2

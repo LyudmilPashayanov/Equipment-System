@@ -16,10 +16,20 @@ namespace Player.Interactables
         public virtual void StopUse() { }
         public virtual void ToggleMode() { }
 
+        protected void SubscribeHand() 
+        {
+            _handHolder.Subscribe(StartUse, StopUse, ToggleMode);
+        }
+        
+        protected void UnsubscribeHand() 
+        {
+            _handHolder.Unsubscribe(StartUse, StopUse, ToggleMode);
+        }
+
         public override void Grab(Hand Hand)
         {
             _handHolder = Hand;
-            Hand.Subscribe(StartUse, StopUse, ToggleMode);
+            SubscribeHand();
             _itemEquipped = true;
             TogglePickUpCollider(false);
             ToggleKinematic(true);
@@ -36,7 +46,7 @@ namespace Player.Interactables
             {
                 _pickUpSequence.Kill();
             }
-            _handHolder.Unsubscribe(StartUse, StopUse, ToggleMode);
+            UnsubscribeHand();
             transform.SetParent(null);
             ToggleKinematic(false);
             TogglePickUpCollider(true);

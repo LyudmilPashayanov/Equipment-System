@@ -18,9 +18,7 @@ namespace Player.Interactables
             bool hatEquipped = _handHolder.GetEquipmentManager().TryEquipHat(this);
             if (hatEquipped)
             {
-                _handHolder.ReleaseCurrentItem(false);
-                _onHeadCollider.enabled = true;
-                _onHead = true;
+                EquipOnHead();
             }
             else
             {
@@ -34,6 +32,15 @@ namespace Player.Interactables
             _onHeadCollider.enabled = false;
             if (_onHead)
                 _handHolder.GetEquipmentManager().UnequipHat();
+        }
+
+        private void EquipOnHead() 
+        {
+            _handHolder.ReleaseCurrentItem(false);
+            UnsubscribeHand();
+            _handHolder = null;
+            _onHeadCollider.enabled = true;
+            _onHead = true;
         }
     }
 }

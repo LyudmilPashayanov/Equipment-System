@@ -8,22 +8,26 @@ namespace Player.Interactables
         [SerializeField] private float _leverMovementSpeed = 100f;
         private bool _grabbed;
         private Hand _holderHand;
-        public int topBorder = 100;
+
+        private float _handsMovementY;
+        private float _xRotation;
+
         private void Update()
         {
             if (_grabbed)
             {
-                float rotationAngle = Time.deltaTime * Vector3.Dot(_holderHand.GetMovementDirection(false), Vector3.back) * _leverMovementSpeed;
-                Quaternion rotation = Quaternion.Euler(rotationAngle, 0f, 0f);
-                _handlePivot.rotation *= rotation;
+                MoveLever();
             }
         }
-        private Quaternion ClampRotation(Quaternion rotation, float minAngle, float maxAngle)
+      
+        private void MoveLever() 
         {
-            Vector3 euler = rotation.eulerAngles;
-            euler.x = Mathf.Clamp(euler.x, minAngle, maxAngle);
-            return Quaternion.Euler(euler);
+            _handsMovementY = Time.deltaTime * _leverMovementSpeed * _holderHand.GetMovementDirection(false).z;
+            _xRotation -= _handsMovementY;
+            _xRotation = Mathf.Clamp(_xRotation, 35f, 175f);
+            _handlePivot.transform.localRotation = Quaternion.Euler(_xRotation, 0, 0);
         }
+
         public override void Grab(Hand hand)
         {
             _holderHand = hand;
