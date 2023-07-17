@@ -5,17 +5,18 @@ namespace Player
 {
     public class Head : MonoBehaviour
     {
-        private GameObject _equippedHat;
+        private HatItem _equippedHat;
 
         internal bool TryEquipHat(HatItem hatItem)
         {
             if (_equippedHat == null)
             {
-                _equippedHat = hatItem.gameObject;
+                _equippedHat = hatItem;
                 _equippedHat.transform.SetParent(transform, false);
                 return true;
             }
             else
+                _equippedHat.HatInUseIndication();
                 return false;
         }
 

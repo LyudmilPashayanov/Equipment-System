@@ -1,6 +1,6 @@
 namespace Player.Interactables
 {
-    public class HatView : ItemView
+    public class CowboyHatController : HatItem
     {
         
     }
