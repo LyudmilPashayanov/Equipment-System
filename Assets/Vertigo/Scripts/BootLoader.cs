@@ -1,15 +1,30 @@
 using UnityEngine;
+using UnityEngine.UI;
+using DG.Tweening;
 
 namespace Vertigo
 {
     public class BootLoader : MonoBehaviour
     {
-        private void Start()
+        [SerializeField] private Image _background;
+
+        private void Awake()
         {
-            Debug.Log("Boot loader");
+            _background.color = Color.black;
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
             Application.targetFrameRate = 120;
         }
+
+        private void Start()
+        {
+            FadeBackground();
+        }
+
+        private void FadeBackground() 
+        {
+            _background.DOFade(0, 2f);
+        }
+
     }
 }
