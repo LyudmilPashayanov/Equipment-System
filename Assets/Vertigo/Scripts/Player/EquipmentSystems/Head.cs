@@ -1,7 +1,7 @@
-using Player.Interactables;
+using Vertigo.Player.Interactables;
 using UnityEngine;
 
-namespace Player
+namespace Vertigo.Player
 {
     public class Head : MonoBehaviour
     {

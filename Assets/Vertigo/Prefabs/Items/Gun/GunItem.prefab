@@ -386,7 +386,6 @@ GameObject:
   - component: {fileID: 8862117650905094220}
   - component: {fileID: 5427599193038288823}
   - component: {fileID: 7684249890461501346}
-  - component: {fileID: 6326640552664146478}
   - component: {fileID: 662105365214470816}
   - component: {fileID: 7113562606833790585}
   m_Layer: 6
@@ -430,10 +429,11 @@ MonoBehaviour:
   _interactableCollider: {fileID: 662105365214470816}
   _rb: {fileID: 7113562606833790585}
   _view: {fileID: 7684249890461501346}
+  _model: {fileID: 11400000, guid: 0424c6b2b3b5d2247847b3ff350bc50e, type: 2}
+  _bulletModel: {fileID: 11400000, guid: 9a0a149cf3744e64890308272c4141b9, type: 2}
   _bulletSpawnPoint: {fileID: 4760953059830135200}
-  _bulletFactory: {fileID: 6326640552664146478}
-  _bulletSpeed: 10
-  _fireRate: 0.333
+  _bulletPrefab: {fileID: 6083390991458204173, guid: fb129b5fcda96ae4eb41e7a1849f6d8c,
+    type: 3}
 --- !u!114 &7684249890461501346
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -449,20 +449,6 @@ MonoBehaviour:
   _meshRenderer: {fileID: 2925593573979136952}
   _remainingBulletsText: {fileID: 421861617073603621}
   _shootingModeText: {fileID: 8012241854965454006}
---- !u!114 &6326640552664146478
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5442947123226462039}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e3891ddc576ee5548a6a823b8d40a6a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _bulletPrefab: {fileID: 5558786311985533731, guid: fb129b5fcda96ae4eb41e7a1849f6d8c,
-    type: 3}
 --- !u!135 &662105365214470816
 SphereCollider:
   m_ObjectHideFlags: 0

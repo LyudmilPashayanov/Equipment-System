@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace Player.Movement
+namespace Vertigo.Player.Movement
 {
     public class PlayerMovement : MonoBehaviour
     {

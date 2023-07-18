@@ -1,7 +1,7 @@
-using Player.Interactables;
 using UnityEngine;
+using Vertigo.Player.Interactables;
 
-namespace Player
+namespace Vertigo.Player
 {
     public class EquipmentManager : MonoBehaviour
     {
@@ -20,7 +20,7 @@ namespace Player
             return (_currentHand == _leftHand ? _rightHand : _leftHand).GetItem();
         }
 
-        public bool TryEquipHat(HatItem hatItem) 
+        public bool TryEquipHat(HatItem hatItem)
         {
             return _head.TryEquipHat(hatItem);
         }
@@ -30,17 +30,17 @@ namespace Player
             _head.UnequipHat();
         }
 
-        public void OnItemUsed(Hand hand) 
+        public void OnItemUsed(Hand hand)
         {
             Grabable usedItem = hand.GetItem();
-            if (usedItem is ICombinableItemm)
+            if (usedItem is ICombinableItem)
             {
                 var otherGrabable = GetOtherHandItem(hand);
                 Grabable item1 = hand.GetItem();
-                ICombinableItemm item = item1 as ICombinableItemm;
-                item.TryCombineWithItem(otherGrabable);   
+                ICombinableItem item = item1 as ICombinableItem;
+                item.TryCombineWithItemInOtherHand(otherGrabable);
             }
-            else if(usedItem is HatItem) 
+            else if (usedItem is HatItem)
             {
                 HatItem hat = usedItem as HatItem;
                 hat.TryEquipOnHead(TryEquipHat(hat));

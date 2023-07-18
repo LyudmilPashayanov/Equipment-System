@@ -1,19 +1,14 @@
 using UnityEngine;
 
-namespace Player.Interactables
+namespace Vertigo.Player.Interactables.Weapons
 {
-    public interface ICombinableItemm 
-    {
-        public void TryCombineWithItem(Grabable otherItem);
-    }
-
-    public class AmmoClipController : ItemController, ICombinableItemm
+    public class AmmoClipController : ItemController, ICombinableItem
     {
         [SerializeField] private AmmoClipView _view;
         [SerializeField] private AmmoClipModel _model;
         private bool _usable = true;
 
-        public void TryCombineWithItem(Grabable otherItem)
+        public void TryCombineWithItemInOtherHand(Grabable otherItem)
         {
             if (_usable)
             {

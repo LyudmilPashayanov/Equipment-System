@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace Player.Interactables
+namespace Vertigo.Player.Interactables.Weapons
 {
     [CreateAssetMenu(fileName = "AmmoClipModel", menuName = "Vertigo/Item Models/Ammo-clip Model")]
     [Serializable]

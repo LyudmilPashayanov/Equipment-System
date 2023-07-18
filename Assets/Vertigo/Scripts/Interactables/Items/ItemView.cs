@@ -1,7 +1,7 @@
 using UnityEngine;
 using DG.Tweening;
 
-namespace Player.Interactables
+namespace Vertigo.Player.Interactables
 {
     public abstract class ItemView : MonoBehaviour
     {
@@ -13,7 +13,6 @@ namespace Player.Interactables
         private void Start()
         {
             _originalColor = _meshRenderer.material.color;
-            //TODO:  ItemController controller = new ItemController(...);
         }
 
         public virtual void UnusableIndication()

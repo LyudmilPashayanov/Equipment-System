@@ -1,7 +1,7 @@
 using DG.Tweening;
 using UnityEngine;
 
-namespace Player.Interactables
+namespace Vertigo.Player.Interactables
 {
     public abstract class ItemController : Grabable
     {
@@ -31,7 +31,6 @@ namespace Player.Interactables
             _handHolder = Hand;
             SubscribeHand();
             _itemEquipped = true;
-            TogglePickUpCollider(false);
             ToggleKinematic(true);
 
             transform.SetParent(Hand.GetPalm(), true);
@@ -49,16 +48,9 @@ namespace Player.Interactables
             UnsubscribeHand();
             transform.SetParent(null);
             ToggleKinematic(false);
-            TogglePickUpCollider(true);
             ApplyThrowForce(_handHolder.GetMovementDirection(), _handHolder.GetHandStrength());
             _itemEquipped = false;
             _handHolder = null;
-        }
-
-        private void TogglePickUpCollider(bool enable)
-        {
-           // _pickUpCollider.enabled = enable;
-           // TODO: Use this collider to always check if the hand is in range (obviously it will always be as it is parented to the hadn)
         }
 
         protected void ToggleKinematic(bool enable)

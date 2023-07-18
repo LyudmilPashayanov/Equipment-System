@@ -1,29 +1,34 @@
 using UnityEngine;
 
-namespace Player.Interactables
+namespace Vertigo.Player.Interactables.Weapons
 {
     public class GunController : ItemController
     {
-        private const int MAGAZINE_SIZE = 10;
-
         [SerializeField] private GunView _view;
+        [SerializeField] private GunModel _model;
+        [SerializeField] private BulletModel _bulletModel;
         [SerializeField] private Transform _bulletSpawnPoint;
-        [SerializeField] private BulletFactory _bulletFactory;
-        [SerializeField] private float _bulletSpeed = 10f;
-        [SerializeField] private float _fireRate = 0.333f; // 3 bullets per second
+        [SerializeField] private Bullet _bulletPrefab;
+        private BulletFactory _bulletFactory;
+       
+        private float _gunForce;
+        private float _fireRate;
+        private int _magazineMaxSize;
 
         private bool _isShooting;
         private float _fireTimer;
-        private int _magazine = MAGAZINE_SIZE;
+        private int _currentMagazineSize;
         private bool _automaticShoot = true;
-
- /*       public GunController(Rigidbody rb) : base(rb)
-        {
-        }*/
 
         private void Start()
         {
-            _view.SetRemainingBullets(_magazine.ToString());
+            _gunForce = _model.bulletSpeed;
+            _fireRate = _model.fireRate;
+            _magazineMaxSize = _model.magazineSize;
+            _currentMagazineSize = _magazineMaxSize;
+            _bulletFactory = new BulletFactory(_bulletPrefab, _bulletModel);
+
+            _view.SetRemainingBullets(_currentMagazineSize.ToString());
             _view.ToggleAutomaticModeText(_automaticShoot);
         }
 
@@ -41,7 +46,7 @@ namespace Player.Interactables
             {
                 _fireTimer -= Time.deltaTime;
             }
-            if (_isShooting && _fireTimer <= 0 && _magazine > 0)
+            if (_isShooting && _fireTimer <= 0 && _currentMagazineSize > 0)
             {
                 FireBullet();
                 _fireTimer = _fireRate;
@@ -50,15 +55,9 @@ namespace Player.Interactables
 
         private void FireBullet()
         {
-            GameObject bullet = _bulletFactory.GetBullet();
-            bullet.transform.position = _bulletSpawnPoint.position;
-            bullet.transform.rotation = _bulletSpawnPoint.rotation;
-            Rigidbody bulletRigidbody = bullet.GetComponent<Rigidbody>();
-            if (bulletRigidbody != null)
-            {
-                bulletRigidbody.velocity = bullet.transform.forward * _bulletSpeed;
-            }
-            _view.SetRemainingBullets((--_magazine).ToString());
+            Bullet bullet = _bulletFactory.GetBullet();
+            bullet.Shoot(_bulletSpawnPoint, _gunForce);
+            _view.SetRemainingBullets((--_currentMagazineSize).ToString());
             if (!_automaticShoot)
             {
                 StopShooting();
@@ -77,10 +76,10 @@ namespace Player.Interactables
 
         public void ReloadBullets(int bulletsBeingReloaded)
         {
-            _magazine += bulletsBeingReloaded;
-            if (_magazine > MAGAZINE_SIZE)
-                _magazine = MAGAZINE_SIZE;
-            _view.SetRemainingBullets(_magazine.ToString());
+            _currentMagazineSize += bulletsBeingReloaded;
+            if (_currentMagazineSize > _magazineMaxSize)
+                _currentMagazineSize = _magazineMaxSize;
+            _view.SetRemainingBullets(_currentMagazineSize.ToString());
         }
 
         public override void ToggleMode()

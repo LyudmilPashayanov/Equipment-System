@@ -1,10 +1,10 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System;
-using Player.Movement;
-using Player.Interactables;
+using Vertigo.Player.Movement;
+using Vertigo.Player.Interactables;
 
-namespace Player
+namespace Vertigo.Player
 {
     public class Hand : MonoBehaviour
     {

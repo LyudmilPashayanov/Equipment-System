@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace Player.Interactables
+namespace Vertigo.Player.Interactables
 {
     /// <summary>
     /// Base class marking a HatController as a Hat item.

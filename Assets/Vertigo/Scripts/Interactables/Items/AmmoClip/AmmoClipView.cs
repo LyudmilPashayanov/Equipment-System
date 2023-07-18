@@ -2,7 +2,7 @@ using DG.Tweening;
 using System;
 using UnityEngine;
 
-namespace Player.Interactables
+namespace Vertigo.Player.Interactables.Weapons
 {
     public class AmmoClipView : ItemView
     {

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace Player.Interactables
+namespace Vertigo.Player.Interactables
 {
     enum LeverState 
     {
@@ -67,11 +67,13 @@ namespace Player.Interactables
         {
             _holderHand = hand;
             _grabbed = true;
+            SetEnabled(false);
         }
 
         public override void Release()
         {
             _grabbed = false;
+            SetEnabled(true);
             OnLeverRelease();
         }
 

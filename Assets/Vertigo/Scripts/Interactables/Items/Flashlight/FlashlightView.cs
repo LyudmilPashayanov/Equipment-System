@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Player.Interactables
+namespace Vertigo.Player.Interactables
 {
     public class FlashlightView : ItemView
     {
