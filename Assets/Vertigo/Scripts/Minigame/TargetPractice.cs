@@ -1,18 +1,22 @@
+using System;
 using UnityEngine;
 
 namespace Vertigo.Minigames
 {
-    public class TargetPractice : MonoBehaviour
+    public interface IHittable 
     {
-        [SerializeField] private Collider _targetCollider;
+        public event Action<int> OnHit;
+        public void Hit(int damage);
+    }
 
+    public class TargetPractice : MonoBehaviour, IHittable
+    {
+        public event Action<int> OnHit;
 
-        private void OnCollisionEnter(Collision collision)
+        public void Hit(int damage)
         {
-            if (collision != null)
-            {
-                //if(collision.gameObject.get)
-            }
+            OnHit?.Invoke(damage);
+            Debug.Log("being hit for " + damage +" dmg.");
         }
     }
 }

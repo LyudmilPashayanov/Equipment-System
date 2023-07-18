@@ -18,17 +18,19 @@ namespace Vertigo.Player.Interactables
     {
         private const float GOAL_VALUE = 155;
         private const float RELEASED_VALUE = 35;
-
-        [SerializeField] private string _onThresholdReachedText = "release lever";
-        [SerializeField] private string _onGrabbedText = "pull down";
-        [SerializeField] private string _defaultText = "grab me";
-        [SerializeField] private string _onSuccessText = "spawning item";
         [SerializeField] private LeverView _view;
         [SerializeField] private Transform _handlePivot;
-        [SerializeField] private float _leverMovementSpeed = 100f;
+        [Header("Label indicators:")]
+        [SerializeField] private string _defaultText = "grab me";
+        [SerializeField] private string _onGrabbedText = "pull down";
+        [SerializeField] private string _onThresholdReachedText = "release lever";
+        [SerializeField] private string _onSuccessText = "spawning item";
+
+        private float _leverMovementSpeed = 5f;
 
         private Hand _holderHand;
         private bool _grabbed;
+
         private float _handsMovementY;
         private float _xRotation;
 

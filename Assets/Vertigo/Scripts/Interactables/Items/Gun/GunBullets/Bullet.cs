@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using Vertigo.Minigames;
 
 namespace Vertigo.Player.Interactables.Weapons
 {
@@ -14,11 +15,6 @@ namespace Vertigo.Player.Interactables.Weapons
         private int _lifetime;
         private int _damage;
 
-        public int GetDamage()
-        {
-            return _damage;
-        }
-
         public void Init(BulletModel model)
         {
             _lifetime = model.lifetime;
@@ -31,14 +27,12 @@ namespace Vertigo.Player.Interactables.Weapons
             transform.position = SpawnPoint.position;
             transform.rotation = SpawnPoint.rotation;
             _bulletRigidbody.velocity = transform.forward * gunForce;
-            Debug.Log("_lifetime " + _lifetime);
             SetBulletLifespan(_lifetime);
         }
 
         private void SetBulletLifespan(float lifetime)
         {
             _despawnCoroutine = StartCoroutine(DespawnBullet(lifetime));
-            Debug.Log("StartCoroutine Bullet Despawning");
         }
 
         private IEnumerator DespawnBullet(float lifetime)
@@ -58,10 +52,21 @@ namespace Vertigo.Player.Interactables.Weapons
             if (_despawnCoroutine != null)
             {
                 StopCoroutine(_despawnCoroutine);
+                _despawnCoroutine = null;
             }
-            Debug.Log("Bullet Despawning");
             gameObject.SetActive(false);
             OnDespawn?.Invoke(this);
+        }
+
+
+        private void OnCollisionEnter(Collision collision)
+        {
+            IHittable hittable;
+            if (collision.collider.TryGetComponent<IHittable>(out hittable))
+            {
+                hittable.Hit(_damage);
+                Despawn();
+            }
         }
     }
 }

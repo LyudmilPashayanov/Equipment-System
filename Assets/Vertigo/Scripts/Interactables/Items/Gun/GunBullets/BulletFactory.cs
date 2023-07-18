@@ -24,7 +24,6 @@ namespace Vertigo.Player.Interactables.Weapons
                 InstantiateBullet();
             }
             Bullet bullet = _bulletPool.Dequeue();
-            bullet.SubscribeOnDespawnEvent(ReturnToPool);
             return bullet;
         }
 
@@ -32,6 +31,7 @@ namespace Vertigo.Player.Interactables.Weapons
         {
             GameObject bulletGO = Object.Instantiate(_bulletPrefab.gameObject);
             Bullet bullet = bulletGO.GetComponent<Bullet>();
+            bullet.SubscribeOnDespawnEvent(ReturnToPool);
             bullet.Init(_bulletModel);
             ReturnBulletToPool(bullet);
         }
