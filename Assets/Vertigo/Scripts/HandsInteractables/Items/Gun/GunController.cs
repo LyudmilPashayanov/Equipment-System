@@ -3,8 +3,13 @@ using Vertigo.Audio;
 
 namespace Vertigo.Player.Interactables.Weapons
 {
+    /// <summary>
+    /// This class contains the business and Unity logic of the Gun item as a Grabbable game object.
+    /// </summary>
     public class GunController : ItemController
     {
+
+        #region Variables
         [SerializeField] private GunView _view;
         [SerializeField] private GunModel _model;
         [SerializeField] private BulletModel _bulletModel;
@@ -20,7 +25,9 @@ namespace Vertigo.Player.Interactables.Weapons
         private float _fireTimer;
         private int _currentMagazineSize;
         private bool _automaticShoot = true;
+        #endregion
 
+        #region Functionality
         private void Start()
         {
             _gunForce = _model.bulletSpeed;
@@ -83,7 +90,9 @@ namespace Vertigo.Player.Interactables.Weapons
                 _currentMagazineSize = _magazineMaxSize;
             _view.SetRemainingBullets(_currentMagazineSize.ToString());
         }
+        #endregion
 
+        #region Event Handlers
         public override void ToggleMode()
         {
             _automaticShoot = !_automaticShoot;
@@ -111,5 +120,6 @@ namespace Vertigo.Player.Interactables.Weapons
             base.Release();
             StopShooting();
         }
+        #endregion
     }
 }

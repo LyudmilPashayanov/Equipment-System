@@ -3,13 +3,20 @@ using Vertigo.Audio;
 
 namespace Vertigo.Player.Interactables.Weapons
 {
+    /// <summary>
+    /// This class contains the business and Unity logic of the Ammo-clip item as a Grabbable game object.
+    /// </summary>
     public class AmmoClipController : ItemController, ICombinableItem
     {
+        #region Variables
+
         [SerializeField] private AmmoClipView _view;
         [SerializeField] private AmmoClipModel _model;
         private bool _usable = true;
+        #endregion
+        #region Functionality
 
-        public void TryCombineWithItemInOtherHand(Grabable otherItem)
+        public void TryCombineWithItemInOtherHand(Grabbable otherItem)
         {
             if (_usable)
             {
@@ -32,5 +39,6 @@ namespace Vertigo.Player.Interactables.Weapons
             gun.ReloadBullets(_model.ammoCount);
             Destroy(gameObject);
         }
+        #endregion
     }
 }

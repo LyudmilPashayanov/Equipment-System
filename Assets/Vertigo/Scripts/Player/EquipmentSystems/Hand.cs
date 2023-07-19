@@ -6,8 +6,12 @@ using Vertigo.Player.Interactables;
 
 namespace Vertigo.Player
 {
+    /// <summary>
+    /// This class is responsible for grabbing items, using them and overall interact with the world in the game.
+    /// </summary>
     public class Hand : MonoBehaviour
     {
+        #region Variables
         private const float RAY_DISTANCE = 3.9f;
 
         [SerializeField] private HandMovement _handMovement;
@@ -29,13 +33,15 @@ namespace Vertigo.Player
         private RaycastHit HandsRayHit;
         private GameObject _rayHitObject;
 
-        private Grabable _itemInHand;
+        private Grabbable _itemInHand;
 
         public event Action<Hand> OnItemUse;
         private event Action OnStopUse;
         private event Action OnToggleMode;
-
-        public Grabable GetItem()
+        #endregion 
+        
+        #region Getters
+        public Grabbable GetItem()
         {
             return _itemInHand;
         }
@@ -49,6 +55,9 @@ namespace Vertigo.Player
         {
             return _releaseForce;
         }
+        #endregion
+
+        #region Functionality
 
         public void Subscribe(Action<Hand> onUse, Action onStopUse, Action onToggle)
         {
@@ -114,7 +123,7 @@ namespace Vertigo.Player
             ChangeLineColor();
         }
 
-        private void ChangeLineColor() // change colors once, not every frame 
+        private void ChangeLineColor() // changes colors once, not every frame 
         {
             if (_lineRenderer.enabled == false && _itemInHand == null)
             {
@@ -145,7 +154,7 @@ namespace Vertigo.Player
             }
             else
             {
-                if (_rayHitObject != null && _rayHitObject.TryGetComponent<Grabable>(out _itemInHand))
+                if (_rayHitObject != null && _rayHitObject.TryGetComponent<Grabbable>(out _itemInHand))
                 {
                     _itemInHand.Grab(this);
                 }
@@ -160,6 +169,7 @@ namespace Vertigo.Player
             }
             _itemInHand = null;
         }
+        #endregion
 
         #region Event Handlers
 

@@ -3,10 +3,18 @@ using UnityEngine;
 
 namespace Vertigo.Player
 {
-    public class Head : MonoBehaviour
-    {
-        private HatItem _equippedHat;
 
+    /// <summary>
+    /// This class represents the Head Slot of the player. It is responsible to equip a Hat to it.
+    /// TODO: Maybe apply any stats, when wearing a hat.
+    /// </summary>
+    public class HeadItemSlot : MonoBehaviour
+    {
+        #region Variables
+        private HatItem _equippedHat;
+        #endregion
+
+        #region Variables
         internal bool TryEquipHat(HatItem hatItem)
         {
             if (_equippedHat == null)
@@ -26,5 +34,6 @@ namespace Vertigo.Player
             _equippedHat.OnUnequipped -= UnequipHat;
             _equippedHat = null;
         }
+        #endregion
     }
 }

@@ -4,6 +4,9 @@ using UnityEngine.InputSystem;
 
 namespace Vertigo.Player.Movement
 {
+    /// <summary>
+    /// This class is responsible for rotating the camera and player depending on the Input given from the Unity Input System.
+    /// </summary>
     public class CameraMovement : MonoBehaviour
     {
         [SerializeField] private InputActionReference _inputCamera;
@@ -23,6 +26,9 @@ namespace Vertigo.Player.Movement
             ApplyCameraMovement();
         }
 
+        /// <summary>
+        /// Rotates the camera up and down and the player transform around it's Y axis.
+        /// </summary>
         private void ApplyCameraMovement()
         {
             _mouseX = _inputCamera.action.ReadValue<Vector2>().x * _sensitivityX * Time.deltaTime;

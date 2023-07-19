@@ -3,8 +3,12 @@ using UnityEngine;
 
 namespace Vertigo.Player.Interactables
 {
-    public abstract class ItemController : Grabable
+    /// <summary>
+    /// Base class for all item controllers in the game. 
+    /// </summary>
+    public abstract class ItemController : Grabbable
     {
+        #region Variables
         private const float PICK_UP_DURATION = 0.5f;
 
         [SerializeField] protected Rigidbody _rb;
@@ -15,7 +19,9 @@ namespace Vertigo.Player.Interactables
         public virtual void StartUse(Hand handUsingIt) { }
         public virtual void StopUse() { }
         public virtual void ToggleMode() { }
-
+        #endregion
+        
+        #region Functionality
         protected void SubscribeHand() 
         {
             _handHolder.Subscribe(StartUse, StopUse, ToggleMode);
@@ -63,5 +69,6 @@ namespace Vertigo.Player.Interactables
             Vector3 throwDirection = Quaternion.Euler(0f, _handHolder.transform.parent.rotation.eulerAngles.y, 0f) * handMovementDirection;
             _rb.AddForce(throwDirection * throwForce, ForceMode.Impulse);
         }
+        #endregion
     }
 }

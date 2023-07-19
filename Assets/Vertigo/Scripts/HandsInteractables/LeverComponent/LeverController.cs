@@ -15,8 +15,13 @@ namespace Vertigo.Player.Interactables
         successfulPull
     }
 
-    public class LeverController : Grabable
+    /// <summary>
+    /// Lever Component which can be used for any type of functionality as an Input Device. 
+    /// Just AddListener() and it will Invoke your added event, when the player pulls the lever.
+    /// </summary>
+    public class LeverController : Grabbable
     {
+        #region Variables
         private const float GOAL_VALUE = 155;
         private const float RELEASED_VALUE = 35;
         [SerializeField] private LeverView _view;
@@ -37,7 +42,9 @@ namespace Vertigo.Player.Interactables
 
         private LeverState _currentState;
         private HashSet<Action> OnSuccessfulPullCallbacks = new HashSet<Action>();
+        #endregion
 
+        #region Functionality
         private void Start()
         {
             _view.Init(RELEASED_VALUE, GOAL_VALUE, _defaultText, _onGrabbedText, _onThresholdReachedText, _onSuccessText);
@@ -179,5 +186,6 @@ namespace Vertigo.Player.Interactables
         {                
             OnSuccessfulPullCallbacks.Clear();
         }
+        #endregion
     }
 }

@@ -5,8 +5,12 @@ using Vertigo.Audio;
 
 namespace Vertigo.Minigames
 {
+    /// <summary>
+    /// This class handles the logic of the Shoot the Target minigame.
+    /// </summary>
     public class TargetPracticeMinigame : MonoBehaviour
     {
+        #region Variables
         [SerializeField] private TargetPractice _target;
         [SerializeField] TextMeshPro _scoreText;
         [SerializeField] Transform _posA;
@@ -14,7 +18,9 @@ namespace Vertigo.Minigames
 
         private int _score;
         private Sequence _moveTargetSequence;
-        
+        #endregion 
+
+        #region Functionality
         private void Start()
         {
             _target.OnHit += TargetHit;
@@ -41,5 +47,6 @@ namespace Vertigo.Minigames
         {
             _scoreText.text = _score.ToString();
         }
+        #endregion 
     }
 }

@@ -1,11 +1,16 @@
 using TMPro;
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
+
 
 namespace Vertigo.Player.Interactables
 {
+    /// <summary>
+    /// This class handles all the visual changes of the Lever component.
+    /// </summary>
     public class LeverView : MonoBehaviour
     {
+        #region Variables
+
         private string _onThresholdReachedText;
         private string _onGrabbedText;
         private string _defaultText;
@@ -18,6 +23,9 @@ namespace Vertigo.Player.Interactables
         private Color _originalColor;
         private float _minLeverX;
         private float _maxLeverX;
+        #endregion 
+
+        #region Functionality
 
         private void Start()
         {
@@ -81,5 +89,6 @@ namespace Vertigo.Player.Interactables
                     break;
             }
         }
+        #endregion
     }
 }

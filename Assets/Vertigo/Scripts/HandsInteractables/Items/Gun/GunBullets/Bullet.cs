@@ -4,8 +4,12 @@ using UnityEngine;
 
 namespace Vertigo.Player.Interactables.Weapons
 {
+    /// <summary>
+    /// The class handles the logic of the Bullet fired from the gun. 
+    /// </summary>
     public class Bullet : MonoBehaviour
     {
+        #region Variables
         [SerializeField] private Rigidbody _bulletRigidbody;
         private Coroutine _despawnCoroutine;
 
@@ -13,7 +17,9 @@ namespace Vertigo.Player.Interactables.Weapons
 
         private int _lifetime;
         private int _damage;
+        #endregion
 
+        #region Functionality
         public void Init(BulletModel model)
         {
             _lifetime = model.lifetime;
@@ -56,8 +62,9 @@ namespace Vertigo.Player.Interactables.Weapons
             gameObject.SetActive(false);
             OnDespawn?.Invoke(this);
         }
+        #endregion
 
-
+        #region Event Handlers
         private void OnCollisionEnter(Collision collision)
         {
             IHittable hittable;
@@ -67,5 +74,6 @@ namespace Vertigo.Player.Interactables.Weapons
                 Despawn();
             }
         }
+        #endregion
     }
 }

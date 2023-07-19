@@ -2,8 +2,12 @@ using UnityEngine;
 
 namespace Vertigo.Player.Interactables
 {
+    /// <summary>
+    /// Handles all visual related logic for the Flashlight item. 
+    /// </summary>
     public class FlashlightView : ItemView
     {
+        #region Variables
         private enum FlashIntensity
         {
             low = 0,
@@ -17,6 +21,10 @@ namespace Vertigo.Player.Interactables
         [SerializeField] private Material _onMaterial;
 
         private FlashIntensity _currentIntensity;
+        #endregion
+
+        #region Functionality
+
         internal void ToggleFlashlight(bool enable)
         {
             _light.enabled = enable;
@@ -39,5 +47,6 @@ namespace Vertigo.Player.Interactables
                     break;
             }
         }
+        #endregion
     }
 }

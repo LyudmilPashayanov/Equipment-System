@@ -4,8 +4,12 @@ using UnityEngine.InputSystem;
 
 namespace Vertigo.Player.Movement
 {
+    /// <summary>
+    /// This class is responsible to move the player forward by handling the Input given from the Unity Input system.
+    /// </summary>
     public class PlayerMovement : MonoBehaviour
     {
+        #region Variables
         [Header("WALKING")]
         [SerializeField] private InputActionReference _input;
         [SerializeField] private Rigidbody _rigidbody;
@@ -18,13 +22,14 @@ namespace Vertigo.Player.Movement
 
         private Vector3 RawMovement;
         private float _currentXSpeed;
+        #endregion 
 
+        #region Functionality
         void Update()
         {
             CalculateWalk();
         }
 
-        //TODO : Explain why you use the FixedUpdate here.
         private void FixedUpdate()
         {
             MoveCharacter();
@@ -38,6 +43,9 @@ namespace Vertigo.Player.Movement
             OnPlayerMove?.Invoke(move);
         }
 
+        /// <summary>
+        /// Moving the player only forward, as in VR I would imagine this is better.
+        /// </summary>
         private void CalculateWalk()
         {
             if (_input.action.inProgress)
@@ -52,5 +60,7 @@ namespace Vertigo.Player.Movement
                 _currentXSpeed = Mathf.MoveTowards(_currentXSpeed, 0, _deAcceleration * Time.deltaTime);
             }
         }
+        #endregion
+
     }
 }

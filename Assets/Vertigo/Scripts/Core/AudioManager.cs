@@ -7,6 +7,7 @@ namespace Vertigo.Audio
     /// </summary> 
     public class AudioManager : MonoBehaviour
     {
+        #region Variables
         private static AudioManager _instance;
         public static AudioManager Instance { get { return _instance; } }
 
@@ -19,6 +20,9 @@ namespace Vertigo.Audio
         [SerializeField] AudioClip _gunReloadAudio;
         [SerializeField] AudioClip _leverPullAudio;
         [SerializeField] AudioClip _cantinaBand;
+        #endregion
+
+        #region Functionality
 
         void Awake()
         {
@@ -61,5 +65,6 @@ namespace Vertigo.Audio
                 _radioSource.Stop();
             }
         }
+        #endregion
     }
 }

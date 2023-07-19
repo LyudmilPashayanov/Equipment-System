@@ -3,13 +3,19 @@ using UnityEngine;
 
 namespace Vertigo.Player.Interactables.Weapons
 {
+    /// <summary>
+    /// This C# class is used in from the GunController and is responsible for Bullet creation and pooling them when needed.
+    /// </summary>
     public class BulletFactory
     {
+        #region Variables
         private Bullet _bulletPrefab;
         private BulletModel _bulletModel;
         private GameObject _bulletParent;
         private Queue<Bullet> _bulletPool = new Queue<Bullet>();
+        #endregion
 
+        #region Functionality
         public BulletFactory(Bullet BulletPrefab, BulletModel bulletModel)
         {
             _bulletParent = new GameObject("BulletsParent");
@@ -46,5 +52,6 @@ namespace Vertigo.Player.Interactables.Weapons
         {
             ReturnBulletToPool(bullet);
         }
+        #endregion
     }
 }

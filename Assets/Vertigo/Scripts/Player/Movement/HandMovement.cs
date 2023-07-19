@@ -3,8 +3,12 @@ using UnityEngine.InputSystem;
 
 namespace Vertigo.Player.Movement
 {
+    /// <summary>
+    /// This class implements, tracks and shares the movement of the Hand it is attached to.
+    /// </summary>
     public class HandMovement : MonoBehaviour
     {
+        #region Variables
         [SerializeField] private InputActionReference _inputScrollHands;
         [SerializeField] private InputActionReference _inputHandMovement;
 
@@ -13,12 +17,19 @@ namespace Vertigo.Player.Movement
         [SerializeField][Range(1, 300)] private float _forwardMovementSensitivity = 2;
 
         private float _yHandRotation = 0f;
+        #endregion
+
+        #region Functionality
 
         private void Start()
         {
             _inputScrollHands.action.started += MovingHand;
         }
 
+        /// <summary>
+        /// Moving the hand up/down when user triggers specific Unity Input System action.
+        /// </summary>
+        /// <param name="context"></param>
         private void MovingHand(InputAction.CallbackContext context)
         {
             _yHandRotation -= _inputScrollHands.action.ReadValue<Vector2>().y * _sensitivityRotationHand * Time.deltaTime;
@@ -26,9 +37,13 @@ namespace Vertigo.Player.Movement
             transform.localRotation = Quaternion.Euler(_yHandRotation, 0, 0);
         }
 
+        /// <summary>
+        /// Calculate the throw direction based on the mouse(or any device in the Unity Input System) delta position.
+        /// </summary>
+        /// <param name="normalized">marks if it will return the data normalized or not</param>
+        /// <returns></returns>
         public Vector3 GetMovementDirection(bool normalized = true)
         {
-            // Calculate the throw direction based on the mouse delta position
             Vector2 scrollMovement;
             Vector2 mouseMovement;
             if (normalized)
@@ -55,5 +70,6 @@ namespace Vertigo.Player.Movement
             
             return movementDirection;
         }
+        #endregion
     }
 }
