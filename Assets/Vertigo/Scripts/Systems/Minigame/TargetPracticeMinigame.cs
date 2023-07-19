@@ -1,6 +1,7 @@
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using Vertigo.Audio;
 
 namespace Vertigo.Minigames
 {
@@ -33,6 +34,7 @@ namespace Vertigo.Minigames
         {
             _score += damageDone;
             UpdateScoreText();
+            AudioManager.Instance.PlayTargetHitSound();
         }
 
         private void UpdateScoreText()

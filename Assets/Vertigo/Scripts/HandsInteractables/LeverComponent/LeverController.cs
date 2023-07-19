@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Vertigo.Audio;
 
 namespace Vertigo.Player.Interactables
 {
@@ -112,6 +113,7 @@ namespace Vertigo.Player.Interactables
         {
             UpdateState(LeverState.successfulPull);
             InvokeCallbacks();
+            AudioManager.Instance.PlayLeverPulledSound();
             ReturnLeverToDefault();
         }
 

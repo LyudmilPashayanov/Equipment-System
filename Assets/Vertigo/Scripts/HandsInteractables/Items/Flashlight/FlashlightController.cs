@@ -1,4 +1,5 @@
 using UnityEngine;
+using Vertigo.Audio;
 
 namespace Vertigo.Player.Interactables
 {
@@ -16,6 +17,7 @@ namespace Vertigo.Player.Interactables
         public override void ToggleMode()
         {
             _view.ChangeIntensity();
+            AudioManager.Instance.PlayToggleModeSound();
         }
     }
 }

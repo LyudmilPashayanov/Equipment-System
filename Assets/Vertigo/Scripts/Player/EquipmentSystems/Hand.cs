@@ -88,9 +88,8 @@ namespace Vertigo.Player
 
         private void CheckIfItemInRange()
         {
-            if(Vector3.Distance(_itemInHand.transform.position, transform.position) > 5) 
+            if(Vector3.Distance(_itemInHand.transform.position, transform.position) > 8) 
             {
-                Debug.Log("Item out of range, releasing it.");
                 ReleaseCurrentItem();
             }
         }

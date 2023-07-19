@@ -17,5 +17,13 @@ namespace Vertigo
         {
             _uiManager.FadeBackground();
         }
+
+        private void Update()
+        {
+            if(Input.GetKeyDown(KeyCode.Escape)) 
+            {
+                Application.Quit();
+            }
+        }
     }
 }
