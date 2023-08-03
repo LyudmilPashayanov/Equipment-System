@@ -1,4 +1,3 @@
-using DG.Tweening;
 using UnityEngine;
 
 namespace Vertigo.Player.Interactables
@@ -6,69 +5,76 @@ namespace Vertigo.Player.Interactables
     /// <summary>
     /// Base class for all item controllers in the game. 
     /// </summary>
-    public abstract class ItemController : Grabbable
+
+    public abstract class ItemController<TView> where TView : ItemView
     {
         #region Variables
-        private const float PICK_UP_DURATION = 0.5f;
-
-        [SerializeField] protected Rigidbody _rb;
-        protected bool _itemEquipped;
-        protected Hand _handHolder;
-        private Sequence _pickUpSequence;
-
-        public virtual void StartUse(Hand handUsingIt) { }
-        public virtual void StopUse() { }
-        public virtual void ToggleMode() { }
+        protected TView _view;
         #endregion
-        
+
         #region Functionality
-        protected void SubscribeHand() 
+
+        public ItemController(TView view)
         {
-            _handHolder.Subscribe(StartUse, StopUse, ToggleMode);
-        }
-        
-        protected void UnsubscribeHand() 
-        {
-            _handHolder.Unsubscribe(StartUse, StopUse, ToggleMode);
+            _view = view;
+            _view.Updated += OnViewUpdate;
+            _view.OnItemUse += UseItem;
+            _view.OnItemStopUse += StopUseItem;
+            _view.OnItemToggle += ToggleItem;
         }
 
-        public override void Grab(Hand Hand)
-        {
-            _handHolder = Hand;
-            SubscribeHand();
-            _itemEquipped = true;
-            ToggleKinematic(true);
+        protected virtual void UseItem()
+        { }
 
-            transform.SetParent(Hand.GetPalm(), true);
-            _pickUpSequence = DOTween.Sequence();
-            _pickUpSequence.Append(transform.DOLocalMove(Vector3.zero, PICK_UP_DURATION));
-            _pickUpSequence.Insert(0, transform.DOLocalRotate(new Vector3(0, -90, 0), PICK_UP_DURATION));
+        protected virtual void StopUseItem()
+        { }
+
+        protected virtual void ToggleItem()
+        { }
+
+        protected virtual void Update()
+        { }
+
+        protected bool PlayAudio(string key)
+        {
+            return true;
+            // play the audio needed if found
         }
 
-        public override void Release()
+        private void OnViewUpdate()
         {
-            if (_pickUpSequence.active)
-            {
-                _pickUpSequence.Kill();
-            }
-            UnsubscribeHand();
-            transform.SetParent(null);
-            ToggleKinematic(false);
-            ApplyThrowForce(_handHolder.GetMovementDirection(), _handHolder.GetHandStrength());
-            _itemEquipped = false;
-            _handHolder = null;
+            Update();
         }
 
-        protected void ToggleKinematic(bool enable)
+        private AudioClip GetAudioClip(string key) // Get audio from model
         {
-            _rb.isKinematic = enable;
+            return null;
+            // have a dictionary with audio files and keys in the model
+            // return FitmindService.GetMiniGameAudioClip(_content.Code, key);
         }
 
-        protected void ApplyThrowForce(Vector3 handMovementDirection, float throwForce)
-        {
-            Vector3 throwDirection = Quaternion.Euler(0f, _handHolder.transform.parent.rotation.eulerAngles.y, 0f) * handMovementDirection;
-            _rb.AddForce(throwDirection * throwForce, ForceMode.Impulse);
-        }
+
+        /* protected Coroutine ExecuteDelayed(Action callback, float delay)
+         {
+             if (_view != null)
+                 return _view.ExecuteDelayed(callback, delay);
+             Debug.LogError("The view is null, make sure you don't use this method before the Start()");
+             return null;
+
+         }
+
+         protected void StopCoroutine(Coroutine routine)
+         {
+             if (_view == null)
+             {
+                 Debug.LogError("The view is null, make sure you don't use this method before the Start()");
+                 return;
+             }
+             if (routine != null)
+                 _view.StopCoroutine(routine);
+         }*/
+
+
         #endregion
     }
 }

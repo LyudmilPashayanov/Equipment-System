@@ -7,7 +7,7 @@ namespace Vertigo.Player.Interactables
     /// </summary>
     public abstract class Grabbable : MonoBehaviour
     {
-        [SerializeField] protected Collider _interactableCollider;
+        [SerializeField] protected Collider _grabbableCollider;
         public abstract void Grab(Hand Hand);
         public abstract void Release();
     }

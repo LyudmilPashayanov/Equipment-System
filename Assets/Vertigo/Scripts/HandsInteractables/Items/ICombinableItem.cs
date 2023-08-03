@@ -5,6 +5,6 @@ namespace Vertigo.Player.Interactables
     /// </summary>
     public interface ICombinableItem
     {
-        public void TryCombineWithItemInOtherHand(Grabbable otherItem);
+        public void TryCombineWithItemInOtherHand<TView>(ItemController<ItemView> otherItem);
     }
 }

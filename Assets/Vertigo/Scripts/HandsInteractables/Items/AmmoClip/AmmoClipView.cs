@@ -9,12 +9,38 @@ namespace Vertigo.Player.Interactables.Weapons
     /// </summary>
     public class AmmoClipView : ItemView
     {
+        #region Variables
+        private Sequence _flashingSequence;
+        [SerializeField] private MeshRenderer _meshRenderer;
+        private Color _originalColor;
+
+        #endregion
+
         #region Functionality
+        private void Awake()
+        {
+            _originalColor = _meshRenderer.material.color;
+        }
+
         internal void ReloadAnimation(float reloadTime, Transform goToTransform, Action onAnimationFinish)
         {
             transform.DOMove(goToTransform.position, reloadTime).SetEase(Ease.InSine);
             transform.DOScale(Vector3.zero, reloadTime).SetEase(Ease.InCubic).OnComplete(() => onAnimationFinish?.Invoke());
         }
+
+        public virtual void UnusableIndication()
+        {
+            if (_flashingSequence != null && _flashingSequence.active)
+            {
+                return;
+            }
+            _flashingSequence = DOTween.Sequence();
+            _flashingSequence.Append(_meshRenderer.material.DOColor(Color.red, 0.2f));
+            _flashingSequence.Append(_meshRenderer.material.DOColor(_originalColor, 0.2f));
+            _flashingSequence.Append(_meshRenderer.material.DOColor(Color.red, 0.2f));
+            _flashingSequence.Append(_meshRenderer.material.DOColor(_originalColor, 0.2f));
+        }
+
         #endregion
     }
 }

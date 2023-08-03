@@ -1,38 +1,84 @@
 using UnityEngine;
 using DG.Tweening;
+using System;
 
 namespace Vertigo.Player.Interactables
 {
     /// <summary>
     /// Base class for all Item Views in the game, handling all the visual changes of the items.
     /// </summary>
-    public abstract class ItemView : MonoBehaviour
+
+
+    /*public interface IItemView
+    {
+        public event Action Updated;
+        Coroutine ExecuteDelayed(Action callback, float delay);
+        Coroutine StartCoroutine(IEnumerator routine);
+        void StopCoroutine(Coroutine routine);
+    }*/
+
+    public abstract class ItemView : Grabbable
     {
         #region Variables
-        [SerializeField] private MeshRenderer _meshRenderer;
+        private const float PICK_UP_DURATION = 0.5f;
 
-        private Sequence _flashingSequence;
-        private Color _originalColor;
+        [SerializeField] protected Rigidbody _rb;
+
+        private Sequence _pickUpSequence;
+
+        protected Hand _handHolder;
+
+        public event Action Updated;
+        public event Action OnItemUse;
+        public event Action OnItemStopUse;
+        public event Action OnItemToggle;
+
         #endregion
-        
+
         #region Functionality
-        private void Start()
+
+
+        protected virtual void Update()
         {
-            _originalColor = _meshRenderer.material.color;
+            Updated?.Invoke();
         }
 
-        public virtual void UnusableIndication()
+        public virtual void StartUse(Hand handUsingIt) { OnItemUse?.Invoke(); }
+        public virtual void StopUse() { OnItemStopUse?.Invoke(); }
+        public virtual void ToggleMode() { OnItemToggle?.Invoke(); }
+
+        public override void Grab(Hand Hand)
         {
-            if (_flashingSequence != null && _flashingSequence.active)
-            {
-                return;
-            }
-            _flashingSequence = DOTween.Sequence();
-            _flashingSequence.Append(_meshRenderer.material.DOColor(Color.red, 0.2f));
-            _flashingSequence.Append(_meshRenderer.material.DOColor(_originalColor, 0.2f));
-            _flashingSequence.Append(_meshRenderer.material.DOColor(Color.red, 0.2f));
-            _flashingSequence.Append(_meshRenderer.material.DOColor(_originalColor, 0.2f));
+            _handHolder = Hand;
+            ToggleKinematic(true);
+            transform.SetParent(Hand.GetPalm(), true);
+            _pickUpSequence = DOTween.Sequence();
+            _pickUpSequence.Append(transform.DOLocalMove(Vector3.zero, PICK_UP_DURATION));
+            _pickUpSequence.Insert(0, transform.DOLocalRotate(new Vector3(0, -90, 0), PICK_UP_DURATION));
         }
-#endregion
+
+        public override void Release()
+        {
+            if (_pickUpSequence.active)
+            {
+                _pickUpSequence.Kill();
+            }
+            transform.SetParent(null);
+            ToggleKinematic(false);
+            ApplyThrowForce(_handHolder.GetMovementDirection(), _handHolder.GetHandStrength());
+            _handHolder = null;
+        }
+
+        protected void ToggleKinematic(bool enable)
+        {
+            _rb.isKinematic = enable;
+        }
+
+        protected void ApplyThrowForce(Vector3 handMovementDirection, float throwForce)
+        {
+            Vector3 throwDirection = Quaternion.Euler(0f, _handHolder.transform.parent.rotation.eulerAngles.y, 0f) * handMovementDirection;
+            _rb.AddForce(throwDirection * throwForce, ForceMode.Impulse);
+        }
+        #endregion
     }
 }

@@ -6,24 +6,28 @@ namespace Vertigo.Player.Interactables.Weapons
     /// <summary>
     /// This class contains the business and Unity logic of the Ammo-clip item as a Grabbable game object.
     /// </summary>
-    public class AmmoClipController : ItemController, ICombinableItem
+    public class AmmoClipController : ItemController<AmmoClipView>, ICombinableItem
     {
         #region Variables
 
         [SerializeField] private AmmoClipView _view;
         [SerializeField] private AmmoClipModel _model;
         private bool _usable = true;
+
+        public AmmoClipController(AmmoClipView view) : base(view)
+        {
+        }
         #endregion
         #region Functionality
 
-        public void TryCombineWithItemInOtherHand(Grabbable otherItem)
+        public void TryCombineWithItemInOtherHand<TView>(ItemController<ItemView> otherItem)
         {
             if (_usable)
             {
                 if (otherItem is GunController)
                 {
-                    GunController gun = (GunController)otherItem;
-                    _view.ReloadAnimation(_model.reloadTime, gun.transform, () => ReloadGun(gun));
+                    //GunController gun = (GunController)otherItem;
+                    //_view.ReloadAnimation(_model.reloadTime, gun.transform, () => ReloadGun(gun));
                     AudioManager.Instance.PlayAmmoReloadSound();
                     _usable = false;
                 }
@@ -37,7 +41,7 @@ namespace Vertigo.Player.Interactables.Weapons
         private void ReloadGun(GunController gun)
         {
             gun.ReloadBullets(_model.ammoCount);
-            Destroy(gameObject);
+            // TODO: Destroy(gameObject);
         }
         #endregion
     }

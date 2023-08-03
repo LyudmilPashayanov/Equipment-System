@@ -59,20 +59,6 @@ namespace Vertigo.Player
 
         #region Functionality
 
-        public void Subscribe(Action<Hand> onUse, Action onStopUse, Action onToggle)
-        {
-            OnItemUse += onUse;
-            OnStopUse += onStopUse;
-            OnToggleMode += onToggle;
-        }
-        
-        public void Unsubscribe(Action<Hand> onUse, Action onStopUse, Action onToggle)
-        {
-            OnItemUse -= onUse;
-            OnStopUse -= onStopUse;
-            OnToggleMode -= onToggle;
-        }
-
         private void Start()
         {
             _inputEquip.action.started += PerformGrab;
@@ -157,6 +143,15 @@ namespace Vertigo.Player
                 if (_rayHitObject != null && _rayHitObject.TryGetComponent<Grabbable>(out _itemInHand))
                 {
                     _itemInHand.Grab(this);
+
+                    // Subscribing to the events so that the item doesn't have a direct reference to the hand
+                    ItemView itemView;
+                    if(_itemInHand.TryGetComponent<ItemView>(out itemView)) 
+                    {
+                       OnItemUse += itemView.StartUse;
+                       OnStopUse += itemView.StopUse;
+                       OnToggleMode += itemView.ToggleMode;
+                    }
                 }
             }
         }
@@ -166,6 +161,14 @@ namespace Vertigo.Player
             if(throwItem) 
             {
                 _itemInHand.Release();
+                // This will probably happen in a function in the ItemSlot later.
+                ItemView itemView;
+                if (_itemInHand.TryGetComponent<ItemView>(out itemView))
+                {
+                    OnItemUse -= itemView.StartUse;
+                    OnStopUse -= itemView.StopUse;
+                    OnToggleMode -= itemView.ToggleMode;
+                }
             }
             _itemInHand = null;
         }

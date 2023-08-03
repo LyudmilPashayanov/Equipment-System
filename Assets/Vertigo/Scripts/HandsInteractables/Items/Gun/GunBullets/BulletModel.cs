@@ -12,5 +12,6 @@ namespace Vertigo.Player.Interactables.Weapons
     {
         public int lifetime;
         public int damage;
+        public Bullet bulletPrefab;
     }
 }

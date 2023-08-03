@@ -1,16 +1,14 @@
-using UnityEngine;
-
 namespace Vertigo.Player.Interactables
 {
-    public class RockController : ItemController
+    public class RockController : ItemController<RockView>
     {
-/*        public RockController(Rigidbody rb) : base(rb)
+        public RockController(RockView view) : base(view)
         {
-        }*/
-
-        public override void StartUse(Hand handUsingIt)
+        }
+        protected override void UseItem()
         {
-            _handHolder.ReleaseCurrentItem();
+            // TODO: DropItem()
+            _view.Release(); // probably wouldn't work as the hand is not iniating the action
         }
     }
 }

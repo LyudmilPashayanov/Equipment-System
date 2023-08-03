@@ -60,7 +60,7 @@ namespace Vertigo.Player.Interactables
 
         public void SetEnabled(bool enable) 
         {
-            _interactableCollider.enabled = enable;        
+            _grabbableCollider.enabled = enable;        
         }
 
         private void MoveLever() 

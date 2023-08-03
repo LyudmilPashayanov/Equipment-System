@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8004652208125356792}
-  - component: {fileID: 6716470360415031911}
   - component: {fileID: 1125283810945660830}
   - component: {fileID: 8396874132865806848}
   - component: {fileID: 2709937537102656597}
@@ -36,22 +35,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6716470360415031911
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 579358134042127915}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d39e5d4936fb46e4fa7bc67a685b0dda, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _interactableCollider: {fileID: 8396874132865806848}
-  _rb: {fileID: 2709937537102656597}
-  _view: {fileID: 1125283810945660830}
-  _model: {fileID: 11400000, guid: e9e0fb297f8e6124baa9afef222ab061, type: 2}
 --- !u!114 &1125283810945660830
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64,6 +47,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69fb41e5abb645149b63dee0a53a13c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _grabbableCollider: {fileID: 8396874132865806848}
+  _rb: {fileID: 2709937537102656597}
   _meshRenderer: {fileID: 4785317231563537971}
 --- !u!135 &8396874132865806848
 SphereCollider:

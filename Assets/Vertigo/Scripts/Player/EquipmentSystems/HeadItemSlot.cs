@@ -20,18 +20,18 @@ namespace Vertigo.Player
             if (_equippedHat == null)
             {
                 _equippedHat = hatItem;
-                _equippedHat.OnUnequipped += UnequipHat;
-                _equippedHat.transform.SetParent(transform, false);
+               // _equippedHat.OnUnequipped += UnequipHat;
+               // _equippedHat.transform.SetParent(transform, false);
                 return true;
             }
             else
-                _equippedHat.HatInUseIndication();
+             //  _equippedHat.HatInUseIndication();
                 return false;
         }
 
         public void UnequipHat()
         {
-            _equippedHat.OnUnequipped -= UnequipHat;
+           // _equippedHat.OnUnequipped -= UnequipHat;
             _equippedHat = null;
         }
         #endregion

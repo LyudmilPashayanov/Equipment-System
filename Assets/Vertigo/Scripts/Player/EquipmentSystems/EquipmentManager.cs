@@ -51,15 +51,15 @@ namespace Vertigo.Player
             Grabbable usedItem = hand.GetItem();
             if (usedItem is ICombinableItem)
             {
-                var otherGrabable = GetOtherHandItem(hand);
+                Grabbable otherGrabable = GetOtherHandItem(hand);
                 Grabbable item1 = hand.GetItem();
                 ICombinableItem item = item1 as ICombinableItem;
-                item.TryCombineWithItemInOtherHand(otherGrabable);
+               // item.TryCombineWithItemInOtherHand(otherGrabable); // will pass the item controller
             }
-            else if (usedItem is HatItem)
+            else if (usedItem is CowboyHatController)
             {
-                HatItem hat = usedItem as HatItem;
-                hat.TryEquipOnHead(TryEquipHat(hat));
+                //CowboyHatController hat = usedItem as CowboyHatController;
+                //hat.TryEquipOnHead(TryEquipHat(hat));
             }
         }
         #endregion

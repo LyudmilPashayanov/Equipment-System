@@ -6,15 +6,13 @@ namespace Vertigo.Player.Interactables.Weapons
     /// <summary>
     /// This class contains the business and Unity logic of the Gun item as a Grabbable game object.
     /// </summary>
-    public class GunController : ItemController
+    public class GunController : ItemController<GunView>
     {
 
         #region Variables
-        [SerializeField] private GunView _view;
-        [SerializeField] private GunModel _model;
-        [SerializeField] private BulletModel _bulletModel;
-        [SerializeField] private Transform _bulletSpawnPoint;
-        [SerializeField] private Bullet _bulletPrefab;
+        private GunModel _model;
+        private BulletModel _bulletModel;
+
         private BulletFactory _bulletFactory;
        
         private float _gunForce;
@@ -25,27 +23,28 @@ namespace Vertigo.Player.Interactables.Weapons
         private float _fireTimer;
         private int _currentMagazineSize;
         private bool _automaticShoot = true;
-        #endregion
 
-        #region Functionality
-        private void Start()
+        public GunController(GunView view, GunModel model, BulletModel bulletModel) : base(view)
         {
+            _model = model;
+            _bulletModel = bulletModel;
+            _bulletFactory = new BulletFactory(_bulletModel);
+
             _gunForce = _model.bulletSpeed;
             _fireRate = _model.fireRate;
             _magazineMaxSize = _model.magazineSize;
             _currentMagazineSize = _magazineMaxSize;
-            _bulletFactory = new BulletFactory(_bulletPrefab, _bulletModel);
 
             _view.SetRemainingBullets(_currentMagazineSize.ToString());
             _view.ToggleAutomaticModeText(_automaticShoot);
         }
+        #endregion
 
-        private void Update()
-        {
-            if (_itemEquipped)
-            {
-                ShootingTick();
-            }
+        #region Functionality
+
+        protected override void Update()
+        {    
+            ShootingTick();
         }
 
         private void ShootingTick()
@@ -64,13 +63,30 @@ namespace Vertigo.Player.Interactables.Weapons
         private void FireBullet()
         {
             Bullet bullet = _bulletFactory.GetBullet();
-            bullet.Shoot(_bulletSpawnPoint, _gunForce);
-            AudioManager.Instance.PlayBulletSound();
+            _view.ShootBullet(bullet, _gunForce);
+           // TODO: Play the audio from the gun model- AudioManager.Instance.PlayBulletSound();
             _view.SetRemainingBullets((--_currentMagazineSize).ToString());
             if (!_automaticShoot)
             {
                 StopShooting();
             }
+        }
+        
+        protected override void UseItem()
+        {
+            StartShooting();
+        }
+
+        protected override void ToggleItem()
+        {
+            _automaticShoot = !_automaticShoot;
+            AudioManager.Instance.PlayToggleModeSound();
+            _view.ToggleAutomaticModeText(_automaticShoot);
+        }
+
+        protected override void StopUseItem()
+        {
+            StopShooting();
         }
 
         private void StartShooting()
@@ -93,7 +109,7 @@ namespace Vertigo.Player.Interactables.Weapons
         #endregion
 
         #region Event Handlers
-        public override void ToggleMode()
+        /*public override void ToggleMode()
         {
             _automaticShoot = !_automaticShoot;
             AudioManager.Instance.PlayToggleModeSound();
@@ -119,7 +135,7 @@ namespace Vertigo.Player.Interactables.Weapons
         {
             base.Release();
             StopShooting();
-        }
+        }*/
         #endregion
     }
 }
