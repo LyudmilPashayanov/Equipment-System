@@ -33,7 +33,7 @@ namespace Vertigo.Player
         private RaycastHit HandsRayHit;
         private GameObject _rayHitObject;
 
-        private Grabbable _itemInHand;
+        private ItemSlot _itemSlot;
 
         public event Action<Hand> OnItemUse;
         private event Action OnStopUse;
@@ -41,10 +41,6 @@ namespace Vertigo.Player
         #endregion 
         
         #region Getters
-        public Grabbable GetItem()
-        {
-            return _itemInHand;
-        }
 
         public Transform GetPalm()
         {
@@ -84,7 +80,7 @@ namespace Vertigo.Player
         private void Update()
         {
             RaycastHands();
-            if(_itemInHand != null) 
+            if(_itemSlot != null) 
             {
                 CheckIfItemInRange();
             }
@@ -97,7 +93,7 @@ namespace Vertigo.Player
 
         private void CheckIfItemInRange()
         {
-            if(Vector3.Distance(_itemInHand.transform.position, transform.position) > 8) 
+            if(Vector3.Distance(_itemSlot.GetItem().transform.position, transform.position) > 8)
             {
                 ReleaseCurrentItem();
             }
@@ -125,11 +121,11 @@ namespace Vertigo.Player
 
         private void ChangeLineColor() // changes colors once, not every frame 
         {
-            if (_lineRenderer.enabled == false && _itemInHand == null)
+            if (_lineRenderer.enabled == false && _itemSlot == null)
             {
                 _lineRenderer.enabled = true;
             }
-            else if (_lineRenderer.enabled == true && _itemInHand != null)
+            else if (_lineRenderer.enabled == true && _itemSlot != null)
             {
                 _lineRenderer.enabled = false;
             }
@@ -148,15 +144,24 @@ namespace Vertigo.Player
         private void PerformGrab(InputAction.CallbackContext context)
         {
             _modifierPressed = true;
-            if (_itemInHand != null)
+            if (_itemSlot.GetItem() != null)
             {
                 ReleaseCurrentItem();
             }
             else
             {
-                if (_rayHitObject != null && _rayHitObject.TryGetComponent<Grabbable>(out _itemInHand))
+                if (_rayHitObject != null)
                 {
-                    _itemInHand.Grab(this);
+                    Grabbable itemToGrab;
+                    _rayHitObject.TryGetComponent<Grabbable>(out itemToGrab);
+                    if (itemToGrab)
+                    {
+                        _itemSlot.Equip(itemToGrab);
+                    }
+                    if(itemToGrab is ItemController) 
+                    {
+                        
+                    }
                 }
             }
         }
@@ -165,9 +170,8 @@ namespace Vertigo.Player
         {
             if(throwItem) 
             {
-                _itemInHand.Release();
+                _itemSlot.Unequip();
             }
-            _itemInHand = null;
         }
         #endregion
 
@@ -180,7 +184,7 @@ namespace Vertigo.Player
                 _modifierPressed = false;
                 return;
             }
-            if (_itemInHand != null)
+            if (_itemSlot != null)
             {
                 OnItemUse?.Invoke(this);
             }
@@ -193,7 +197,7 @@ namespace Vertigo.Player
                 _modifierPressed = false;
                 return;
             }
-            if (_itemInHand != null)
+            if (_itemSlot != null)
             {
                 OnStopUse?.Invoke();
             }
@@ -202,7 +206,7 @@ namespace Vertigo.Player
         private void ToggleItemMode(InputAction.CallbackContext context)
         {
             _modifierPressed = true;
-            if (_itemInHand != null)
+            if (_itemSlot != null)
             {
                 OnToggleMode?.Invoke();
             }

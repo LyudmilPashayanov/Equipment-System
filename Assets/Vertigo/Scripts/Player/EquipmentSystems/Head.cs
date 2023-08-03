@@ -8,10 +8,12 @@ namespace Vertigo.Player
     /// This class represents the Head Slot of the player. It is responsible to equip a Hat to it.
     /// TODO: Maybe apply any stats, when wearing a hat.
     /// </summary>
-    public class HeadItemSlot : MonoBehaviour
+    
+    public class Head : MonoBehaviour
     {
         #region Variables
         private HatItem _equippedHat;
+
         #endregion
 
         #region Variables
@@ -25,8 +27,11 @@ namespace Vertigo.Player
                 return true;
             }
             else
+            {
                 _equippedHat.HatInUseIndication();
-                return false;
+            }    
+
+            return false;
         }
 
         public void UnequipHat()

@@ -13,7 +13,7 @@ namespace Vertigo.Player.Interactables
 
         [SerializeField] protected Rigidbody _rb;
         protected bool _itemEquipped;
-        protected Hand _handHolder;
+        protected Hand _handHolder; // Should be ItemSlot
         private Sequence _pickUpSequence;
 
         public virtual void StartUse(Hand handUsingIt) { }
@@ -54,7 +54,7 @@ namespace Vertigo.Player.Interactables
             UnsubscribeHand();
             transform.SetParent(null);
             ToggleKinematic(false);
-            ApplyThrowForce(_handHolder.GetMovementDirection(), _handHolder.GetHandStrength());
+            ApplyThrowForce(_handHolder.GetMovementDirection(), _handHolder.GetHandStrength()); // TODO: Get this through an event, not through a direct reference.
             _itemEquipped = false;
             _handHolder = null;
         }
