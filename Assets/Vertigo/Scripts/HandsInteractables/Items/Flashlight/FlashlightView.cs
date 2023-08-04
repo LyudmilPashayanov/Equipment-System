@@ -47,6 +47,11 @@ namespace Vertigo.Player.Interactables
                     break;
             }
         }
+
+        public override void InitController()
+        {
+            Controller = new FlashlightController(this);
+        }
         #endregion
     }
 }

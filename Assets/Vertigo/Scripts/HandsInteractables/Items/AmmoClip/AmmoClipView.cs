@@ -22,6 +22,11 @@ namespace Vertigo.Player.Interactables.Weapons
             _originalColor = _meshRenderer.material.color;
         }
 
+        public override void InitController()
+        {
+            Controller = new AmmoClipController(this);
+        }
+
         internal void ReloadAnimation(float reloadTime, Transform goToTransform, Action onAnimationFinish)
         {
             transform.DOMove(goToTransform.position, reloadTime).SetEase(Ease.InSine);
@@ -40,7 +45,6 @@ namespace Vertigo.Player.Interactables.Weapons
             _flashingSequence.Append(_meshRenderer.material.DOColor(Color.red, 0.2f));
             _flashingSequence.Append(_meshRenderer.material.DOColor(_originalColor, 0.2f));
         }
-
         #endregion
     }
 }

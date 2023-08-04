@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using Vertigo.Player.Interactables;
 
@@ -6,37 +7,34 @@ namespace Vertigo.Player
     /// <summary>
     /// This class is responsible to track and share what items are equipped to the Player hands and head.
     /// </summary>
-    public class EquipmentManager : MonoBehaviour
+    public class EquipmentManager
     {
-
         #region Variables
-        [SerializeField] private Hand _leftHand;
-        [SerializeField] private Hand _rightHand;
-        [SerializeField] private HeadItemSlot _head;
+        [SerializeField] private ItemSlot _leftHand;
+        [SerializeField] private ItemSlot _rightHand;
+        [SerializeField] private ItemSlot _head;
 
+        public EquipmentManager(Hand leftHand, Hand rightHand, ItemSlot head)
+        {
+            _leftHand = leftHand;
+            _rightHand = rightHand;
+            leftHand.OnItemUse += OnItemUsed;
+            rightHand.OnItemUse += OnItemUsed;
+            _head = head;
+        }
         #endregion
 
         #region Functionality
-        private void Start()
+        public ItemController GetOtherHandItem(Hand _currentHand)
         {
-            _leftHand.OnItemUse += OnItemUsed;
-            _rightHand.OnItemUse += OnItemUsed;
+            return (_currentHand.GetEquippedItem() == _leftHand.GetEquippedItem() ? _rightHand.GetEquippedItem() : _leftHand.GetEquippedItem());
         }
 
-        public Grabbable GetOtherHandItem(Hand _currentHand)
-        {
-            return (_currentHand == _leftHand ? _rightHand : _leftHand).GetItem();
-        }
-
-        public bool TryEquipHat(HatItem hatItem)
-        {
-            return _head.TryEquipHat(hatItem);
-        }
-
+        /*
         internal void UnequipHat()
         {
             _head.UnequipHat();
-        }
+        }*/
         #endregion
 
         #region Event Handlers
@@ -48,18 +46,17 @@ namespace Vertigo.Player
         /// <param name="hand"></param>
         public void OnItemUsed(Hand hand)
         {
-            Grabbable usedItem = hand.GetItem();
-            if (usedItem is ICombinableItem)
+            ItemController currentlyUsedItem = hand.GetEquippedItem();
+            if (currentlyUsedItem is ICombinableItem)
             {
-                Grabbable otherGrabable = GetOtherHandItem(hand);
-                Grabbable item1 = hand.GetItem();
-                ICombinableItem item = item1 as ICombinableItem;
-               // item.TryCombineWithItemInOtherHand(otherGrabable); // will pass the item controller
+                ItemController otherItem = GetOtherHandItem(hand);
+                ICombinableItem item = currentlyUsedItem as ICombinableItem;
+                item.TryCombineWithItemInOtherHand(otherItem);
             }
-            else if (usedItem is CowboyHatController)
+            else if (currentlyUsedItem is CowboyHatController)
             {
-                //CowboyHatController hat = usedItem as CowboyHatController;
-                //hat.TryEquipOnHead(TryEquipHat(hat));
+                CowboyHatController hat = currentlyUsedItem as CowboyHatController;
+                hat.TryEquipOnHead(_head.(hat));
             }
         }
         #endregion

@@ -2,9 +2,9 @@ namespace Vertigo.Player.Interactables
 {
     public class RockView : ItemView
     {
-        public override void StartUse(Hand handUsingIt)
+        public override void InitController()
         {
-            Release(); 
+            Controller = new RockController(this);
         }
     }
 }

@@ -1,4 +1,5 @@
 using UnityEngine;
+using Vertigo.Player;
 using Vertigo.UI;
 
 namespace Vertigo
@@ -15,6 +16,9 @@ namespace Vertigo
         #region Variables
 
         [SerializeField] private UIManager _uiManager;
+        [SerializeField] private Hand _leftHand;
+        [SerializeField] private Hand _rightHand;
+        [SerializeField] private Head _head;
         #endregion
 
         #region Functionality
@@ -28,7 +32,18 @@ namespace Vertigo
 
         private void Start()
         {
-            _uiManager.FadeBackground();
+            InitEquipmentManager();
+        }
+
+        private void InitEquipmentManager() 
+        {
+            EquipmentManager equipmentManager = new EquipmentManager(_leftHand, _rightHand, _head);
+            InitFinished();
+        }
+
+        private void InitFinished() 
+        {
+            _uiManager.FadeBackground();    
         }
 
         private void Update()

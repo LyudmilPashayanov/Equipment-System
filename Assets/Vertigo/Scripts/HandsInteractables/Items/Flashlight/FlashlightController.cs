@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using Vertigo.Audio;
 
@@ -16,20 +17,28 @@ namespace Vertigo.Player.Interactables
 
         }
         #endregion
-
-
         #region Functionality
-         
-        protected override void UseItem()
+
+        public override void StartUse(Hand handUsingIt)
         {
             _isFlashOn = !_isFlashOn;
             _view.ToggleFlashlight(_isFlashOn);
         }
 
-        protected override void ToggleItem()
+        public override void ToggleItem()
         {
             _view.ChangeIntensity();
             AudioManager.Instance.PlayToggleModeSound();
+        }
+
+        public override Type GetItemType()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool IsCompatible(Type otherItemType)
+        {
+            throw new NotImplementedException();
         }
         #endregion
 

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using Vertigo.Audio;
 
@@ -8,7 +9,6 @@ namespace Vertigo.Player.Interactables.Weapons
     /// </summary>
     public class GunController : ItemController<GunView>
     {
-
         #region Variables
         private GunModel _model;
         private BulletModel _bulletModel;
@@ -71,23 +71,6 @@ namespace Vertigo.Player.Interactables.Weapons
                 StopShooting();
             }
         }
-        
-        protected override void UseItem()
-        {
-            StartShooting();
-        }
-
-        protected override void ToggleItem()
-        {
-            _automaticShoot = !_automaticShoot;
-            AudioManager.Instance.PlayToggleModeSound();
-            _view.ToggleAutomaticModeText(_automaticShoot);
-        }
-
-        protected override void StopUseItem()
-        {
-            StopShooting();
-        }
 
         private void StartShooting()
         {
@@ -109,13 +92,6 @@ namespace Vertigo.Player.Interactables.Weapons
         #endregion
 
         #region Event Handlers
-        /*public override void ToggleMode()
-        {
-            _automaticShoot = !_automaticShoot;
-            AudioManager.Instance.PlayToggleModeSound();
-            _view.ToggleAutomaticModeText(_automaticShoot);
-        }
-
         public override void StartUse(Hand handUsingIt)
         {
             StartShooting();
@@ -126,16 +102,17 @@ namespace Vertigo.Player.Interactables.Weapons
             StopShooting();
         }
 
-        public override void Grab(Hand _currentHand)
+        public override void ToggleItem()
         {
-            base.Grab(_currentHand);
+            _automaticShoot = !_automaticShoot;
+            AudioManager.Instance.PlayToggleModeSound();
+            _view.ToggleAutomaticModeText(_automaticShoot);
         }
 
-        public override void Release()
+        public override void ReleaseItem()
         {
-            base.Release();
             StopShooting();
-        }*/
+        }
         #endregion
     }
 }

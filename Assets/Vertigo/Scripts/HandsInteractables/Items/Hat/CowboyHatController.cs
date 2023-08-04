@@ -1,4 +1,6 @@
 
+using System;
+
 namespace Vertigo.Player.Interactables
 {
     public class CowboyHatController : ItemController<CowboyHatView>
@@ -28,6 +30,16 @@ namespace Vertigo.Player.Interactables
             // Drop from hand -> _handHolder.ReleaseCurrentItem(false);
             // UnsubscribeHand();
             _view.EnableOnHeadCollider(true);
+        }
+
+        public override Type GetItemType()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool IsCompatible(Type otherItemType)
+        {
+            throw new NotImplementedException();
         }
         #endregion
     }

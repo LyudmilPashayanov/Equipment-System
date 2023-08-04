@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using Vertigo.Audio;
 
@@ -15,20 +16,19 @@ namespace Vertigo.Player.Interactables.Weapons
         private bool _usable = true;
 
         public AmmoClipController(AmmoClipView view) : base(view)
-        {
-        }
+        { }
         #endregion
         #region Functionality
 
-        public void TryCombineWithItemInOtherHand<TView>(ItemController<ItemView> otherItem)
+        public void TryCombineWithItemInOtherHand(ItemController otherItem)
         {
             if (_usable)
             {
                 if (otherItem is GunController)
                 {
-                    //GunController gun = (GunController)otherItem;
-                    //_view.ReloadAnimation(_model.reloadTime, gun.transform, () => ReloadGun(gun));
-                    AudioManager.Instance.PlayAmmoReloadSound();
+                    GunController gun = (GunController)otherItem;
+                    // _view.ReloadAnimation(_model.reloadTime, gun.transform, () => ReloadGun(gun));
+                    // TODO: Take the auido from the model of the ammo-clip AudioManager.Instance.PlayAmmoReloadSound();
                     _usable = false;
                 }
                 else
@@ -41,7 +41,7 @@ namespace Vertigo.Player.Interactables.Weapons
         private void ReloadGun(GunController gun)
         {
             gun.ReloadBullets(_model.ammoCount);
-            // TODO: Destroy(gameObject);
+           // TODO: _view.Destory()? OR  UnityEngine.Object.Destroy(_view.gameObject);
         }
         #endregion
     }

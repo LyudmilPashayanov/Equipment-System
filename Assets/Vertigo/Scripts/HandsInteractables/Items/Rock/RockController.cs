@@ -1,3 +1,5 @@
+using System;
+
 namespace Vertigo.Player.Interactables
 {
     public class RockController : ItemController<RockView>
@@ -5,10 +7,19 @@ namespace Vertigo.Player.Interactables
         public RockController(RockView view) : base(view)
         {
         }
-        protected override void UseItem()
+
+        public override void StartUse(Hand handUsingIt)
         {
-            // TODO: DropItem()
-            _view.Release(); // probably wouldn't work as the hand is not iniating the action
+            _view.Release();
+        }
+        public override Type GetItemType()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool IsCompatible(Type otherItemType)
+        {
+            throw new NotImplementedException();
         }
     }
 }

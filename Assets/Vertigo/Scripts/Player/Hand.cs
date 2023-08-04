@@ -1,15 +1,16 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using System;
-using Vertigo.Player.Movement;
 using Vertigo.Player.Interactables;
+using Vertigo.Player.Movement;
 
 namespace Vertigo.Player
 {
     /// <summary>
     /// This class is responsible for grabbing items, using them and overall interact with the world in the game.
     /// </summary>
-    public class Hand : MonoBehaviour
+
+    public class Hand : ItemSlot
     {
         #region Variables
         private const float RAY_DISTANCE = 3.9f;
@@ -33,25 +34,21 @@ namespace Vertigo.Player
         private RaycastHit HandsRayHit;
         private GameObject _rayHitObject;
 
-        private Grabbable _itemInHand;
-
+        public event Action<ItemController> OnItemGrab;
         public event Action<Hand> OnItemUse;
         private event Action OnStopUse;
         private event Action OnToggleMode;
-        #endregion 
-        
+        private event Action OnItemRelease;
+        #endregion
+
         #region Getters
-        public Grabbable GetItem()
-        {
-            return _itemInHand;
-        }
 
         public Transform GetPalm()
         {
             return _palm;
         }
 
-        public float GetHandStrength() 
+        public float GetHandStrength()
         {
             return _releaseForce;
         }
@@ -70,23 +67,25 @@ namespace Vertigo.Player
         private void Update()
         {
             RaycastHands();
-            if(_itemInHand != null) 
+            if (_item != null)
             {
                 CheckIfItemInRange();
             }
         }
 
-        public Vector3 GetMovementDirection(bool normalized = true) 
+        public Vector3 GetMovementDirection(bool normalized = true)
         {
             return _handMovement.GetMovementDirection(normalized);
         }
 
         private void CheckIfItemInRange()
         {
-            if(Vector3.Distance(_itemInHand.transform.position, transform.position) > 8) 
+            //TODO: Fix this or find another solution
+            
+            /*if (Vector3.Distance(_itemSlot.transform.position, transform.position) > 8)
             {
                 ReleaseCurrentItem();
-            }
+            }*/
         }
 
         private void RaycastHands()
@@ -111,11 +110,11 @@ namespace Vertigo.Player
 
         private void ChangeLineColor() // changes colors once, not every frame 
         {
-            if (_lineRenderer.enabled == false && _itemInHand == null)
+            if (_lineRenderer.enabled == false && _item == null)
             {
                 _lineRenderer.enabled = true;
             }
-            else if (_lineRenderer.enabled == true && _itemInHand != null)
+            else if (_lineRenderer.enabled == true && _item != null)
             {
                 _lineRenderer.enabled = false;
             }
@@ -134,43 +133,37 @@ namespace Vertigo.Player
         private void PerformGrab(InputAction.CallbackContext context)
         {
             _modifierPressed = true;
-            if (_itemInHand != null)
+            if (_item != null)
             {
                 ReleaseCurrentItem();
             }
             else
             {
-                if (_rayHitObject != null && _rayHitObject.TryGetComponent<Grabbable>(out _itemInHand))
+                Grabbable _grabbedItem;
+                if (_rayHitObject != null && _rayHitObject.TryGetComponent(out _grabbedItem))
                 {
-                    _itemInHand.Grab(this);
-
-                    // Subscribing to the events so that the item doesn't have a direct reference to the hand
-                    ItemView itemView;
-                    if(_itemInHand.TryGetComponent<ItemView>(out itemView)) 
-                    {
-                       OnItemUse += itemView.StartUse;
-                       OnStopUse += itemView.StopUse;
-                       OnToggleMode += itemView.ToggleMode;
-                    }
+                    ItemController itemController = _grabbedItem.Grab(this);
+                    //OnItemGrab?.Invoke(itemController);
+                    EquipItem(itemController);
+                    OnItemUse += itemController.StartUse;
+                    OnStopUse += itemController.StopUse;
+                    OnToggleMode += itemController.ToggleItem;
+                    OnItemRelease += itemController.ReleaseItem;
                 }
             }
         }
 
         public void ReleaseCurrentItem(bool throwItem = true)
         {
-            if(throwItem) 
+            if (throwItem)
             {
-                _itemInHand.Release();
-                // This will probably happen in a function in the ItemSlot later.
-                ItemView itemView;
-                if (_itemInHand.TryGetComponent<ItemView>(out itemView))
-                {
-                    OnItemUse -= itemView.StartUse;
-                    OnStopUse -= itemView.StopUse;
-                    OnToggleMode -= itemView.ToggleMode;
-                }
+                UnequipItem();
+                // Take a look of this logic when it comes to putting the hat on.
+                OnItemUse -= GetEquippedItem().StartUse;
+                OnStopUse -= GetEquippedItem().StopUse;
+                OnToggleMode -= GetEquippedItem().ToggleItem;
             }
-            _itemInHand = null;
+            OnItemRelease?.Invoke();
         }
         #endregion
 
@@ -183,7 +176,7 @@ namespace Vertigo.Player
                 _modifierPressed = false;
                 return;
             }
-            if (_itemInHand != null)
+            if (_item != null)
             {
                 OnItemUse?.Invoke(this);
             }
@@ -196,7 +189,7 @@ namespace Vertigo.Player
                 _modifierPressed = false;
                 return;
             }
-            if (_itemInHand != null)
+            if (_item != null)
             {
                 OnStopUse?.Invoke();
             }
@@ -205,11 +198,11 @@ namespace Vertigo.Player
         private void ToggleItemMode(InputAction.CallbackContext context)
         {
             _modifierPressed = true;
-            if (_itemInHand != null)
+            if (_item != null)
             {
                 OnToggleMode?.Invoke();
             }
         }
-#endregion
+        #endregion
     }
 }

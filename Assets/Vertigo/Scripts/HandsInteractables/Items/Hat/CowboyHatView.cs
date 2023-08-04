@@ -36,11 +36,17 @@ namespace Vertigo.Player.Interactables
             _flashingSequence.Append(_meshRenderer.material.DOColor(_originalColor, 0.2f));
         }
 
-        public override void Grab(Hand Hand)
+        public override ItemController Grab(Hand Hand)
         {
             base.Grab(Hand);
             _onHeadCollider.enabled = false;
             OnUnequipped?.Invoke();
+            return Controller;
+        }
+
+        public override void InitController()
+        {
+            Controller = new CowboyHatController(this);
         }
     }
 }

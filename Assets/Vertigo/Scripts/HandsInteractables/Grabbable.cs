@@ -8,7 +8,7 @@ namespace Vertigo.Player.Interactables
     public abstract class Grabbable : MonoBehaviour
     {
         [SerializeField] protected Collider _grabbableCollider;
-        public abstract void Grab(Hand Hand);
+        public abstract ItemController Grab(Hand Hand); // Maybe make Grabbable Item and only Grabbable to distinguish from the Lever
         public abstract void Release();
     }
 }

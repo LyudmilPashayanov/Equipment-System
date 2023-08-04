@@ -73,11 +73,13 @@ namespace Vertigo.Player.Interactables
             SetStateOnValueChange();
         }
 
-        public override void Grab(Hand hand)
+        // Should be in the View
+        public override ItemController Grab(Hand hand)
         {
             _holderHand = hand;
             _grabbed = true;
             SetEnabled(false);
+            return null;
         }
 
         public override void Release()
