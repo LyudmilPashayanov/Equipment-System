@@ -26,6 +26,8 @@ namespace Vertigo.Player.Interactables
         private const float RELEASED_VALUE = 35;
         [SerializeField] private LeverView _view;
         [SerializeField] private Transform _handlePivot;
+        [SerializeField] private AudioClip _leverPullAudio;
+
         [Header("Default Label indicators:")]
         [SerializeField] private string _defaultText = "grab me";
         [SerializeField] private string _onGrabbedText = "pull down";
@@ -122,7 +124,7 @@ namespace Vertigo.Player.Interactables
         {
             UpdateState(LeverState.successfulPull);
             InvokeCallbacks();
-            AudioManager.Instance.PlayLeverPulledSound();
+            AudioManager.Instance.PlaySoundAtPoint(_leverPullAudio,transform.position); // give the location of the lever
             ReturnLeverToDefault();
         }
 

@@ -1,3 +1,4 @@
+using UnityEngine;
 using Vertigo.Player.Interactables;
 
 namespace Vertigo.Player
@@ -7,27 +8,19 @@ namespace Vertigo.Player
     /// This class represents the Head Slot of the player. It is responsible to equip a Hat to it.
     /// TODO: Maybe apply any stats, when wearing a hat.
     /// </summary>
-    public class Head : ItemSlot
+    public class Head : MonoBehaviour
     {
         #region Variables
-        internal bool TryEquipHat(ItemController hatItem)
+        [SerializeField] private Transform _headParent;
+
+        public void SetHat(ItemController hatItem)
         {
-            if (GetEquippedItem() == null)
-            {
-                EquipItem(hatItem);
-                _equippedHat.OnUnequipped += UnequipHat;
-                _equippedHat.transform.SetParent(transform, false);
-                return true;
-            }
-            else
-                //  _equippedHat.HatInUseIndication();
-                return false;
+            hatItem.transform.SetParent(_headParent, false);
         }
 
-        public void UnequipHat()
+        public void RemoveHat()
         {
             // _equippedHat.OnUnequipped -= UnequipHat;
-            _equippedHat = null;
         }
         #endregion
     }

@@ -28,17 +28,7 @@ namespace Vertigo.Player.Interactables
         public override void ToggleItem()
         {
             _view.ChangeIntensity();
-            AudioManager.Instance.PlayToggleModeSound();
-        }
-
-        public override Type GetItemType()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override bool IsCompatible(Type otherItemType)
-        {
-            throw new NotImplementedException();
+            AudioManager.Instance.PlaySound(); // play shared toggle sound 
         }
         #endregion
 

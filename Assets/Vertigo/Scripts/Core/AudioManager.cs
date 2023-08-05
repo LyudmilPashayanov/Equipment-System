@@ -1,68 +1,50 @@
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace Vertigo.Audio 
 {
     /// <summary>
     /// Audio manager, which is singleton, so that you can play audio from anywhere in the app you want.
     /// </summary> 
+
     public class AudioManager : MonoBehaviour
     {
         #region Variables
         private static AudioManager _instance;
         public static AudioManager Instance { get { return _instance; } }
 
-        [SerializeField] AudioSource _oneShotSource;
-        [SerializeField] AudioSource _radioSource;
+        [SerializeField] AudioSource _playerSFXAudioSource;
+        [SerializeField] AudioSource _backgroundAudioSource;
 
-        [SerializeField] AudioClip _fireBulletSound;
-        [SerializeField] AudioClip _targetHitSound;
-        [SerializeField] AudioClip _toggleItemModeSound;
-        [SerializeField] AudioClip _gunReloadAudio;
-        [SerializeField] AudioClip _leverPullAudio;
-        [SerializeField] AudioClip _cantinaBand;
+        [SerializeField] AudioClip _backgroundMusic;
         #endregion
 
         #region Functionality
-
         void Awake()
         {
             _instance = this;
         }
 
-        public void PlayBulletSound()
+        public void PlaySound(AudioClip clipToPlay)
         {
-            _oneShotSource.PlayOneShot(_fireBulletSound);
+            _playerSFXAudioSource.PlayOneShot(clipToPlay);
         }
 
-        public void PlayToggleModeSound()
+        public void PlaySoundAtPoint(AudioClip clipToPlay, Vector3 point) 
         {
-            _oneShotSource.PlayOneShot(_toggleItemModeSound);
+            AudioSource.PlayClipAtPoint(clipToPlay, point);
         }
 
-        public void PlayTargetHitSound()
-        {
-            _oneShotSource.PlayOneShot(_targetHitSound);
-        }
-
-        public void PlayAmmoReloadSound()
-        {
-            _oneShotSource.PlayOneShot(_gunReloadAudio);
-        }
-        
-        public void PlayLeverPulledSound()
-        {
-            _oneShotSource.PlayOneShot(_leverPullAudio);
-        }
-
-        public void PlayCantinaBand(bool enable)
+        public void PlayBackgroundMusic(bool enable)
         {
             if (enable)
             {
-                _radioSource.PlayOneShot(_cantinaBand);
+                _backgroundAudioSource.PlayOneShot(_backgroundMusic);
             }
             else
             {
-                _radioSource.Stop();
+                _backgroundAudioSource.Stop();
             }
         }
         #endregion

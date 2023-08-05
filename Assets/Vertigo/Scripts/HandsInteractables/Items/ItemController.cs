@@ -1,10 +1,7 @@
-using System;
-using UnityEngine;
-
 namespace Vertigo.Player.Interactables
 {
     /// <summary>
-    /// Base class for all item controllers in the game. 
+    /// Base class for all items in the game. 
     /// </summary>
     public abstract class ItemController
     {
@@ -21,7 +18,6 @@ namespace Vertigo.Player.Interactables
         #endregion
 
         #region Functionality
-
         public ItemController(TView view)
         {
             _view = view;
@@ -31,22 +27,9 @@ namespace Vertigo.Player.Interactables
         protected virtual void Update()
         { }
 
-        protected bool PlayAudio(string key)
-        {
-            return true;
-            // play the audio needed if found
-        }
-
         private void ViewUpdate()
         {
             Update();
-        }
-
-        private AudioClip GetAudioClip(string key) // Get audio from model
-        {
-            return null;
-            // have a dictionary with audio files and keys in the model
-            // return FitmindService.GetMiniGameAudioClip(_content.Code, key);
         }
         #endregion
     }

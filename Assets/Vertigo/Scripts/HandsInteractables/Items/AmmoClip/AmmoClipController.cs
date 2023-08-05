@@ -10,8 +10,6 @@ namespace Vertigo.Player.Interactables.Weapons
     public class AmmoClipController : ItemController<AmmoClipView>, ICombinableItem
     {
         #region Variables
-
-        [SerializeField] private AmmoClipView _view;
         [SerializeField] private AmmoClipModel _model;
         private bool _usable = true;
 
@@ -28,7 +26,7 @@ namespace Vertigo.Player.Interactables.Weapons
                 {
                     GunController gun = (GunController)otherItem;
                     // _view.ReloadAnimation(_model.reloadTime, gun.transform, () => ReloadGun(gun));
-                    // TODO: Take the auido from the model of the ammo-clip AudioManager.Instance.PlayAmmoReloadSound();
+                    AudioManager.Instance.PlaySound(_model.gunReloadAudio);
                     _usable = false;
                 }
                 else

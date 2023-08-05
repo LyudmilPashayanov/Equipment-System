@@ -25,7 +25,7 @@ namespace Vertigo.Audio
 
         private void StartRadio()
         {
-            AudioManager.Instance.PlayCantinaBand(!_playing);
+            AudioManager.Instance.PlayBackgroundMusic(!_playing);
             _playing = !_playing;
         }
         #endregion

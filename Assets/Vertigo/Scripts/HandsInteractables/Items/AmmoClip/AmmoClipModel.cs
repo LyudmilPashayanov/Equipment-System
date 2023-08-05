@@ -13,5 +13,7 @@ namespace Vertigo.Player.Interactables.Weapons
     {
         public int ammoCount;
         public float reloadTime;
+        public AudioClip gunReloadAudio;
+
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using UnityEngine;
 using Vertigo.Player.Interactables;
 
@@ -19,12 +20,15 @@ namespace Vertigo.Player
         [SerializeField] private ItemSlot _leftHandSlot;
         [SerializeField] private ItemSlot _rightHandSlot;
         [SerializeField] private ItemSlot _headSlot;
+        public event Action<ItemController> OnHatEquipped;
 
-        public EquipmentManager(Hand leftHand, Hand rightHand)
+        public EquipmentManager(Hand leftHand, Hand rightHand, Head head)
         {
             _leftHandSlot = new ItemSlot();
             _rightHandSlot = new ItemSlot();
             _headSlot = new ItemSlot();
+
+            OnHatEquipped += head.SetHat;
 
             leftHand.OnItemGrab += EquipSlot;
             leftHand.OnItemUse += OnItemUsed;
@@ -90,28 +94,33 @@ namespace Vertigo.Player
         /// <param name="hand"></param>
         public void OnItemUsed(Hand hand)
         {
-            ItemController currentlyUsedItem = null;
-            ItemController otherHandItem = null;
-            switch (hand.GetHandSide())
-            {
-                case HandSide.right:
-                    currentlyUsedItem = _rightHandSlot.GetEquippedItem();
-                    otherHandItem= _leftHandSlot.GetEquippedItem();
-                    break;
-                case HandSide.left:
-                    currentlyUsedItem = _leftHandSlot.GetEquippedItem();
-                    otherHandItem = _rightHandSlot.GetEquippedItem();
-                    break;
-            }
-            
+            ItemController currentlyUsedItem = hand.GetHandSide() == HandSide.right ? _rightHandSlot.GetEquippedItem() : _leftHandSlot.GetEquippedItem();
+
             if (currentlyUsedItem is ICombinableItem)
             {
-                ICombinableItem item = currentlyUsedItem as ICombinableItem;
-                item.TryCombineWithItemInOtherHand(otherHandItem);
-            }
+                TryCombineItems();
+            }        
             else if (currentlyUsedItem is CowboyHatController)
             {
+                TryEquipHat();
+            }
+
+            void TryCombineItems()
+            {
+                ICombinableItem currentItem = currentlyUsedItem as ICombinableItem;
+                ItemController otherHandItem = hand.GetHandSide() == HandSide.right ? _leftHandSlot.GetEquippedItem() : _rightHandSlot.GetEquippedItem();
+                currentItem.TryCombineWithItemInOtherHand(otherHandItem);
+            }
+
+            void TryEquipHat() 
+            {
+                if (_headSlot.GetEquippedItem() != null)
+                    return;
+
                 CowboyHatController hat = currentlyUsedItem as CowboyHatController;
+                _headSlot.EquipItem(hat);
+                OnHatEquipped?.Invoke(hat);
+
                 hat.TryEquipOnHead(_headSlot.GetEquippedItem() == null);
             }
         }

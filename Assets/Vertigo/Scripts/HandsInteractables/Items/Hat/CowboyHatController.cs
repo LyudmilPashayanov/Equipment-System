@@ -1,6 +1,3 @@
-
-using System;
-
 namespace Vertigo.Player.Interactables
 {
     public class CowboyHatController : ItemController<CowboyHatView>
