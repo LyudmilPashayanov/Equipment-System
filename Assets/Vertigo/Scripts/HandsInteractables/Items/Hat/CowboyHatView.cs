@@ -6,9 +6,10 @@ namespace Vertigo.Player.Interactables
 {
     public class CowboyHatView : ItemView
     {
-        private Sequence _flashingSequence;
         [SerializeField] private MeshRenderer _meshRenderer;
         [SerializeField] protected Collider _onHeadCollider;
+
+        private Sequence _flashingSequence;
         private Color _originalColor;
 
         public event Action OnUnequipped;

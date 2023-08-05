@@ -18,6 +18,10 @@ namespace Vertigo.Player.Interactables
             {
                 EquipOnHead();
             }
+            else
+            {
+                HatInUseIndication();
+            }
         }
 
         public void HatInUseIndication()
@@ -30,16 +34,6 @@ namespace Vertigo.Player.Interactables
             // Drop from hand -> _handHolder.ReleaseCurrentItem(false);
             // UnsubscribeHand();
             _view.EnableOnHeadCollider(true);
-        }
-
-        public override Type GetItemType()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override bool IsCompatible(Type otherItemType)
-        {
-            throw new NotImplementedException();
         }
         #endregion
     }

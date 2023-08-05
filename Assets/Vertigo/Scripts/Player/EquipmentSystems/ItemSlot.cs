@@ -1,17 +1,19 @@
-using UnityEngine;
 using Vertigo.Player.Interactables;
 
-public abstract class ItemSlot : MonoBehaviour
+public class ItemSlot
 {
     protected ItemController _item;
     public ItemController GetEquippedItem() => _item;
+    
+    public ItemSlot()
+    { }
 
-    protected void EquipItem(ItemController item)
+    public void EquipItem(ItemController item)
     {
         _item = item;
     }
 
-    protected void UnequipItem()
+    public void UnequipItem()
     {
         _item = null;
     }

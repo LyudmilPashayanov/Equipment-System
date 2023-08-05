@@ -12,14 +12,5 @@ namespace Vertigo.Player.Interactables
         {
             _view.Release();
         }
-        public override Type GetItemType()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override bool IsCompatible(Type otherItemType)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
