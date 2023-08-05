@@ -16,8 +16,8 @@ namespace Vertigo
         #region Variables
 
         [SerializeField] private UIManager _uiManager;
-        [SerializeField] private Hand _leftHand;
-        [SerializeField] private Hand _rightHand;
+        [SerializeField] private HandInput _leftHand;
+        [SerializeField] private HandInput _rightHand;
         [SerializeField] private Head _head;
         #endregion
 

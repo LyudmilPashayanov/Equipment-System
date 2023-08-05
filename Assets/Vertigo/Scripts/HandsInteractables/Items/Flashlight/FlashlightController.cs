@@ -19,7 +19,7 @@ namespace Vertigo.Player.Interactables
         #endregion
         #region Functionality
 
-        public override void StartUse(Hand handUsingIt)
+        public override void StartUse(HandInput handUsingIt)
         {
             _isFlashOn = !_isFlashOn;
             _view.ToggleFlashlight(_isFlashOn);
@@ -28,7 +28,7 @@ namespace Vertigo.Player.Interactables
         public override void ToggleItem()
         {
             _view.ChangeIntensity();
-            AudioManager.Instance.PlaySound(); // play shared toggle sound 
+           // AudioManager.Instance.PlaySound(); // play shared toggle sound 
         }
         #endregion
 

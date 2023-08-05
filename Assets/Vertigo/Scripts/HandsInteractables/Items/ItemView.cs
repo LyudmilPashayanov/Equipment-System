@@ -13,11 +13,11 @@ namespace Vertigo.Player.Interactables
     {
         public void InitController();
         public event Action OnUpdate;
-        public event Action OnItemUse;
+/*        public event Action OnItemUse;
         public event Action OnItemStopUse;
         public event Action OnItemToggle;
         public event Action OnItemReleased;
-    }
+    }*/
 
     public abstract class ItemView : Grabbable, IItemView
     {
@@ -25,18 +25,18 @@ namespace Vertigo.Player.Interactables
         private const float PICK_UP_DURATION = 0.5f;
 
         [SerializeField] protected Rigidbody _rb;
-                public ItemController Controller;
-
+  
         private Sequence _pickUpSequence;
 
-        protected Hand _handHolder;
+        protected HandInput _handHolder;
 
+        public ItemController Controller;
 
         public event Action OnUpdate;
-        public event Action OnItemUse;
+/*        public event Action OnItemUse;
         public event Action OnItemStopUse;
         public event Action OnItemToggle;
-        public event Action OnItemReleased;
+        public event Action OnItemReleased;*/
         #endregion
 
         #region Functionality
@@ -52,20 +52,19 @@ namespace Vertigo.Player.Interactables
             OnUpdate?.Invoke();
         }
 
-        public override ItemController Grab(Hand Hand)
+        public override ItemController Grabbed(HandInput Hand)
         {
             _handHolder = Hand;
             ToggleKinematic(true);
-            transform.SetParent(_handHolder.GetPalm(), true);
+            transform.SetParent(_handHolder.GetPalm(), true); // TODO: parent the item inside the hand
             _pickUpSequence = DOTween.Sequence();
             _pickUpSequence.Append(transform.DOLocalMove(Vector3.zero, PICK_UP_DURATION));
             _pickUpSequence.Insert(0, transform.DOLocalRotate(new Vector3(0, -90, 0), PICK_UP_DURATION));
             return Controller;
         }
 
-        public override void Release()
+        public override void Release() // Maybe pass in the hand which is releasing it
         {
-            OnItemReleased?.Invoke();
             if (_pickUpSequence.active)
             {
                 _pickUpSequence.Kill();

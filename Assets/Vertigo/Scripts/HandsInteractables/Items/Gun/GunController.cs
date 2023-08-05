@@ -1,5 +1,4 @@
 using UnityEngine;
-using Vertigo.Audio;
 
 namespace Vertigo.Player.Interactables.Weapons
 {
@@ -9,7 +8,6 @@ namespace Vertigo.Player.Interactables.Weapons
     public class GunController : ItemController<GunView>
     {
         #region Variables
-        private const string BULLET_SHOOT_AUDIO_KEY = "shootAudio";
         private GunModel _model;
         private BulletModel _bulletModel;
 
@@ -64,8 +62,7 @@ namespace Vertigo.Player.Interactables.Weapons
         {
             Bullet bullet = _bulletFactory.GetBullet();
             _view.ShootBullet(bullet, _gunForce);
-            PlayAudio(BULLET_SHOOT_AUDIO_KEY);
-            AudioManager.Instance.PlaySound(_model.fireBulletSound);
+            _view.PlayBulletSound();
             _view.SetRemainingBullets((--_currentMagazineSize).ToString());
             if (!_automaticShoot)
             {
@@ -93,7 +90,7 @@ namespace Vertigo.Player.Interactables.Weapons
         #endregion
 
         #region Event Handlers
-        public override void StartUse(Hand handUsingIt)
+        public override void StartUse(HandInput handUsingIt)
         {
             StartShooting();
         }
@@ -106,11 +103,11 @@ namespace Vertigo.Player.Interactables.Weapons
         public override void ToggleItem()
         {
             _automaticShoot = !_automaticShoot;
-            AudioManager.Instance.PlaySound(); // Play shared toggle sound
+            //AudioManager.Instance.PlaySound(); // Play shared toggle sound
             _view.ToggleAutomaticModeText(_automaticShoot);
         }
 
-        public override void ReleaseItem(Hand _)
+        public override void ReleaseItem(HandInput _)
         {
             StopShooting();
         }

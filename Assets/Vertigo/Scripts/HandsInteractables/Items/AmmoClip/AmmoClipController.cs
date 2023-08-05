@@ -1,7 +1,3 @@
-using System;
-using UnityEngine;
-using Vertigo.Audio;
-
 namespace Vertigo.Player.Interactables.Weapons
 {
     /// <summary>
@@ -10,11 +6,14 @@ namespace Vertigo.Player.Interactables.Weapons
     public class AmmoClipController : ItemController<AmmoClipView>, ICombinableItem
     {
         #region Variables
-        [SerializeField] private AmmoClipModel _model;
+        private AmmoClipModel _model;
         private bool _usable = true;
 
-        public AmmoClipController(AmmoClipView view) : base(view)
-        { }
+        public AmmoClipController(AmmoClipView view, AmmoClipModel model) : base(view)
+        {
+            _model = model;
+        }
+
         #endregion
         #region Functionality
 
@@ -26,7 +25,7 @@ namespace Vertigo.Player.Interactables.Weapons
                 {
                     GunController gun = (GunController)otherItem;
                     // _view.ReloadAnimation(_model.reloadTime, gun.transform, () => ReloadGun(gun));
-                    AudioManager.Instance.PlaySound(_model.gunReloadAudio);
+                    _view.PlayReloadSound();
                     _usable = false;
                 }
                 else

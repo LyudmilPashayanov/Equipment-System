@@ -14,7 +14,7 @@ namespace Vertigo.Player
         right,
         left
     }
-    public class Hand : MonoBehaviour
+    public class HandInput : MonoBehaviour
     {
         #region Variables
         private const float RAY_DISTANCE = 3.9f;
@@ -39,10 +39,10 @@ namespace Vertigo.Player
         private RaycastHit HandsRayHit;
         private GameObject _rayHitObject;
 
-        public event Action<Hand, ItemController> OnItemGrab;
-        public event Action<Hand> OnItemRelease;
+        public event Action<HandInput, ItemController> OnItemGrab;
+        public event Action<HandInput> OnItemRelease;
 
-        public event Action<Hand> OnItemUse;
+        public event Action<HandInput> OnItemUse;
         public event Action OnStopUse;
         public event Action OnToggleMode;
         #endregion
@@ -153,7 +153,7 @@ namespace Vertigo.Player
                 Grabbable _grabbedItem;
                 if (_rayHitObject != null && _rayHitObject.TryGetComponent(out _grabbedItem))
                 {
-                    ItemController itemController = _grabbedItem.Grab(this);
+                    ItemController itemController = _grabbedItem.Grabbed(this);
                     OnItemGrab?.Invoke(this, itemController);
                     _holdsItem = true;
                 }

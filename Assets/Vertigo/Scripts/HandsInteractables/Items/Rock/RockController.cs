@@ -1,5 +1,3 @@
-using System;
-
 namespace Vertigo.Player.Interactables
 {
     public class RockController : ItemController<RockView>
@@ -8,7 +6,7 @@ namespace Vertigo.Player.Interactables
         {
         }
 
-        public override void StartUse(Hand handUsingIt)
+        public override void StartUse(HandInput handUsingIt)
         {
             _view.Release();
         }

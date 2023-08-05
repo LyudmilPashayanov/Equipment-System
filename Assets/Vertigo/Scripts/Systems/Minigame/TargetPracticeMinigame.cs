@@ -41,7 +41,7 @@ namespace Vertigo.Minigames
         {
             _score += damageDone;
             UpdateScoreText();
-            AudioManager.Instance.PlaySoundAtPoint(_targetHitSound, transform.position);
+            AudioSource.PlayClipAtPoint(_targetHitSound, transform.position);
         }
 
         private void UpdateScoreText()

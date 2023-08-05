@@ -1,4 +1,4 @@
-using UnityEngine;
+ using UnityEngine;
 using Vertigo.Player.Interactables;
 
 namespace Vertigo.Player
@@ -13,9 +13,11 @@ namespace Vertigo.Player
         #region Variables
         [SerializeField] private Transform _headParent;
 
+        [SerializeField] private ItemSlot _headItemSlot;
+
         public void SetHat(ItemController hatItem)
         {
-            hatItem.transform.SetParent(_headParent, false);
+           // hatItem.transform.SetParent(_headParent, false);
         }
 
         public void RemoveHat()

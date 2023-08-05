@@ -12,6 +12,8 @@ namespace Vertigo.Player.Interactables.Weapons
         #region Variables
         private Sequence _flashingSequence;
         [SerializeField] private MeshRenderer _meshRenderer;
+        [SerializeField] private AmmoClipModel _model;
+        [SerializeField] private AudioSource _ammoClipAudioSource;
         private Color _originalColor;
 
         #endregion
@@ -24,13 +26,18 @@ namespace Vertigo.Player.Interactables.Weapons
 
         public override void InitController()
         {
-            Controller = new AmmoClipController(this);
+            Controller = new AmmoClipController(this, _model);
         }
 
-        internal void ReloadAnimation(float reloadTime, Transform goToTransform, Action onAnimationFinish)
+        public void ReloadAnimation(float reloadTime, Transform goToTransform, Action onAnimationFinish)
         {
             transform.DOMove(goToTransform.position, reloadTime).SetEase(Ease.InSine);
             transform.DOScale(Vector3.zero, reloadTime).SetEase(Ease.InCubic).OnComplete(() => onAnimationFinish?.Invoke());
+        }
+        
+        public void PlayReloadSound() 
+        {
+            _ammoClipAudioSource.PlayOneShot(_model.gunReloadAudio);
         }
 
         public virtual void UnusableIndication()

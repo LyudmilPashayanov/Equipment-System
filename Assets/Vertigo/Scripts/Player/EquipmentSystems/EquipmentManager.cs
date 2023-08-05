@@ -14,15 +14,16 @@ namespace Vertigo.Player
         RHand,
         Head
     }
+
     public class EquipmentManager
     {
         #region Variables
-        [SerializeField] private ItemSlot _leftHandSlot;
-        [SerializeField] private ItemSlot _rightHandSlot;
-        [SerializeField] private ItemSlot _headSlot;
+        private ItemSlot _leftHandSlot;
+        private ItemSlot _rightHandSlot;
+        private ItemSlot _headSlot;
         public event Action<ItemController> OnHatEquipped;
 
-        public EquipmentManager(Hand leftHand, Hand rightHand, Head head)
+        public EquipmentManager(HandInput leftHand, HandInput rightHand, Head head)
         {
             _leftHandSlot = new ItemSlot();
             _rightHandSlot = new ItemSlot();
@@ -39,16 +40,16 @@ namespace Vertigo.Player
             rightHand.OnItemRelease += UnequipSlot;
         }
 
-        private void EquipSlot(Hand hand, ItemController controller)
+        private void EquipSlot(HandInput hand, ItemController item)
         {
-            GetSlotFromHand(hand).EquipItem(controller);
-            hand.OnItemUse += controller.StartUse;
-            hand.OnStopUse += controller.StopUse;
-            hand.OnToggleMode += controller.ToggleItem;
-            hand.OnItemRelease += controller.ReleaseItem;
+            GetSlotFromHand(hand).EquipItem(item);
+            hand.OnItemUse += item.StartUse;
+            hand.OnStopUse += item.StopUse;
+            hand.OnToggleMode += item.ToggleItem;
+            hand.OnItemRelease += item.ReleaseItem;
         } 
         
-        private void UnequipSlot(Hand hand)
+        private void UnequipSlot(HandInput hand)
         {
             ItemSlot slotToUnequip = GetSlotFromHand(hand);
 
@@ -59,7 +60,7 @@ namespace Vertigo.Player
             slotToUnequip.UnequipItem();
         }
 
-        private ItemSlot GetSlotFromHand(Hand hand) 
+        private ItemSlot GetSlotFromHand(HandInput hand) 
         {
             switch (hand.GetHandSide())
             {
@@ -92,15 +93,16 @@ namespace Vertigo.Player
         /// Also will try to equip a Hat if an Hat item is being used.
         /// </summary>
         /// <param name="hand"></param>
-        public void OnItemUsed(Hand hand)
+        public void OnItemUsed(HandInput hand)
         {
             ItemController currentlyUsedItem = hand.GetHandSide() == HandSide.right ? _rightHandSlot.GetEquippedItem() : _leftHandSlot.GetEquippedItem();
+           // currentlyUsedItem.StartUse();
 
             if (currentlyUsedItem is ICombinableItem)
             {
                 TryCombineItems();
             }        
-            else if (currentlyUsedItem is CowboyHatController)
+            else if (currentlyUsedItem is HatController)
             {
                 TryEquipHat();
             }
@@ -117,7 +119,7 @@ namespace Vertigo.Player
                 if (_headSlot.GetEquippedItem() != null)
                     return;
 
-                CowboyHatController hat = currentlyUsedItem as CowboyHatController;
+                HatController hat = currentlyUsedItem as HatController;
                 _headSlot.EquipItem(hat);
                 OnHatEquipped?.Invoke(hat);
 

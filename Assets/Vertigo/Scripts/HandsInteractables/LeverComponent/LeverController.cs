@@ -36,7 +36,7 @@ namespace Vertigo.Player.Interactables
 
         private float _leverMovementSpeed = 5f;
 
-        private Hand _holderHand;
+        private HandInput _holderHand;
         private bool _grabbed;
 
         private float _handsMovementY;
@@ -76,7 +76,7 @@ namespace Vertigo.Player.Interactables
         }
 
         // Should be in the View
-        public override ItemController Grab(Hand hand)
+        public override ItemController Grabbed(HandInput hand)
         {
             _holderHand = hand;
             _grabbed = true;
@@ -124,7 +124,7 @@ namespace Vertigo.Player.Interactables
         {
             UpdateState(LeverState.successfulPull);
             InvokeCallbacks();
-            AudioManager.Instance.PlaySoundAtPoint(_leverPullAudio,transform.position); // give the location of the lever
+            //AudioManager.Instance.PlaySoundAtPoint(_leverPullAudio,transform.position);
             ReturnLeverToDefault();
         }
 

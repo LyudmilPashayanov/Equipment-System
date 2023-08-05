@@ -5,10 +5,10 @@ namespace Vertigo.Player.Interactables
     /// </summary>
     public abstract class ItemController
     {
-        public virtual void StartUse(Hand handUsing) { }
+        public virtual void StartUse(HandInput handUsing) { }
         public virtual void StopUse() { }
         public virtual void ToggleItem() { }
-        public virtual void ReleaseItem(Hand handReleasing) { }
+        public virtual void ReleaseItem(HandInput handReleasing) { }
     }
 
     public abstract class ItemController<TView> : ItemController where TView : IItemView

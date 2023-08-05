@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4286770400469823386}
   - component: {fileID: 6175007207544297203}
   m_Layer: 6
-  m_Name: HatItem
+  m_Name: CowboyHatItem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
