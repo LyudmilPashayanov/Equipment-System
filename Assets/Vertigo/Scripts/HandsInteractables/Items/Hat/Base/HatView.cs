@@ -35,6 +35,7 @@ public abstract class HatView : ItemView
 
     public override ItemController GrabItem()
     {
+        base.GrabItem();
         _onHeadCollider.enabled = false;
         return Controller;
     }

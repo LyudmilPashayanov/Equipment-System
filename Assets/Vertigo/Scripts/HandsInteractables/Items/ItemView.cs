@@ -13,7 +13,6 @@ namespace Vertigo.Player.Interactables
         public void InitController();
         public void ParentItem(Transform parent, bool worldPosStays);
         void Release();
-
         void ApplyThrowForce(Vector3 throwDirection, float handForce);
 
         public event Action OnUpdate;
@@ -45,15 +44,22 @@ namespace Vertigo.Player.Interactables
         }
         public void ParentItem(Transform parent, bool worldPosStays) 
         {
+            if (parent != null)
+            {
+                ToggleKinematic(true);
+                _pickUpSequence = DOTween.Sequence();
+                _pickUpSequence.Append(transform.DOLocalMove(Vector3.zero, PICK_UP_DURATION));
+                _pickUpSequence.Insert(0, transform.DOLocalRotate(new Vector3(0, -90, 0), PICK_UP_DURATION));
+            }
+            else 
+            {
+                ToggleKinematic(false);
+            }
             transform.SetParent(parent, worldPosStays);
         }
 
-        public override ItemController Grab(Hand hand)
+        public override ItemController GrabItem()
         {
-            ToggleKinematic(true);
-            _pickUpSequence = DOTween.Sequence();
-            _pickUpSequence.Append(transform.DOLocalMove(Vector3.zero, PICK_UP_DURATION));
-            _pickUpSequence.Insert(0, transform.DOLocalRotate(new Vector3(0, -90, 0), PICK_UP_DURATION));
             return Controller;
         }
 
@@ -63,10 +69,9 @@ namespace Vertigo.Player.Interactables
             {
                 _pickUpSequence.Kill();
             }
-            ToggleKinematic(false);
         }
 
-        protected void ToggleKinematic(bool enable)
+        public void ToggleKinematic(bool enable)
         {
             _rb.isKinematic = enable;
         }

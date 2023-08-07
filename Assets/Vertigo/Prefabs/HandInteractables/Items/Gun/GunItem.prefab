@@ -412,7 +412,7 @@ Transform:
   - {fileID: 6955664268142425002}
   - {fileID: 2627699510005550258}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7684249890461501346
 MonoBehaviour:
@@ -426,7 +426,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bad22c3036d13db45bb50d1650b48bef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _grabbableCollider: {fileID: 662105365214470816}
+  _interactableCollider: {fileID: 662105365214470816}
   _rb: {fileID: 7113562606833790585}
   _remainingBulletsText: {fileID: 421861617073603621}
   _shootingModeText: {fileID: 8012241854965454006}

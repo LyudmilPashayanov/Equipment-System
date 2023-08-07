@@ -44,7 +44,7 @@ namespace Vertigo.Player.Interactables.Weapons
 
         public void PlayBulletSound() 
         {
-            _gunAudioSource.PlayOneShot(_gunModel.fireBulletSound);
+           // _gunAudioSource.PlayOneShot(_gunModel.fireBulletSound);
         }
         #endregion
     }

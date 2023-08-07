@@ -1,7 +1,3 @@
-using System;
-using UnityEngine;
-using Vertigo.Audio;
-
 namespace Vertigo.Player.Interactables
 {
     /// <summary>
@@ -21,6 +17,7 @@ namespace Vertigo.Player.Interactables
 
         public override void StartUse()
         {
+            base.StartUse();
             _isFlashOn = !_isFlashOn;
             _view.ToggleFlashlight(_isFlashOn);
         }

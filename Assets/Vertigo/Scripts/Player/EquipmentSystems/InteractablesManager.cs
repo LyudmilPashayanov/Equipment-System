@@ -1,5 +1,3 @@
-using System;
-using System.Threading;
 using UnityEngine;
 using Vertigo.Player.Interactables;
 
@@ -8,29 +6,41 @@ namespace Vertigo.Player
     /// <summary>
     /// This class is responsible to track and share what items are equipped to the Player hands and head.
     /// </summary>
-    public class EquipmentManager : MonoBehaviour
+    public class InteractablesManager : MonoBehaviour
     {
         #region Variables
-        private ItemSlot _leftHandSlot;
-        private ItemSlot _rightHandSlot;
-        private ItemSlot _headSlot;
+        [SerializeField] private ItemSlot _leftHandSlot;
+        [SerializeField] private ItemSlot _rightHandSlot;
+        [SerializeField] private ItemSlot _headSlot;
         #endregion
 
         #region Functionality
-        public void EquipHandItem(HandSide handSide, ItemController item)
+        public void EquipHandSlot(IHand handSide, ItemController item)
         {
-            switch (handSide)
+            if(_headSlot.GetEquippedItem() == item) 
             {
-                case HandSide.right:
-                    _rightHandSlot.Equip(item);
-                    break;
-                case HandSide.left:
-                    _leftHandSlot.Equip(item);
-                    break;
+                _headSlot.UnequipItem();
             }
+            if(item is ItemController interactableItem) 
+            {
+                switch (handSide.GetHandSide())
+                {
+                    case HandSide.right:
+                        _rightHandSlot.Equip(interactableItem);
+                        break;
+                    case HandSide.left:
+                        _leftHandSlot.Equip(interactableItem);
+                        break;
+                }
+            }
+            /*  else if( item is StaticObjectInteractable staticObjectInteractableItem) 
+            {
+                staticObjectInteractableItem.grab
+            }*/
+           
         }
 
-        public ItemController UnequipSlot(HandSide handSide)
+        public ItemController UnequipHandSlot(HandSide handSide)
         {
             ItemController itemToReturn = null;
             switch (handSide)
@@ -52,10 +62,17 @@ namespace Vertigo.Player
         /// Also will try to equip a Hat if an Hat item is being used.
         /// </summary>
         /// <param name="hand"></param>
-        public void UseItem(HandSide handSide)
+        public void UseItem(IHand handUser)
         {
+            HandSide handSide = handUser.GetHandSide();
             ItemController currentlyUsedItem = GetItemFromHandSlot(handSide);
+
             currentlyUsedItem.StartUse();
+            if(currentlyUsedItem.GetUsagesLeft() == 0) 
+            {
+                Debug.Log("USAGES LEFT ARE 0 - RELEASING THE ITEM");
+                handUser.ReleaseCurrentItem();
+            }
 
             if (currentlyUsedItem is ICombinableItem)
             {
@@ -80,7 +97,7 @@ namespace Vertigo.Player
                 hat.TryEquipOnHead(canEquipOnHead);
                 if (canEquipOnHead)
                 {
-                    UnequipSlot(handSide);
+                    UnequipHandSlot(handSide);
                     _headSlot.Equip(hat);
                 }
             }
@@ -97,12 +114,15 @@ namespace Vertigo.Player
             ItemController currentlyUsedItem = GetItemFromHandSlot(handSide);
             currentlyUsedItem.ToggleItem();
         }
+        public bool CheckIfHandSlotTaken(HandSide handSide)
+        {
+            return GetItemFromHandSlot(handSide) != null;
+        }
 
         private ItemController GetItemFromHandSlot(HandSide handSide) 
         {
             return handSide == HandSide.right ? _rightHandSlot.GetEquippedItem() : _leftHandSlot.GetEquippedItem();
         }
-
         #endregion
     }
 }

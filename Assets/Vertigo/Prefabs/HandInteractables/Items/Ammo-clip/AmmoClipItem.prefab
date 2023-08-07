@@ -34,7 +34,7 @@ Transform:
   m_Children:
   - {fileID: 5918838732155880796}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1125283810945660830
 MonoBehaviour:
@@ -48,7 +48,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69fb41e5abb645149b63dee0a53a13c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _grabbableCollider: {fileID: 8396874132865806848}
+  _interactableCollider: {fileID: 8396874132865806848}
   _rb: {fileID: 2709937537102656597}
   _meshRenderer: {fileID: 4785317231563537971}
   _model: {fileID: 11400000, guid: e9e0fb297f8e6124baa9afef222ab061, type: 2}

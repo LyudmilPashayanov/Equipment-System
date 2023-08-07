@@ -34,7 +34,7 @@ Transform:
   - {fileID: 8344999093608914039}
   - {fileID: 3921693220376180255}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!135 &8674644809085125499
 SphereCollider:
@@ -96,7 +96,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 216b1b482bc46dc4ab9997df7074bda5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _grabbableCollider: {fileID: 8674644809085125499}
+  _interactableCollider: {fileID: 8674644809085125499}
   _rb: {fileID: 3437647668920519516}
   _light: {fileID: 215257709142706288}
   _onIndicator: {fileID: 2058984252909258608}

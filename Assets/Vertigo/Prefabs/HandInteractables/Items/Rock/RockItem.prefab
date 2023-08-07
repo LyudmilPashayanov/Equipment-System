@@ -33,7 +33,7 @@ Transform:
   m_Children:
   - {fileID: 2473969793860952446}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!135 &2903113723978352564
 SphereCollider:
@@ -95,8 +95,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4dbf54244ef3c144b0c4f8b51dc5e09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _grabbableCollider: {fileID: 2903113723978352564}
+  _interactableCollider: {fileID: 2903113723978352564}
   _rb: {fileID: 5872956013338564386}
+  _rockModel: {fileID: 11400000, guid: 5e4b73964d4707f45932793a0ef74a36, type: 2}
 --- !u!1001 &2729171573115029141
 PrefabInstance:
   m_ObjectHideFlags: 0

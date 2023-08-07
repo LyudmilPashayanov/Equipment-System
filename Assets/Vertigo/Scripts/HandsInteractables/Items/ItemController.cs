@@ -15,12 +15,15 @@ namespace Vertigo.Player.Interactables
         public abstract void SetParent(Transform parent, bool worldPosStays=false);
 
         public abstract void AddThrowForce(Vector3 throwDirection, float force);
+
+        public abstract int GetUsagesLeft();
     }
 
     public abstract class ItemController<TView> : ItemController where TView : IItemView
     {
         #region Variables
         protected TView _view;
+        protected int _usagesLeft = -1;
         #endregion
 
         #region Functionality
@@ -37,7 +40,11 @@ namespace Vertigo.Player.Interactables
         {
             Update();
         }
-
+        public override void StartUse()
+        {
+            base.StartUse();
+            _usagesLeft--;
+        }
         public override void Release()
         { 
             _view.Release();
@@ -51,6 +58,10 @@ namespace Vertigo.Player.Interactables
         public override void AddThrowForce(Vector3 throwDirection, float force)
         {
             _view.ApplyThrowForce(throwDirection, force);
+        }
+        public override int GetUsagesLeft() 
+        {
+            return _usagesLeft;
         }
 
         #endregion

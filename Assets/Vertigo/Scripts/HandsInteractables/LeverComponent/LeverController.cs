@@ -20,7 +20,7 @@ namespace Vertigo.Player.Interactables
     /// Lever Component which can be used for any type of functionality as an Input Device. 
     /// Just AddListener() and it will Invoke your added event, when the player pulls the lever.
     /// </summary>
-    public class LeverController : Interactable
+    public class LeverController :MonoBehaviour//: IInteractable
     {
         #region Variables
         private const float GOAL_VALUE = 155;
@@ -58,12 +58,13 @@ namespace Vertigo.Player.Interactables
             if (_grabbed)
             {
                 MoveLever();
+                //CheckRangeFromHand, if far away- unequip
             }
         }
 
         public void SetEnabled(bool enable) 
         {
-            _InteractableCollider.enabled = enable;        
+            //_InteractableCollider.enabled = enable;        
         }
 
         private void MoveLever() 
@@ -77,7 +78,7 @@ namespace Vertigo.Player.Interactables
         }
 
         // Should be in the View
-        public override Interactable Grab(Hand hand)
+        /*public override IInteractable Grab(Hand hand)
         {
             _holderHand = hand;
             _grabbed = true;
@@ -91,7 +92,7 @@ namespace Vertigo.Player.Interactables
             _holderHand = null;
             SetEnabled(true);
             OnLeverRelease();
-        }
+        }*/
 
         private void SetColorOnValueChange() 
         {
@@ -191,11 +192,6 @@ namespace Vertigo.Player.Interactables
         public void RemoveAllListener()
         {                
             OnSuccessfulPullCallbacks.Clear();
-        }
-
-        public override ItemController GrabItem(Hand handHolder)
-        {
-            throw new NotImplementedException();
         }
         #endregion
     }

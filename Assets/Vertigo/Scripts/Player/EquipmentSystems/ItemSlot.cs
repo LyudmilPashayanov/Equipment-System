@@ -13,12 +13,12 @@ public class ItemSlot : MonoBehaviour
     public void Equip(ItemController item)
     {
         _item = item;
-        item.SetParent(_parent);
+        item.SetParent(_parent, true);
     }
 
     public ItemController UnequipItem()
     {
-        _item.SetParent(null);
+        _item.SetParent(null, true);
         ItemController itemToReturn = _item;
         _item = null;
         return itemToReturn;

@@ -92,6 +92,7 @@ namespace Vertigo.Player.Interactables.Weapons
         #region Event Handlers
         public override void StartUse()
         {
+            base.StartUse();
             StartShooting();
         }
 
@@ -109,8 +110,8 @@ namespace Vertigo.Player.Interactables.Weapons
 
         public override void Release()
         {
-            base.Release();
             StopShooting();
+            base.Release();
         }
         #endregion
     }

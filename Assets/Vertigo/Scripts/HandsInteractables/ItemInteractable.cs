@@ -3,24 +3,28 @@ using UnityEngine;
 namespace Vertigo.Player.Interactables
 {
     /// <summary>
-    /// Base class which marks all items which can be grabbed.
+    /// Base class which marks all items which can be interacted with.
     /// </summary>
     /// 
-    public abstract class Interactable : MonoBehaviour
+    public interface IInteractable
     {
-        [SerializeField] protected Collider _InteractableCollider;
+        public abstract ItemController GrabItem();
         public abstract void Release();
     }
 
-    public abstract class ItemInteractable : Interactable
+    public abstract class ItemInteractable : MonoBehaviour, IInteractable
     {
-        public abstract ItemController Grab(Hand handHolder);
+        [SerializeField] protected Collider _interactableCollider;
+        public abstract ItemController GrabItem();
+        public abstract void Release();
     }
 
-    public abstract class StaticObjectInteractable : Interactable
+/*    public abstract class StaticObjectInteractable : MonoBehaviour, IInteractable
     {
-        public abstract void Grab(Hand handHolder);
-    }
+        [SerializeField] protected Collider _InteractableCollider;
+        public abstract IInteractable Grab(IHand handHolder);
+        public abstract void Release();
+    }*/
 
 
 }

@@ -2,12 +2,17 @@ namespace Vertigo.Player.Interactables
 {
     public class RockController : ItemController<RockView>
     {
-        public RockController(RockView view) : base(view)
-        { }
-
-        public override void StartUse()
+        private RockModel _rockModel;
+        public RockController(RockView view, RockModel RockModel ) : base(view)
         {
-            _view.Release();
+            _rockModel = RockModel;
+            _usagesLeft = _rockModel.Usages;
+        }
+
+        public override void Release()
+        {
+            base.Release();
+            _usagesLeft = _rockModel.Usages;
         }
     }
 }

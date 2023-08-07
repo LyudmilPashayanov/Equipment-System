@@ -1,5 +1,4 @@
 using System;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Vertigo.Player.Interactables;
@@ -15,13 +14,21 @@ namespace Vertigo.Player
         right,
         left
     }
-    public class Hand : MonoBehaviour
+
+    public interface IHand 
+    {
+        public Vector3 GetMovementDirection(bool normalized = true);
+        public HandSide GetHandSide();
+        public void ReleaseCurrentItem();
+
+    }
+    public class Hand : MonoBehaviour, IHand
     {
         #region Variables
         private const float RAY_DISTANCE = 3.9f;
         [SerializeField] private HandSide _handSide;
         [SerializeField] private HandMovement _handMovement;
-        [SerializeField] private EquipmentManager _equipmentManager;
+        [SerializeField] private InteractablesManager _equipmentManager;
 
         [SerializeField] private InputActionReference _inputUse;
         [SerializeField] private InputActionReference _inputEquip;
@@ -34,8 +41,6 @@ namespace Vertigo.Player
 
         private bool _lookingAtItem;
         private bool _modifierPressed = false;
-        private bool _isEquipped = false;
-        private bool _isInteracting=false;
 
         private Ray _ray;
         private RaycastHit HandsRayHit;
@@ -48,6 +53,10 @@ namespace Vertigo.Player
         public HandSide GetHandSide() 
         {
             return _handSide;
+        }
+        public Vector3 GetMovementDirection(bool normalized = true)
+        {
+            return _handMovement.GetMovementDirection(normalized);
         }
         #endregion
 
@@ -64,11 +73,6 @@ namespace Vertigo.Player
         private void Update()
         {
             RaycastHands();
-        }
-
-        public Vector3 GetMovementDirection(bool normalized = true)
-        {
-            return _handMovement.GetMovementDirection(normalized);
         }
 
         private void CheckHandRange()
@@ -103,11 +107,11 @@ namespace Vertigo.Player
 
         private void ChangeLineColor() // changes colors once, not every frame 
         {
-            if (_lineRenderer.enabled == false && _isEquipped == false)
+            if (_lineRenderer.enabled == false && IsHandBusy() == false)
             {
                 _lineRenderer.enabled = true;
             }
-            else if (_lineRenderer.enabled == true && _isEquipped == true)
+            else if (_lineRenderer.enabled == true && IsHandBusy() == true)
             {
                 _lineRenderer.enabled = false;
             }
@@ -129,20 +133,28 @@ namespace Vertigo.Player
             item.AddThrowForce(throwDirection, _handForce);
         }
 
-        private Action StopInteracting;
+        private bool IsHandBusy()
+        {
+            return _equipmentManager.CheckIfHandSlotTaken(_handSide);            
+        }
+        #endregion
+
+        #region Event Handlers
+                    
         private void PerformGrab(InputAction.CallbackContext context)
         {
             _modifierPressed = true;
-            if (_isEquipped)
+            if (IsHandBusy())
             {
                 ReleaseCurrentItem();
             }
             else
             {
-                Interactable _interactable;
+                IInteractable _interactable;
                 if (_rayHitObject != null && _rayHitObject.TryGetComponent(out _interactable))
                 {
-                    if (_interactable is ItemInteractable item)
+                    _equipmentManager.EquipHandSlot(this, _interactable.GrabItem());
+                    /*if (_interactable is ItemInteractable item)
                     {
                         ItemController itemController = item.Grab(this);
                         _equipmentManager.EquipHandItem(_handSide, itemController);
@@ -153,31 +165,26 @@ namespace Vertigo.Player
                         staticObject.Grab(this);
                         StopInteracting += staticObject.Release;
                         _isInteracting = true;
-                    }
+                    }*/
                 }
             }
         }
 
         public void ReleaseCurrentItem()
         {
-            if (_isEquipped)
+            if (IsHandBusy())
             {
-                ItemController uneqippedItem = _equipmentManager.UnequipSlot(_handSide);
+                ItemController uneqippedItem = _equipmentManager.UnequipHandSlot(_handSide);
                 ApplyThrowForceToItem(uneqippedItem);
-                _isEquipped = false;
             }
-            else if (_isInteracting) 
+/*            else if (_isInteracting)
             {
                 StopInteracting?.Invoke();
                 StopInteracting = null;
                 _isInteracting = false;
-            }
-            
+            }*/
+
         }
-        #endregion
-
-        #region Event Handlers
-
         private void StartUse(InputAction.CallbackContext context)
         {
             if (_modifierPressed)
@@ -185,9 +192,9 @@ namespace Vertigo.Player
                 _modifierPressed = false;
                 return;
             }
-            if (_isEquipped)
+            if (IsHandBusy())
             {
-                _equipmentManager.UseItem(_handSide);
+                _equipmentManager.UseItem(this);
             }
         }
 
@@ -198,7 +205,7 @@ namespace Vertigo.Player
                 _modifierPressed = false;
                 return;
             }
-            if (_isEquipped)
+            if (IsHandBusy())
             {
                 _equipmentManager.StopUse(_handSide);
             }
@@ -207,7 +214,7 @@ namespace Vertigo.Player
         private void ToggleItemMode(InputAction.CallbackContext context)
         {
             _modifierPressed = true;
-            if (_isEquipped)
+            if (IsHandBusy())
             {
                 _equipmentManager.ToggleItem(_handSide);
             }
