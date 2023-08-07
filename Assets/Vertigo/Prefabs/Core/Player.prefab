@@ -36,7 +36,7 @@ Transform:
   m_Children:
   - {fileID: 2429528213438570072}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!136 &1091331044379189355
 CapsuleCollider:
@@ -307,7 +307,7 @@ MonoBehaviour:
   _itemLayerMask:
     serializedVersion: 2
     m_Bits: 64
-  _handForce: 5
+  _handForce: 20
 --- !u!114 &5250882571743168420
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -515,7 +515,7 @@ MonoBehaviour:
   _itemLayerMask:
     serializedVersion: 2
     m_Bits: 64
-  _handForce: 5
+  _handForce: 20
 --- !u!114 &3038665599578379020
 MonoBehaviour:
   m_ObjectHideFlags: 0
