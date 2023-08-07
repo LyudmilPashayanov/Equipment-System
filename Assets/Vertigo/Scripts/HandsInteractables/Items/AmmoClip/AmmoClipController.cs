@@ -1,3 +1,5 @@
+using Vertigo.Audio;
+
 namespace Vertigo.Player.Interactables.Weapons
 {
     /// <summary>
@@ -25,7 +27,7 @@ namespace Vertigo.Player.Interactables.Weapons
                 {
                     GunController gun = (GunController)otherItem;
                      _view.ReloadAnimation(_model.reloadTime, gun.GetTransform(), () => ReloadGun(gun));
-                    _view.PlayReloadSound();
+                    AudioManager.Instance.PlayOneShot(_model.gunReloadAudio);
                     _usable = false;
                 }
                 else

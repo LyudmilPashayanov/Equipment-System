@@ -119,7 +119,8 @@ MonoBehaviour:
   _scoreText: {fileID: 1045195167289859020}
   _posA: {fileID: 4891662666516240736}
   _posB: {fileID: 6790645229512736863}
-  _targetHitSound: {fileID: 8300000, guid: 5c8450ef8a33a574686792e3d478d550, type: 3}
+  _targetHitAudioModel: {fileID: 11400000, guid: c9c783cba8d9de64b952750771b4c830,
+    type: 2}
 --- !u!1 &1041199163246487321
 GameObject:
   m_ObjectHideFlags: 0

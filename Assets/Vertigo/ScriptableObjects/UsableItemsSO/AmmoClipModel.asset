@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ammoCount: 5
   reloadTime: 0.5
+  gunReloadAudio: {fileID: 8300000, guid: fd844a6b42c6c204484c447d380d798f, type: 3}

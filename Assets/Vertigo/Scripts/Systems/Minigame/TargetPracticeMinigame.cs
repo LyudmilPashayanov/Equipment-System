@@ -15,7 +15,7 @@ namespace Vertigo.Minigames
         [SerializeField] private TextMeshPro _scoreText;
         [SerializeField] private Transform _posA;
         [SerializeField] private Transform _posB;
-        [SerializeField] private AudioClip _targetHitSound;
+        [SerializeField] private SpatialAudioClipModel _targetHitAudioModel;
 
         private int _score;
         private Sequence _moveTargetSequence;
@@ -41,7 +41,7 @@ namespace Vertigo.Minigames
         {
             _score += damageDone;
             UpdateScoreText();
-            AudioSource.PlayClipAtPoint(_targetHitSound, transform.position);
+            AudioManager.Instance.PlayAtPoint(_targetHitAudioModel.audioClip, transform.position, _targetHitAudioModel.loudness);
         }
 
         private void UpdateScoreText()

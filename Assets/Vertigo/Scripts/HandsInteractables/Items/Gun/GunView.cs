@@ -17,7 +17,6 @@ namespace Vertigo.Player.Interactables.Weapons
         [SerializeField] private GunModel _gunModel;
         [SerializeField] private BulletModel _bulletModel;
         [SerializeField] private Transform _bulletSpawnPoint;
-        [SerializeField] private AudioSource _gunAudioSource;
         #endregion
 
         #region Functionality
@@ -40,11 +39,6 @@ namespace Vertigo.Player.Interactables.Weapons
         public void ShootBullet(Bullet bullet, float gunForce)
         {
             bullet.Shoot(_bulletSpawnPoint, gunForce);
-        }
-
-        public void PlayBulletSound() 
-        {
-           // _gunAudioSource.PlayOneShot(_gunModel.fireBulletSound);
         }
         #endregion
     }

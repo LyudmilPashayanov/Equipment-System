@@ -1,5 +1,4 @@
 using UnityEngine;
-using Vertigo.Player;
 using Vertigo.UI;
 
 namespace Vertigo

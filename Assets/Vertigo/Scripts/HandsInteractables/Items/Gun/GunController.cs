@@ -1,4 +1,5 @@
 using UnityEngine;
+using Vertigo.Audio;
 
 namespace Vertigo.Player.Interactables.Weapons
 {
@@ -62,7 +63,7 @@ namespace Vertigo.Player.Interactables.Weapons
         {
             Bullet bullet = _bulletFactory.GetBullet();
             _view.ShootBullet(bullet, _gunForce);
-            _view.PlayBulletSound();
+            AudioManager.Instance.PlayAtPoint(_model.fireBulletSound,_view.transform.position,2);
             _view.SetRemainingBullets((--_currentMagazineSize).ToString());
             if (!_automaticShoot)
             {

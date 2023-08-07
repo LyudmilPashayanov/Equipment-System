@@ -11,8 +11,7 @@ namespace Vertigo.Audio
         #region Variables
         [SerializeField] private LeverController _lever;
         [SerializeField] private string _successfulText = "";
-        [SerializeField] private AudioClip _radioAudio;
-        [SerializeField] private AudioSource _radioAudioSource;
+        [SerializeField] private SpatialAudioClipModel _radioClipModel;
 
         private bool _playing = false;
         #endregion
@@ -21,7 +20,6 @@ namespace Vertigo.Audio
         private void Start()
         {
             _lever.AddListener(StartRadio);
-            _radioAudioSource.clip = _radioAudio;
             if (_successfulText != "")
                 _lever.ChangeOnSuccessfulText(_successfulText);
         }
@@ -31,11 +29,11 @@ namespace Vertigo.Audio
             _playing = !_playing;
             if (_playing)
             {
-                _radioAudioSource.Play();
+                AudioManager.Instance.PlayAtPoint(_radioClipModel.audioClip, transform.position,_radioClipModel.loudness);
             }
             else
             {
-                _radioAudioSource.Pause();
+                AudioManager.Instance.StopSpatialAudioSource(_radioClipModel.audioClip);
             }
         }
         #endregion
