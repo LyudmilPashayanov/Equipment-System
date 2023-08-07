@@ -1,10 +1,20 @@
 # Equipment system
-
 ## Vertigo technical assignment
 The "Equipment system" project was a technical assignment created for Vertigo Games. Its aim is to assess my technical knowledge.
 
+# Version 2.0 Notes
+- Introduced Item Slots.
+- Better design and more flexible and decoupled functionality between Hand, Inventory and ItemSlots.
+- Refactored all the items to be properly following the MVC pattern.
+- Audio clips for different features/functionalities are referenced in their own classes. 
+- AudioManager class supports 3D world Audio Playing.
+- Replaced abstract class implementations by interfaces.
+- Cleaned unnecessary code and classes.
+- All functionality and requirements are still fulfilled and work in the game as before.
+- Written better summary explanations of functions.
+# Version 1.0 Notes
 ## Technical Description
-The project was developed using C# on the Unity Engine 2022.3.4f1 LTS version. The app was tested and works in landscape mode on Windows and in the Unity Editor.
+The project was developed using C# on the Unity Engine 2022.3.4f1 LTS version. The app was tested and works in landscape mode on Windows and in the Unity Editor
 
 ## Extra Plugins
 For the animations in the project it was used the DoTween plugin and the Unity Input System to handle Input from different devices. 
@@ -16,7 +26,7 @@ You can run the app/game from:
   OR
 - Build the game for Windows from the Unity Editor.
   OR
-- Download it from the following link: https://drive.google.com/drive/folders/1bOesEzbW3ulZXOI5TiFp_Pf-mAVUj8k0
+- Download it from the following link: https://drive.google.com/file/d/1JV4u1ilq9HT8J7tAXN5ElZRiDwB12M0T/view?usp=sharing
 
 ## About the game  
 The Equipment System game, was done as a PC prototype, which eventually will be ported for VR. In the game you can interact with a number of items: Shoot a target with a gun; reload the gun with an ammo-clip; equip a hat on your head; Throw a rock; Pull Levers to play nice music and spawn stuff.
@@ -33,8 +43,6 @@ Try to get the maximum number of score(200) with the use of only a single ammo-c
 
 ## TO-DO (Known Flaws)
 ### Code
-
-- Currently the MVC pattern is not strictly followed. The Controllers in my project, do inherit from MonoBehaviour and do handle some Unity logic. This doesn't allow for unit testing or reusability in Unreal for example. Eventually, if we want to have only the business logic in the controllers, we can remove their MonoBehaviour inheritance and construct them (with their needed references) in their specific ItemView class.
 - Currently we don't have LevelManager for starting the needed level and spawning the Player in it. This could eventually happen when we have a system to save and load the Player progress.
 - Currently we don't have any persistency in the game. Every time the game starts from the same place and all the "progress"(there isn't much progress anyway) is lost.
   
@@ -44,7 +52,7 @@ Try to get the maximum number of score(200) with the use of only a single ammo-c
 
 ## Early designs
 Before I start implementing I always try to design upfront. Here are some of my early design sketches:
-
+<img src="https://github.com/LyudmilPashayanov/Equipment-System/assets/41620452/616bcef7-08e1-47f6-9f58-c2724922fa55" alt="My Image" width="900"/>
 <img src="https://user-images.githubusercontent.com/41620452/254587208-8c7fa72d-4779-4baa-b05e-a2c6276711bb.jpg" alt="My Image" width="500"/>
 <img src="https://user-images.githubusercontent.com/41620452/254587241-b963d531-3d21-4dc9-bed8-83e5016b375a.jpg" alt="My Image" width="500"/>
 <img src="https://user-images.githubusercontent.com/41620452/254587187-b7a1e2c7-337c-4ee1-b3e6-e2d666f75edb.jpg" alt="My Image" width="500"/>
