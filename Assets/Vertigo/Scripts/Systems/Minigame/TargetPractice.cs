@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Vertigo.Minigames
 {
     /// <summary>
-    /// The target which the moves. Marked as IHittable so that the bullets hit it.
+    /// The target which the moves. Marked as <see cref="IHittable"/> so that the bullets hit it.
     /// </summary>
     public class TargetPractice : MonoBehaviour, IHittable
     {

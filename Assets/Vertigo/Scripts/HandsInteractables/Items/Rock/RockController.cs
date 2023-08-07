@@ -1,16 +1,21 @@
-using UnityEngine;
-
 namespace Vertigo.Player.Interactables
 {
-    public class RockController : ItemController
+    /// <summary>
+    /// This class contains the business logic of the Rock item.
+    /// </summary>
+    public class RockController : ItemController<RockView>
     {
-/*        public RockController(Rigidbody rb) : base(rb)
+        private RockModel _rockModel;
+        public RockController(RockView view, RockModel RockModel ) : base(view)
         {
-        }*/
+            _rockModel = RockModel;
+            _usagesLeft = _rockModel.usages;
+        }
 
-        public override void StartUse(Hand handUsingIt)
+        public override void Release()
         {
-            _handHolder.ReleaseCurrentItem();
+            base.Release();
+            _usagesLeft = _rockModel.usages;
         }
     }
 }

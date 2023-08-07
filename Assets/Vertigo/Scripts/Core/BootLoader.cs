@@ -9,11 +9,9 @@ namespace Vertigo
     /// Also if needed inject the classes with one another, so that they can
     /// hold the references they need. Currently not having any persistancy in the game, makes this class almost obsolete.
     /// </summary>
-
     public class BootLoader : MonoBehaviour
     {
         #region Variables
-
         [SerializeField] private UIManager _uiManager;
         #endregion
 

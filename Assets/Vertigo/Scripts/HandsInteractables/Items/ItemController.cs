@@ -1,74 +1,74 @@
-using DG.Tweening;
 using UnityEngine;
 
 namespace Vertigo.Player.Interactables
 {
+    public interface IUsableItem
+    {
+        public void StartUse();
+        public void StopUse();
+        public void ToggleItem();
+        public void Release();
+        public void SetParent(Transform parent, bool worldPosStays=false);
+        public void AddThrowForce(Vector3 throwDirection, float force);
+        public void Destroy();
+        public int GetUsagesLeft();
+    }
+
     /// <summary>
-    /// Base class for all item controllers in the game. 
+    /// Base class for all items in the game, which holds their business logic.
     /// </summary>
-    public abstract class ItemController : Grabbable
+    public abstract class ItemController<TView> : IUsableItem where TView : IItemView
     {
         #region Variables
-        private const float PICK_UP_DURATION = 0.5f;
-
-        [SerializeField] protected Rigidbody _rb;
-        protected bool _itemEquipped;
-        protected Hand _handHolder;
-        private Sequence _pickUpSequence;
-
-        public virtual void StartUse(Hand handUsingIt) { }
-        public virtual void StopUse() { }
-        public virtual void ToggleMode() { }
+        protected TView _view;
+        protected int _usagesLeft = -1;
         #endregion
-        
+
         #region Functionality
-        protected void SubscribeHand() 
+        public ItemController(TView view)
         {
-            _handHolder.Subscribe(StartUse, StopUse, ToggleMode);
+            _view = view;
+            _view.OnUpdate += ViewUpdate;
         }
-        
-        protected void UnsubscribeHand() 
+        private void ViewUpdate()
         {
-            _handHolder.Unsubscribe(StartUse, StopUse, ToggleMode);
-        }
-
-        public override void Grab(Hand Hand)
-        {
-            _handHolder = Hand;
-            SubscribeHand();
-            _itemEquipped = true;
-            ToggleKinematic(true);
-
-            transform.SetParent(Hand.GetPalm(), true);
-            _pickUpSequence = DOTween.Sequence();
-            _pickUpSequence.Append(transform.DOLocalMove(Vector3.zero, PICK_UP_DURATION));
-            _pickUpSequence.Insert(0, transform.DOLocalRotate(new Vector3(0, -90, 0), PICK_UP_DURATION));
+            Update();
         }
 
-        public override void Release()
+        protected virtual void Update() { }
+
+        public virtual void StartUse()
         {
-            if (_pickUpSequence.active)
-            {
-                _pickUpSequence.Kill();
-            }
-            UnsubscribeHand();
-            transform.SetParent(null);
-            ToggleKinematic(false);
-            ApplyThrowForce(_handHolder.GetMovementDirection(), _handHolder.GetHandStrength());
-            _itemEquipped = false;
-            _handHolder = null;
+            _usagesLeft--;
         }
 
-        protected void ToggleKinematic(bool enable)
-        {
-            _rb.isKinematic = enable;
+        public virtual void Release()
+        { 
+            _view.Release();
         }
 
-        protected void ApplyThrowForce(Vector3 handMovementDirection, float throwForce)
+        public virtual void SetParent(Transform parent, bool worldPosStays = false)
         {
-            Vector3 throwDirection = Quaternion.Euler(0f, _handHolder.transform.parent.rotation.eulerAngles.y, 0f) * handMovementDirection;
-            _rb.AddForce(throwDirection * throwForce, ForceMode.Impulse);
+            _view.ParentItem(parent, worldPosStays);
         }
+
+        public virtual void AddThrowForce(Vector3 throwDirection, float force)
+        {
+            _view.ApplyThrowForce(throwDirection, force);
+        }
+
+        public virtual int GetUsagesLeft() 
+        {
+            return _usagesLeft;
+        }
+        public virtual void Destroy()
+        {
+            _view.Destroy();
+        }
+        public virtual void StopUse() { }
+        public virtual void ToggleItem() { }
+  
+
         #endregion
     }
 }

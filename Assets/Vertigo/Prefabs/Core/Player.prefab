@@ -11,9 +11,10 @@ GameObject:
   - component: {fileID: 8059054544072892567}
   - component: {fileID: 1091331044379189355}
   - component: {fileID: 5679776525021491599}
-  - component: {fileID: 3779664979045534321}
+  - component: {fileID: 5984865649060772138}
   - component: {fileID: 2440965193469643482}
   - component: {fileID: 6809698973849606971}
+  - component: {fileID: 5307234397661921031}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -35,7 +36,7 @@ Transform:
   m_Children:
   - {fileID: 2429528213438570072}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!136 &1091331044379189355
 CapsuleCollider:
@@ -87,7 +88,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!114 &3779664979045534321
+--- !u!114 &5984865649060772138
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -99,9 +100,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9de6f7c88ab913d41b35e7e6ebe2d2d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _leftHand: {fileID: 9084609645490643909}
-  _rightHand: {fileID: 58760717417373232}
-  _head: {fileID: 7011374294383875683}
+  _leftHandItemSlot: {fileID: 229779423266421949}
+  _rightHandItemSlot: {fileID: 9125163737943749904}
+  _headItemSlot: {fileID: 7148121090417748210}
 --- !u!114 &2440965193469643482
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -137,6 +138,37 @@ MonoBehaviour:
   _player: {fileID: 8059054544072892567}
   _sensitivityX: 1.5
   _sensitivityY: 1.5
+--- !u!114 &5307234397661921031
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 298209862087450845}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: 1d06cb3410b94e54385e071791e08cfd,
+    type: 3}
+  m_NotificationBehavior: 0
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents: []
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: PlayerControls
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!1 &3999357528075203916
 GameObject:
   m_ObjectHideFlags: 0
@@ -146,7 +178,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1213748624097964657}
-  - component: {fileID: 7011374294383875683}
+  - component: {fileID: 7148121090417748210}
   m_Layer: 0
   m_Name: Head
   m_TagString: Untagged
@@ -169,7 +201,7 @@ Transform:
   m_Father: {fileID: 2429528213438570072}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7011374294383875683
+--- !u!114 &7148121090417748210
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -178,9 +210,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 3999357528075203916}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fb4997a78f068cf47a73a5acc912edc3, type: 3}
+  m_Script: {fileID: 11500000, guid: ac33602fb144b2f4e8de5f0e12e1d012, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _parent: {fileID: 1213748624097964657}
 --- !u!1 &5157202551438571227
 GameObject:
   m_ObjectHideFlags: 0
@@ -224,6 +257,7 @@ GameObject:
   - component: {fileID: 9084609645490643909}
   - component: {fileID: 5250882571743168420}
   - component: {fileID: 1030609258492696141}
+  - component: {fileID: 229779423266421949}
   m_Layer: 0
   m_Name: L-hand
   m_TagString: Untagged
@@ -260,7 +294,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f0e3c95b948feb44925f8be40c16edf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _handSide: 1
   _handMovement: {fileID: 5250882571743168420}
+  _interactablesSystem: {fileID: 5984865649060772138}
   _inputUse: {fileID: 6925533622116751204, guid: 1d06cb3410b94e54385e071791e08cfd,
     type: 3}
   _inputEquip: {fileID: -3704798430305152012, guid: 1d06cb3410b94e54385e071791e08cfd,
@@ -271,8 +307,7 @@ MonoBehaviour:
   _itemLayerMask:
     serializedVersion: 2
     m_Bits: 64
-  _palm: {fileID: 2515950521259780025}
-  _releaseForce: 15
+  _handForce: 20
 --- !u!114 &5250882571743168420
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -405,6 +440,19 @@ LineRenderer:
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
+--- !u!114 &229779423266421949
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6530219004545759480}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac33602fb144b2f4e8de5f0e12e1d012, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _parent: {fileID: 2515950521259780025}
 --- !u!1 &7575452496595690594
 GameObject:
   m_ObjectHideFlags: 0
@@ -417,6 +465,7 @@ GameObject:
   - component: {fileID: 58760717417373232}
   - component: {fileID: 3038665599578379020}
   - component: {fileID: 1136542991053529974}
+  - component: {fileID: 9125163737943749904}
   m_Layer: 0
   m_Name: R-hand
   m_TagString: Untagged
@@ -453,7 +502,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f0e3c95b948feb44925f8be40c16edf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _handSide: 0
   _handMovement: {fileID: 3038665599578379020}
+  _interactablesSystem: {fileID: 5984865649060772138}
   _inputUse: {fileID: -3932663192171668953, guid: 1d06cb3410b94e54385e071791e08cfd,
     type: 3}
   _inputEquip: {fileID: -8092672811267632305, guid: 1d06cb3410b94e54385e071791e08cfd,
@@ -464,8 +515,7 @@ MonoBehaviour:
   _itemLayerMask:
     serializedVersion: 2
     m_Bits: 64
-  _palm: {fileID: 5391889646088190354}
-  _releaseForce: 15
+  _handForce: 20
 --- !u!114 &3038665599578379020
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -598,6 +648,19 @@ LineRenderer:
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
+--- !u!114 &9125163737943749904
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7575452496595690594}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac33602fb144b2f4e8de5f0e12e1d012, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _parent: {fileID: 5391889646088190354}
 --- !u!1 &7773880792582967677
 GameObject:
   m_ObjectHideFlags: 0

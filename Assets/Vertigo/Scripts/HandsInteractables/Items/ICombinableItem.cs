@@ -1,10 +1,10 @@
 namespace Vertigo.Player.Interactables
 {
     /// <summary>
-    /// This class marks a Grabbable Item, as one which can be combined with another Grabbable item in the other hand of the Player.
+    /// This class marks an Interactable Item, as one which can be combined with another Interactable Item which is in the other hand of the Player.
     /// </summary>
     public interface ICombinableItem
     {
-        public void TryCombineWithItemInOtherHand(Grabbable otherItem);
+        public void TryCombineWithItemInOtherHand(IUsableItem otherItem);
     }
 }

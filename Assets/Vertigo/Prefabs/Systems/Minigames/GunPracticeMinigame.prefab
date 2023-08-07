@@ -101,7 +101,7 @@ Transform:
   - {fileID: 6790645229512736863}
   - {fileID: 2157882801468663040}
   m_Father: {fileID: 0}
-  m_RootOrder: 14
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!114 &3746767948364792421
 MonoBehaviour:
@@ -119,6 +119,8 @@ MonoBehaviour:
   _scoreText: {fileID: 1045195167289859020}
   _posA: {fileID: 4891662666516240736}
   _posB: {fileID: 6790645229512736863}
+  _targetHitAudioModel: {fileID: 11400000, guid: c9c783cba8d9de64b952750771b4c830,
+    type: 2}
 --- !u!1 &1041199163246487321
 GameObject:
   m_ObjectHideFlags: 0

@@ -4,7 +4,7 @@ using TMPro;
 namespace Vertigo.Player.Interactables.Weapons
 {
     /// <summary>
-    /// Handles all visual related logic of the Gun. 
+    /// Handles all Unity and visual related logic of the Gun. 
     /// </summary>
     public class GunView : ItemView
     {
@@ -14,9 +14,18 @@ namespace Vertigo.Player.Interactables.Weapons
 
         [SerializeField] private TextMeshPro _remainingBulletsText;
         [SerializeField] private TextMeshPro _shootingModeText;
+        [SerializeField] private GunModel _gunModel;
+        [SerializeField] private BulletModel _bulletModel;
+        [SerializeField] private Transform _bulletSpawnPoint;
         #endregion
 
         #region Functionality
+
+        public override void InitController()
+        {
+            Controller = new GunController(this, _gunModel, _bulletModel);
+        }
+
         public void SetRemainingBullets(string remainingBullet)
         {
             _remainingBulletsText.text = remainingBullet;
@@ -25,6 +34,11 @@ namespace Vertigo.Player.Interactables.Weapons
         public void ToggleAutomaticModeText(bool automaticEnabled)
         {
             _shootingModeText.text = automaticEnabled ? AUTOMATIC_MODE_TEXT : SINGLE_MODE_TEXT;
+        }
+
+        public void ShootBullet(Bullet bullet, float gunForce)
+        {
+            bullet.Shoot(_bulletSpawnPoint, gunForce);
         }
         #endregion
     }

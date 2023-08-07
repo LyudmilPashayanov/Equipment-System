@@ -14,5 +14,8 @@ namespace Vertigo.Player.Interactables.Weapons
         public int bulletSpeed;
         public float fireRate;
         public int magazineSize;
+        public AudioClip fireBulletSound;
+        public AudioClip toggleItemModeSound;
+
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 namespace Vertigo.Player.Movement
 {
     /// <summary>
-    /// This class implements, tracks and shares the movement of the Hand it is attached to.
+    /// This class implements, tracks and shares the movement of the <see cref="Hand"/> it is attached to.
     /// </summary>
     public class HandMovement : MonoBehaviour
     {

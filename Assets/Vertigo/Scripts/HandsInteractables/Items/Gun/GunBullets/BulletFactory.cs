@@ -16,10 +16,10 @@ namespace Vertigo.Player.Interactables.Weapons
         #endregion
 
         #region Functionality
-        public BulletFactory(Bullet BulletPrefab, BulletModel bulletModel)
+        public BulletFactory(BulletModel bulletModel)
         {
             _bulletParent = new GameObject("BulletsParent");
-            _bulletPrefab = BulletPrefab;
+            _bulletPrefab = bulletModel.bulletPrefab;
             _bulletModel = bulletModel;
         }
 

@@ -3,7 +3,7 @@ using UnityEngine;
 namespace Vertigo.Player.Interactables
 {
     /// <summary>
-    /// Handles all visual related logic for the Flashlight item. 
+    /// Handles all Unity and visual related logic for the Flashlight item. 
     /// </summary>
     public class FlashlightView : ItemView
     {
@@ -46,6 +46,11 @@ namespace Vertigo.Player.Interactables
                     _light.intensity = 150;
                     break;
             }
+        }
+
+        public override void InitController()
+        {
+            Controller = new FlashlightController(this);
         }
         #endregion
     }

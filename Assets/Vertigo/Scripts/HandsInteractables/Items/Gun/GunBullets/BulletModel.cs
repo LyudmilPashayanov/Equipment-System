@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Vertigo.Player.Interactables.Weapons
@@ -12,5 +13,6 @@ namespace Vertigo.Player.Interactables.Weapons
     {
         public int lifetime;
         public int damage;
+        public Bullet bulletPrefab;
     }
 }

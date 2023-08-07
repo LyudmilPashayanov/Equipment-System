@@ -35,7 +35,7 @@ Transform:
   - {fileID: 3222100942331839585}
   - {fileID: 1506862336179465218}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!65 &7153796967714084516
 BoxCollider:
@@ -73,6 +73,7 @@ MonoBehaviour:
   _interactableCollider: {fileID: 7153796967714084516}
   _view: {fileID: 39005001742523749}
   _handlePivot: {fileID: 5297469577061113034}
+  _leverPullAudio: {fileID: 8300000, guid: 9179ab58c0e439a4da56c8b7384290d2, type: 3}
   _defaultText: grab me
   _onGrabbedText: pull down
   _onThresholdReachedText: release lever

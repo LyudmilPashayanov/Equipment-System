@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4760953059830135200}
   m_Layer: 6
-  m_Name: BulletSpawner
+  m_Name: BulletSpawPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -384,7 +384,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8862117650905094220}
-  - component: {fileID: 5427599193038288823}
   - component: {fileID: 7684249890461501346}
   - component: {fileID: 662105365214470816}
   - component: {fileID: 7113562606833790585}
@@ -414,26 +413,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5427599193038288823
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5442947123226462039}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4bc33b10511e4ba47b7f9ddc816f8017, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _interactableCollider: {fileID: 662105365214470816}
-  _rb: {fileID: 7113562606833790585}
-  _view: {fileID: 7684249890461501346}
-  _model: {fileID: 11400000, guid: 0424c6b2b3b5d2247847b3ff350bc50e, type: 2}
-  _bulletModel: {fileID: 11400000, guid: 9a0a149cf3744e64890308272c4141b9, type: 2}
-  _bulletSpawnPoint: {fileID: 4760953059830135200}
-  _bulletPrefab: {fileID: 6083390991458204173, guid: fb129b5fcda96ae4eb41e7a1849f6d8c,
-    type: 3}
 --- !u!114 &7684249890461501346
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -446,9 +425,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bad22c3036d13db45bb50d1650b48bef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _meshRenderer: {fileID: 2925593573979136952}
+  _interactableCollider: {fileID: 662105365214470816}
+  _rb: {fileID: 7113562606833790585}
   _remainingBulletsText: {fileID: 421861617073603621}
   _shootingModeText: {fileID: 8012241854965454006}
+  _gunModel: {fileID: 11400000, guid: 0424c6b2b3b5d2247847b3ff350bc50e, type: 2}
+  _bulletModel: {fileID: 11400000, guid: 9a0a149cf3744e64890308272c4141b9, type: 2}
+  _bulletSpawnPoint: {fileID: 4760953059830135200}
+  _gunAudioSource: {fileID: 0}
 --- !u!135 &662105365214470816
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -599,12 +583,6 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1041972891523145880}
   m_SourcePrefab: {fileID: 100100000, guid: a13056cd9d1539d479fd8ed421883f6d, type: 3}
---- !u!23 &2925593573979136952 stripped
-MeshRenderer:
-  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: a13056cd9d1539d479fd8ed421883f6d,
-    type: 3}
-  m_PrefabInstance: {fileID: 4564502105596084028}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &3718064174155072109 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: a13056cd9d1539d479fd8ed421883f6d,

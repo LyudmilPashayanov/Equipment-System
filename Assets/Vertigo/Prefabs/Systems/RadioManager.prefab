@@ -32,7 +32,7 @@ Transform:
   - {fileID: 4791339826068932305}
   - {fileID: 3365014548410941641}
   m_Father: {fileID: 0}
-  m_RootOrder: 21
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2638984607991470855
 MonoBehaviour:
@@ -48,6 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _lever: {fileID: 5777284077465912547}
   _successfulText: FUN!
+  _radioClipModel: {fileID: 11400000, guid: 7c2cad94d051f874ab7f3400c1632b30, type: 2}
 --- !u!1 &8107822757643435320
 GameObject:
   m_ObjectHideFlags: 0
