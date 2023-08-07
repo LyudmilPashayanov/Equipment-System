@@ -20,7 +20,7 @@ AudioMixerGroupController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Background
+  m_Name: 3DEnvironmentSFX
   m_AudioMixer: {fileID: 24100000}
   m_GroupID: 406c18eec443cbc4682ce3f33b973043
   m_Children: []
@@ -116,7 +116,7 @@ AudioMixerSnapshotController:
   m_AudioMixer: {fileID: 24100000}
   m_SnapshotID: d818e288f7716f54ab3ee3c9f1b4ed63
   m_FloatValues:
-    30957a0061710fa45a30434a5187a526: -19.928473
+    30957a0061710fa45a30434a5187a526: -20.589151
     b2689630af0e1af4290854dde1160376: -5.3230715
   m_TransitionOverrides: {}
 --- !u!243 &7955949165197775121
@@ -125,7 +125,7 @@ AudioMixerGroupController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: PlayerSFX
+  m_Name: 2DPlayerSFX
   m_AudioMixer: {fileID: 24100000}
   m_GroupID: ad288f2df28000543b9213334d852d78
   m_Children: []

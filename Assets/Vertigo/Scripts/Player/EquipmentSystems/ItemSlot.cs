@@ -1,6 +1,9 @@
 using UnityEngine;
 using Vertigo.Player.Interactables;
 
+/// <summary>
+/// This class holds a <see cref="IUsableItem"/> item which is equipped to either the hands or the head.
+/// </summary>
 public class ItemSlot : MonoBehaviour
 {
     protected IUsableItem _equippedItem;

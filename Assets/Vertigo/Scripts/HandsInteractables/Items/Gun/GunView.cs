@@ -4,7 +4,7 @@ using TMPro;
 namespace Vertigo.Player.Interactables.Weapons
 {
     /// <summary>
-    /// Handles all visual related logic of the Gun. 
+    /// Handles all Unity and visual related logic of the Gun. 
     /// </summary>
     public class GunView : ItemView
     {

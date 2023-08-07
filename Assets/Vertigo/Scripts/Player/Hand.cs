@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Vertigo.Player.Interactables;
@@ -6,22 +5,24 @@ using Vertigo.Player.Movement;
 
 namespace Vertigo.Player
 {
-    /// <summary>
-    /// This class is responsible for grabbing items, using them and overall interact with the world in the game.
-    /// </summary>
-    public enum HandSide 
+    public enum HandSide
     {
         right,
         left
     }
 
-    public interface IHand 
+    public interface IHand
     {
         public Vector3 GetMovementDirection(bool normalized = true);
+        public Vector3 GetPosition();
         public HandSide GetHandSide();
-        public void ReleaseCurrentItem();
+        public void ReleaseCurrentInteractable();
 
     }
+
+    /// <summary>
+    /// This class is responsible for grabbing items and handling input commands from the player. Then it just passes that information to the <see cref="InteractablesManager"/>.
+    /// </summary>
     public class Hand : MonoBehaviour, IHand
     {
         #region Variables
@@ -50,10 +51,16 @@ namespace Vertigo.Player
 
         #region Getters
 
-        public HandSide GetHandSide() 
+        public Vector3 GetPosition()
+        {
+            return transform.position;
+        }
+
+        public HandSide GetHandSide()
         {
             return _handSide;
         }
+
         public Vector3 GetMovementDirection(bool normalized = true)
         {
             return _handMovement.GetMovementDirection(normalized);
@@ -75,16 +82,6 @@ namespace Vertigo.Player
             RaycastHands();
         }
 
-        private void CheckHandRange()
-        {
-            //TODO: Fix this or find another solution
-            
-            /*if (Vector3.Distance(_itemSlot.transform.position, transform.position) > 8)
-           // {
-                ReleaseCurrentItem();
-          //  }*/
-        }
-
         private void RaycastHands()
         {
             _ray = new Ray(transform.position, transform.forward);
@@ -94,7 +91,6 @@ namespace Vertigo.Player
                 _rayHitObject = HandsRayHit.collider.gameObject;
                 _lineRenderer.SetPosition(1, HandsRayHit.point);
                 _lookingAtItem = true;
-                // TODO: Maybe add an indicator what you are hitting
             }
             else
             {
@@ -126,7 +122,7 @@ namespace Vertigo.Player
                 _lineRenderer.endColor = Color.red;
             }
         }
-        
+
         protected void ApplyThrowForceToItem(IUsableItem item)
         {
             Vector3 throwDirection = Quaternion.Euler(0f, transform.parent.rotation.eulerAngles.y, 0f) * GetMovementDirection();
@@ -135,51 +131,37 @@ namespace Vertigo.Player
 
         private bool IsHandBusy()
         {
-            return _interactablesSystem.CheckIfHandSlotAvailable(_handSide);            
+            return !_interactablesSystem.CheckIfHandSlotAvailable(_handSide);
         }
         #endregion
 
         #region Event Handlers
-                    
+
         private void PerformGrab(InputAction.CallbackContext context)
         {
             _modifierPressed = true;
             if (IsHandBusy())
             {
-                ReleaseCurrentItem();
+                ReleaseCurrentInteractable();
             }
             else
             {
                 IInteractable _interactable;
                 if (_rayHitObject != null && _rayHitObject.TryGetComponent(out _interactable))
                 {
-                    _interactablesSystem.OccupyHandSlot(this, _interactable);
-                    /*if (_interactable is ItemInteractable item)
-                    {
-                        ItemController itemController = item.Grab(this);
-                        _equipmentManager.EquipHandItem(_handSide, itemController);
-                        _isEquipped = true;
-                    }
-                    else if (_interactable is StaticObjectInteractable staticObject)
-                    {
-                        staticObject.Grab(this);
-                        StopInteracting += staticObject.Release;
-                        _isInteracting = true;
-                    }*/
+                    _interactablesSystem.EquipHandSlot(this, _interactable);
                 }
             }
         }
 
-        public void ReleaseCurrentItem()
+        public void ReleaseCurrentInteractable()
         {
-            if (IsHandBusy())
+            IUsableItem uneqippedItem = _interactablesSystem.FreeHandSlot(_handSide);
+            if (uneqippedItem != null)
             {
-                IUsableItem uneqippedItem = _interactablesSystem.FreeHandSlot(_handSide);
-                if (uneqippedItem != null)
-                {
-                    ApplyThrowForceToItem(uneqippedItem);
-                }
+                ApplyThrowForceToItem(uneqippedItem);
             }
+
         }
         private void StartUse(InputAction.CallbackContext context)
         {
@@ -187,11 +169,8 @@ namespace Vertigo.Player
             {
                 _modifierPressed = false;
                 return;
-            }
-            if (IsHandBusy())
-            {
-                _interactablesSystem.UseItem(this);
-            }
+            }                
+            _interactablesSystem.UseItem(this);          
         }
 
         private void StopUse(InputAction.CallbackContext context)
@@ -200,20 +179,14 @@ namespace Vertigo.Player
             {
                 _modifierPressed = false;
                 return;
-            }
-            if (IsHandBusy())
-            {
-                _interactablesSystem.StopUse(_handSide);
-            }
+            }                
+            _interactablesSystem.StopUse(_handSide);         
         }
 
         private void ToggleItemMode(InputAction.CallbackContext context)
         {
-            _modifierPressed = true;
-            if (IsHandBusy())
-            {
-                _interactablesSystem.ToggleItem(_handSide);
-            }
+            _modifierPressed = true;                
+            _interactablesSystem.ToggleItem(_handSide);
         }
         #endregion
     }

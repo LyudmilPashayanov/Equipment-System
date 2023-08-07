@@ -4,7 +4,7 @@ using Vertigo.Audio;
 namespace Vertigo.Player.Interactables.Weapons
 {
     /// <summary>
-    /// This class contains the business and Unity logic of the Gun item as a Grabbable game object.
+    /// This class contains the business logic of the Gun item.
     /// </summary>
     public class GunController : ItemController<GunView>
     {

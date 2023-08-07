@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Vertigo.Audio;
 
 namespace Vertigo.Player.Interactables
 {
@@ -56,7 +57,10 @@ namespace Vertigo.Player.Interactables
             if (_grabbed)
             {
                 MoveLever();
-                //TODO: CheckRangeFromHand, if far away- unequip
+                if(Vector3.Distance(transform.position, _holderHand.GetPosition()) > 8) 
+                {
+                    _holderHand.ReleaseCurrentInteractable();
+                }
             }
         }
 
@@ -75,7 +79,6 @@ namespace Vertigo.Player.Interactables
             SetStateOnValueChange();
         }
 
-        // Should be in the View
         public override void RegisterHand(IHand hand)
         {
             _holderHand = hand;
@@ -86,9 +89,9 @@ namespace Vertigo.Player.Interactables
         public override void Release()
         {
             _grabbed = false;
-            _holderHand = null;
             SetEnabled(true);
             OnLeverRelease();
+            _holderHand = null;
         }
 
         private void SetColorOnValueChange() 
@@ -124,7 +127,7 @@ namespace Vertigo.Player.Interactables
         {
             UpdateState(LeverState.successfulPull);
             InvokeCallbacks();
-            //AudioManager.Instance.PlaySoundAtPoint(_leverPullAudio,transform.position);
+            AudioManager.Instance.PlayOneShot(_leverPullAudio);
             ReturnLeverToDefault();
         }
 

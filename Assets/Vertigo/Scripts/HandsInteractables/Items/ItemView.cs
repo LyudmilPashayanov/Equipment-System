@@ -5,7 +5,7 @@ using System;
 namespace Vertigo.Player.Interactables
 {
     /// <summary>
-    /// Base class for all Item Views in the game, handling all the visual changes of the items.
+    /// Base class for all Item Views in the game, handling all the Unity and visual changes logic of the items.
     /// </summary>
 
     public interface IItemView

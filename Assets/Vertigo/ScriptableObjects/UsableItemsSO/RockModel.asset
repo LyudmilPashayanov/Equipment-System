@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02ee476a909cc3a4c938f65306ccecda, type: 3}
   m_Name: RockModel
   m_EditorClassIdentifier: 
-  Usages: 1
+  usages: 1

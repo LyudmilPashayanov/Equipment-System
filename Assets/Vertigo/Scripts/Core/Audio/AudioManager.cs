@@ -4,13 +4,17 @@ using UnityEngine;
 
 namespace Vertigo.Audio
 {
+    /// <summary>
+    /// Singleton Audio manager so that you have a centralized place to control the SFX in your game.
+    /// </summary> 
     public class AudioManager : MonoBehaviour
     {
         #region Variables
         private static AudioManager _instance;
         public static AudioManager Instance { get { return _instance; } }
 
-        [SerializeField] AudioSource _oneShotSource;
+        [SerializeField] private AudioSource _oneShotSource;
+        [SerializeField] private AudioSource _3DEnvironmentSourcePrefab;
 
         private SpatialAudioSourceFactory _spatialAudioSourceFactory;
         private Dictionary<AudioSource, Coroutine> _spatialSourcesPlaying = new Dictionary<AudioSource, Coroutine>();
@@ -24,7 +28,7 @@ namespace Vertigo.Audio
 
         private void Start()
         {
-            _spatialAudioSourceFactory = new SpatialAudioSourceFactory(transform);
+            _spatialAudioSourceFactory = new SpatialAudioSourceFactory(transform, _3DEnvironmentSourcePrefab);
         }
 
         public void PlayOneShot(AudioClip clipToPlay)
@@ -33,18 +37,19 @@ namespace Vertigo.Audio
         }
 
         /// <summary>
-        /// Optimized version with pooling technique of the AudioSource.PlayClipAtPointPlays 3D sound from the provided vector3 position.
+        /// Optimized version with pooling technique of the Unity version of <see cref="AudioSource.PlayClipAtPoint(AudioClip, Vector3)"/> 3D sound from the provided vector3 position.
         /// </summary>
         /// <param name="loudness">Specifies at what distance the sound will be the least hearable</param>
-        public void PlayAtPoint(AudioClip clipToPlay, Vector3 positionToPlay, float loudness)
+        public AudioSource PlayAtPoint(AudioClip clipToPlay, Vector3 positionToPlay, float loudness)
         {
             AudioSource audioSource = _spatialAudioSourceFactory.GetAudioSourceFromPool();
-            audioSource.gameObject.name = clipToPlay.name;
             audioSource.transform.position = positionToPlay;
             audioSource.maxDistance = loudness;
             audioSource.clip = clipToPlay;
             audioSource.Play();
-            StartCoroutine(ReturnAudioSourceToPoolAfterPlaying(audioSource, clipToPlay.length));
+            Coroutine returnToPoolCoroutine = StartCoroutine(ReturnAudioSourceToPoolAfterPlaying(audioSource, clipToPlay.length));
+            _spatialSourcesPlaying.Add(audioSource, returnToPoolCoroutine);
+            return audioSource;
         }
 
         /// <summary>
@@ -53,21 +58,29 @@ namespace Vertigo.Audio
         /// <param name="clipToStop"></param>
         public void StopSpatialAudioSource(AudioClip clipToStop) 
         {
+            AudioSource sourceToRemove = null;
             foreach (KeyValuePair<AudioSource, Coroutine> item in _spatialSourcesPlaying)
             {
                 AudioSource audioSource = item.Key;
-                if(audioSource == clipToStop) 
+                if(audioSource.clip == clipToStop) 
                 {
+                    sourceToRemove = audioSource;
                     audioSource.Stop();
                     _spatialAudioSourceFactory.ReturnAudioSourceToPool(audioSource);
                     StopCoroutine(item.Value);
+                    break;
                 }
+            }
+            if (sourceToRemove != null)
+            {
+                _spatialSourcesPlaying.Remove(sourceToRemove);
             }
         }
 
         private IEnumerator ReturnAudioSourceToPoolAfterPlaying(AudioSource audioSource, float time)
         {
             yield return new WaitForSeconds(time);
+            _spatialSourcesPlaying.Remove(audioSource);
             _spatialAudioSourceFactory.ReturnAudioSourceToPool(audioSource);
         }
 

@@ -10,6 +10,6 @@ namespace Vertigo.Player.Interactables
     /// </summary>
     public class RockModel : ScriptableObject
     {
-        public int Usages = 1;
+        public int usages;
     }
 }

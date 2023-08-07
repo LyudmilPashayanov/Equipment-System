@@ -2,9 +2,6 @@ using UnityEngine;
 
 namespace Vertigo.Player.Interactables
 {
-    /// <summary>
-    /// Base class for all items in the game. 
-    /// </summary>
     public interface IUsableItem
     {
         public void StartUse();
@@ -15,9 +12,11 @@ namespace Vertigo.Player.Interactables
         public void AddThrowForce(Vector3 throwDirection, float force);
         public void Destroy();
         public int GetUsagesLeft();
-        
     }
 
+    /// <summary>
+    /// Base class for all items in the game, which holds their business logic.
+    /// </summary>
     public abstract class ItemController<TView> : IUsableItem where TView : IItemView
     {
         #region Variables

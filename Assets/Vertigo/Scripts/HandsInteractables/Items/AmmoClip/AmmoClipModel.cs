@@ -10,6 +10,7 @@ namespace Vertigo.Player.Interactables.Weapons
     /// </summary>
     public class AmmoClipModel : ScriptableObject
     {
+        public int usages;
         public int ammoCount;
         public float reloadTime;
         public AudioClip gunReloadAudio;

@@ -1,36 +1,32 @@
 using DG.Tweening;
-using System;
 using UnityEngine;
 
-namespace Vertigo.Player.Interactables.Weapons
+namespace Vertigo.Player.Interactables
 {
     /// <summary>
-    /// Handles all Unity and visual related logic for the Ammo-clip item. 
+    /// Handles all Unity and visual related logic for the Cowboy hat item. 
     /// </summary>
-    public class AmmoClipView : ItemView
+    public class CowboyHatView : ItemView
     {
-        #region Variables
-        private Sequence _flashingSequence;
         [SerializeField] private MeshRenderer _meshRenderer;
-        [SerializeField] private AmmoClipModel _model;
-        private Color _originalColor;
-        #endregion
+        [SerializeField] protected Collider _onHeadCollider;
 
-        #region Functionality
+        private Sequence _flashingSequence;
+        private Color _originalColor;
+
         private void Start()
         {
             _originalColor = _meshRenderer.material.color;
         }
-        
+
         public override void InitController()
         {
-            Controller = new AmmoClipController(this, _model);
+            Controller = new CowboyHatController(this);
         }
 
-        public void ReloadAnimation(float reloadTime, Transform goToTransform, Action onAnimationFinish)
+        public void EnableOnHeadCollider(bool enable)
         {
-            transform.DOMove(goToTransform.position, reloadTime).SetEase(Ease.InSine);
-            transform.DOScale(Vector3.zero, reloadTime).SetEase(Ease.InCubic).OnComplete(() => onAnimationFinish?.Invoke());
+            _onHeadCollider.enabled = enable;
         }
 
         public virtual void UnusableIndication()
@@ -45,6 +41,12 @@ namespace Vertigo.Player.Interactables.Weapons
             _flashingSequence.Append(_meshRenderer.material.DOColor(Color.red, 0.2f));
             _flashingSequence.Append(_meshRenderer.material.DOColor(_originalColor, 0.2f));
         }
-        #endregion
+
+        public override IUsableItem GetUsableItem()
+        {
+            base.GetUsableItem();
+            _onHeadCollider.enabled = false;
+            return Controller;
+        }
     }
 }

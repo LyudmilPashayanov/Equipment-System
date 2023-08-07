@@ -4,7 +4,7 @@ using Vertigo.Player.Interactables;
 namespace Vertigo.Player
 {
     /// <summary>
-    /// This class is responsible to track and share what items are equipped to the Player hands and head.
+    /// This class is being controlled by the <see cref="Hand"/>. It is responsible to control <see cref="ItemInteractable"/> and <see cref="StaticInteractable"/> items, which are in the hands or/and on the head of the player.
     /// </summary>
     public class InteractablesManager : MonoBehaviour
     {
@@ -17,7 +17,7 @@ namespace Vertigo.Player
         #endregion
 
         #region Functionality
-        public void OccupyHandSlot(IHand handOperator, IInteractable interactable)
+        public void EquipHandSlot(IHand handOperator, IInteractable interactable)
         {
             if (interactable is ItemInteractable itemInteractable)
             {
@@ -85,48 +85,51 @@ namespace Vertigo.Player
         }
 
         /// <summary>
-        /// If the hand currently using an item, uses an ICombinable item,
+        /// If the hand currently using an item, uses an <see cref="ICombinableItem"/> item,
         /// this function will call the Combine method with the item in the other hand.
-        /// Also will try to equip a Hat if an Hat item is being used.
+        /// Also will try to equip a <see cref="IHat"/> if a Hat is being used.
+        /// Also trakcs how much usages an <see cref="IUsableItem"/> has and unequips it if reach 0.
         /// </summary>
         /// <param name="hand"></param>
         public void UseItem(IHand handUser)
         {
             HandSide handSide = handUser.GetHandSide();
             IUsableItem currentlyUsedItem = GetItemFromHandSlot(handSide);
-
-            currentlyUsedItem.StartUse();
-            if (currentlyUsedItem.GetUsagesLeft() == 0)
+            if (currentlyUsedItem != null)
             {
-                handUser.ReleaseCurrentItem();
-            }
-
-            if (currentlyUsedItem is ICombinableItem)
-            {
-                TryCombineItems();
-            }
-
-            if (currentlyUsedItem is HatController)
-            {
-                TryEquipHat();
-            }
-
-            void TryCombineItems()
-            {
-                ICombinableItem currentItem = currentlyUsedItem as ICombinableItem;
-                IUsableItem otherHandItem = handSide == HandSide.right ? _leftHandItemSlot.GetEquippedItem() : _rightHandItemSlot.GetEquippedItem();
-                currentItem.TryCombineWithItemInOtherHand(otherHandItem);
-            }
-
-            void TryEquipHat()
-            {
-                HatController hat = currentlyUsedItem as HatController;
-                bool canEquipOnHead = _headItemSlot.IsAvailable;
-                hat.TryEquipOnHead(canEquipOnHead);
-                if (canEquipOnHead)
+                currentlyUsedItem.StartUse();
+                if (currentlyUsedItem is ICombinableItem)
                 {
-                    FreeHandSlot(handSide);
-                    _headItemSlot.Equip(hat);
+                    TryCombineItems();
+                }
+
+                if (currentlyUsedItem is IHat)
+                {
+                    TryEquipHat();
+                }
+
+                if (currentlyUsedItem.GetUsagesLeft() == 0)
+                {
+                    handUser.ReleaseCurrentInteractable();
+                }
+
+                void TryCombineItems()
+                {
+                    ICombinableItem currentItem = currentlyUsedItem as ICombinableItem;
+                    IUsableItem otherHandItem = handSide == HandSide.right ? _leftHandItemSlot.GetEquippedItem() : _rightHandItemSlot.GetEquippedItem();
+                    currentItem.TryCombineWithItemInOtherHand(otherHandItem);
+                }
+
+                void TryEquipHat()
+                {
+                    CowboyHatController hat = currentlyUsedItem as CowboyHatController;
+                    bool canEquipOnHead = _headItemSlot.IsAvailable;
+                    hat.TryEquipOnHead(canEquipOnHead);
+                    if (canEquipOnHead)
+                    {
+                        FreeHandSlot(handSide);
+                        _headItemSlot.Equip(hat);
+                    }
                 }
             }
         }
@@ -134,24 +137,30 @@ namespace Vertigo.Player
         public void StopUse(HandSide handSide)
         {
             IUsableItem currentlyUsedItem = GetItemFromHandSlot(handSide);
-            currentlyUsedItem.StopUse();
+            if (currentlyUsedItem != null)
+            {
+                currentlyUsedItem.StopUse(); 
+            }
         }
 
         public void ToggleItem(HandSide handSide)
         {
             IUsableItem currentlyUsedItem = GetItemFromHandSlot(handSide);
-            currentlyUsedItem.ToggleItem();
+            if (currentlyUsedItem != null)
+            {
+                currentlyUsedItem.ToggleItem();
+            }
         }
 
         public bool CheckIfHandSlotAvailable(HandSide handSide)
         {
             if(handSide == HandSide.right) 
             {
-                return _rightHandInteractable != null && _rightHandItemSlot.IsAvailable;
+                return _rightHandInteractable == null && _rightHandItemSlot.IsAvailable;
             }
             else if (handSide == HandSide.left) 
             {
-                return _leftHandInteractable != null && _leftHandItemSlot.IsAvailable;
+                return _leftHandInteractable == null && _leftHandItemSlot.IsAvailable;
 
             }
             return false;

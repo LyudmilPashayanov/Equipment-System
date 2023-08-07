@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4420a160462220445900823e7782d171, type: 3}
   m_Name: AmmoClipModel
   m_EditorClassIdentifier: 
+  usages: 1
   ammoCount: 5
   reloadTime: 0.5
   gunReloadAudio: {fileID: 8300000, guid: fd844a6b42c6c204484c447d380d798f, type: 3}

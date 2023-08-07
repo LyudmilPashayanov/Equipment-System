@@ -100,9 +100,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9de6f7c88ab913d41b35e7e6ebe2d2d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _leftHandSlot: {fileID: 229779423266421949}
-  _rightHandSlot: {fileID: 9125163737943749904}
-  _headSlot: {fileID: 7148121090417748210}
+  _leftHandItemSlot: {fileID: 229779423266421949}
+  _rightHandItemSlot: {fileID: 9125163737943749904}
+  _headItemSlot: {fileID: 7148121090417748210}
 --- !u!114 &2440965193469643482
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -296,7 +296,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _handSide: 1
   _handMovement: {fileID: 5250882571743168420}
-  _equipmentManager: {fileID: 5984865649060772138}
+  _interactablesSystem: {fileID: 5984865649060772138}
   _inputUse: {fileID: 6925533622116751204, guid: 1d06cb3410b94e54385e071791e08cfd,
     type: 3}
   _inputEquip: {fileID: -3704798430305152012, guid: 1d06cb3410b94e54385e071791e08cfd,
@@ -504,7 +504,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _handSide: 0
   _handMovement: {fileID: 3038665599578379020}
-  _equipmentManager: {fileID: 5984865649060772138}
+  _interactablesSystem: {fileID: 5984865649060772138}
   _inputUse: {fileID: -3932663192171668953, guid: 1d06cb3410b94e54385e071791e08cfd,
     type: 3}
   _inputEquip: {fileID: -8092672811267632305, guid: 1d06cb3410b94e54385e071791e08cfd,
