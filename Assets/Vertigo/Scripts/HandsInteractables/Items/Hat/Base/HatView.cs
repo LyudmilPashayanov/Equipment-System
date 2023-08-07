@@ -1,6 +1,5 @@
 using DG.Tweening;
 using UnityEngine;
-using Vertigo.Player;
 using Vertigo.Player.Interactables;
 
 public abstract class HatView : ItemView
@@ -34,11 +33,9 @@ public abstract class HatView : ItemView
         _flashingSequence.Append(_meshRenderer.material.DOColor(_originalColor, 0.2f));
     }
 
-    public override ItemController Grabbed(HandInput Hand)
+    public override ItemController GrabItem()
     {
-        base.Grabbed(Hand);
         _onHeadCollider.enabled = false;
-        // Controller.OnUnequipped?.Invoke(); //TODO : Maybe handle that tthrough an event raised from the equipment manager to a listener in the controller
         return Controller;
     }
 }

@@ -10,32 +10,15 @@ public class HatController : ItemController<HatView>
         _view.EnableOnHeadCollider(false);
     }
 
-    public void TryEquipOnHead(bool successfulEquip)
+    public void TryEquipOnHead(bool equipped)
     {
-        if (successfulEquip)
+        if (equipped)
         {
-            EquipOnHead();
+            _view.EnableOnHeadCollider(true);
         }
-        else
+        else 
         {
-            HatInUseIndication();
+            _view.UnusableIndication();
         }
-    }
-
-    public void HatInUseIndication()
-    {
-        _view.UnusableIndication();
-    }
-
-
-    private void EquipOnHead()
-    {
-
-        // TODO : Remove from the hand 
-        /*_handHolder.ReleaseCurrentItem(false);
-        UnsubscribeHand();
-        _handHolder = null;*/
-        _view.EnableOnHeadCollider(true);
-
     }
 }

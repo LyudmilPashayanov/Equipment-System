@@ -6,5 +6,10 @@ namespace Vertigo.Player.Interactables
         {
             Controller = new RockController(this);
         }
+
+        public override void Release()
+        {
+            base.Release();
+        }
     }
 }

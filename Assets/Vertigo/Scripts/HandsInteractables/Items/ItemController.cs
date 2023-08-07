@@ -1,3 +1,6 @@
+using System;
+using UnityEngine;
+
 namespace Vertigo.Player.Interactables
 {
     /// <summary>
@@ -5,10 +8,13 @@ namespace Vertigo.Player.Interactables
     /// </summary>
     public abstract class ItemController
     {
-        public virtual void StartUse(HandInput handUsing) { }
+        public virtual void StartUse() { }
         public virtual void StopUse() { }
         public virtual void ToggleItem() { }
-        public virtual void ReleaseItem(HandInput handReleasing) { }
+        public abstract void Release();
+        public abstract void SetParent(Transform parent, bool worldPosStays=false);
+
+        public abstract void AddThrowForce(Vector3 throwDirection, float force);
     }
 
     public abstract class ItemController<TView> : ItemController where TView : IItemView
@@ -31,6 +37,22 @@ namespace Vertigo.Player.Interactables
         {
             Update();
         }
+
+        public override void Release()
+        { 
+            _view.Release();
+        }
+
+        public override void SetParent(Transform parent, bool worldPosStays = false)
+        {
+            _view.ParentItem(parent, worldPosStays);
+        }
+
+        public override void AddThrowForce(Vector3 throwDirection, float force)
+        {
+            _view.ApplyThrowForce(throwDirection, force);
+        }
+
         #endregion
     }
 }

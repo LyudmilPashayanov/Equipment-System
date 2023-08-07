@@ -2,106 +2,66 @@ using System;
 using System.Threading;
 using UnityEngine;
 using Vertigo.Player.Interactables;
+using static UnityEditor.Progress;
 
 namespace Vertigo.Player
 {
     /// <summary>
     /// This class is responsible to track and share what items are equipped to the Player hands and head.
     /// </summary>
-    public enum Slot
-    {
-        LHand,
-        RHand,
-        Head
-    }
-
-    public class EquipmentManager
+    public class EquipmentManager : MonoBehaviour
     {
         #region Variables
         private ItemSlot _leftHandSlot;
         private ItemSlot _rightHandSlot;
         private ItemSlot _headSlot;
-        public event Action<ItemController> OnHatEquipped;
-
-        public EquipmentManager(HandInput leftHand, HandInput rightHand, Head head)
-        {
-            _leftHandSlot = new ItemSlot();
-            _rightHandSlot = new ItemSlot();
-            _headSlot = new ItemSlot();
-
-            OnHatEquipped += head.SetHat;
-
-            leftHand.OnItemGrab += EquipSlot;
-            leftHand.OnItemUse += OnItemUsed;
-            leftHand.OnItemRelease += UnequipSlot;
-
-            rightHand.OnItemGrab += EquipSlot;
-            rightHand.OnItemUse += OnItemUsed;
-            rightHand.OnItemRelease += UnequipSlot;
-        }
-
-        private void EquipSlot(HandInput hand, ItemController item)
-        {
-            GetSlotFromHand(hand).EquipItem(item);
-            hand.OnItemUse += item.StartUse;
-            hand.OnStopUse += item.StopUse;
-            hand.OnToggleMode += item.ToggleItem;
-            hand.OnItemRelease += item.ReleaseItem;
-        } 
-        
-        private void UnequipSlot(HandInput hand)
-        {
-            ItemSlot slotToUnequip = GetSlotFromHand(hand);
-
-            hand.OnItemUse -= slotToUnequip.GetEquippedItem().StartUse;
-            hand.OnStopUse -= slotToUnequip.GetEquippedItem().StopUse;
-            hand.OnToggleMode += slotToUnequip.GetEquippedItem().ToggleItem;
-            hand.OnItemRelease += slotToUnequip.GetEquippedItem().ReleaseItem;
-            slotToUnequip.UnequipItem();
-        }
-
-        private ItemSlot GetSlotFromHand(HandInput hand) 
-        {
-            switch (hand.GetHandSide())
-            {
-                case HandSide.right:
-                    return _rightHandSlot;
-                case HandSide.left:
-                    return _leftHandSlot;
-            }
-            return null;
-        }
         #endregion
 
         #region Functionality
-        /*        public ItemController GetOtherHandItem(Hand _currentHand)
-                {
-                    return (_currentHand.GetEquippedItem() == _leftHandSlot.GetEquippedItem() ? _rightHandSlot.GetEquippedItem() : _leftHandSlot.GetEquippedItem());
-                }*/
-
-        /*
-        internal void UnequipHat()
+        public void EquipHandItem(HandSide handSide, ItemController item)
         {
-            _head.UnequipHat();
-        }*/
-        #endregion
+            switch (handSide)
+            {
+                case HandSide.right:
+                    _rightHandSlot.Equip(item);
+                    break;
+                case HandSide.left:
+                    _leftHandSlot.Equip(item);
+                    break;
+            }
+        }
 
-        #region Event Handlers
+        public ItemController UnequipSlot(HandSide handSide)
+        {
+            ItemController itemToReturn = null;
+            switch (handSide)
+            {
+                case HandSide.right:
+                    itemToReturn = _rightHandSlot.UnequipItem();
+                    break;
+                case HandSide.left:
+                    itemToReturn = _leftHandSlot.UnequipItem();
+                    break;
+            }
+            itemToReturn.Release();
+            return itemToReturn;
+        }
+
         /// <summary>
         /// If the hand currently using an item, uses an ICombinable item,
         /// this function will call the Combine method with the item in the other hand.
         /// Also will try to equip a Hat if an Hat item is being used.
         /// </summary>
         /// <param name="hand"></param>
-        public void OnItemUsed(HandInput hand)
+        public void UseItem(HandSide handSide)
         {
-            ItemController currentlyUsedItem = hand.GetHandSide() == HandSide.right ? _rightHandSlot.GetEquippedItem() : _leftHandSlot.GetEquippedItem();
-           // currentlyUsedItem.StartUse();
+            ItemController currentlyUsedItem = GetItemFromHandSlot(handSide);
+            currentlyUsedItem.StartUse();
 
             if (currentlyUsedItem is ICombinableItem)
             {
                 TryCombineItems();
-            }        
+            }
             else if (currentlyUsedItem is HatController)
             {
                 TryEquipHat();
@@ -110,23 +70,40 @@ namespace Vertigo.Player
             void TryCombineItems()
             {
                 ICombinableItem currentItem = currentlyUsedItem as ICombinableItem;
-                ItemController otherHandItem = hand.GetHandSide() == HandSide.right ? _leftHandSlot.GetEquippedItem() : _rightHandSlot.GetEquippedItem();
+                ItemController otherHandItem = handSide == HandSide.right ? _leftHandSlot.GetEquippedItem() : _rightHandSlot.GetEquippedItem();
                 currentItem.TryCombineWithItemInOtherHand(otherHandItem);
             }
 
-            void TryEquipHat() 
+            void TryEquipHat()
             {
-                if (_headSlot.GetEquippedItem() != null)
-                    return;
-
                 HatController hat = currentlyUsedItem as HatController;
-                _headSlot.EquipItem(hat);
-                OnHatEquipped?.Invoke(hat);
-
-                hat.TryEquipOnHead(_headSlot.GetEquippedItem() == null);
+                bool canEquipOnHead = _headSlot.GetEquippedItem() == null;
+                hat.TryEquipOnHead(canEquipOnHead);
+                if (canEquipOnHead)
+                {
+                    UnequipSlot(handSide);
+                    _headSlot.Equip(hat);
+                }
             }
         }
-        #endregion
 
+        public void StopUse(HandSide handSide)
+        {
+            ItemController currentlyUsedItem = GetItemFromHandSlot(handSide);
+            currentlyUsedItem.StopUse();
+        }
+
+        public void ToggleItem(HandSide handSide)
+        {
+            ItemController currentlyUsedItem = GetItemFromHandSlot(handSide);
+            currentlyUsedItem.ToggleItem();
+        }
+
+        private ItemController GetItemFromHandSlot(HandSide handSide) 
+        {
+            return handSide == HandSide.right ? _rightHandSlot.GetEquippedItem() : _leftHandSlot.GetEquippedItem();
+        }
+
+        #endregion
     }
 }

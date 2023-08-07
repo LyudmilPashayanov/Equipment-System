@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.XR;
 using Vertigo.Audio;
 
 namespace Vertigo.Player.Interactables
@@ -19,7 +20,7 @@ namespace Vertigo.Player.Interactables
     /// Lever Component which can be used for any type of functionality as an Input Device. 
     /// Just AddListener() and it will Invoke your added event, when the player pulls the lever.
     /// </summary>
-    public class LeverController : Grabbable
+    public class LeverController : Interactable
     {
         #region Variables
         private const float GOAL_VALUE = 155;
@@ -36,7 +37,7 @@ namespace Vertigo.Player.Interactables
 
         private float _leverMovementSpeed = 5f;
 
-        private HandInput _holderHand;
+        private Hand _holderHand;
         private bool _grabbed;
 
         private float _handsMovementY;
@@ -62,7 +63,7 @@ namespace Vertigo.Player.Interactables
 
         public void SetEnabled(bool enable) 
         {
-            _grabbableCollider.enabled = enable;        
+            _InteractableCollider.enabled = enable;        
         }
 
         private void MoveLever() 
@@ -76,17 +77,18 @@ namespace Vertigo.Player.Interactables
         }
 
         // Should be in the View
-        public override ItemController Grabbed(HandInput hand)
+        public override Interactable Grab(Hand hand)
         {
             _holderHand = hand;
             _grabbed = true;
             SetEnabled(false);
-            return null;
+            return this;
         }
 
         public override void Release()
         {
             _grabbed = false;
+            _holderHand = null;
             SetEnabled(true);
             OnLeverRelease();
         }
@@ -189,6 +191,11 @@ namespace Vertigo.Player.Interactables
         public void RemoveAllListener()
         {                
             OnSuccessfulPullCallbacks.Clear();
+        }
+
+        public override ItemController GrabItem(Hand handHolder)
+        {
+            throw new NotImplementedException();
         }
         #endregion
     }
