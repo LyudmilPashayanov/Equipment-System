@@ -75,10 +75,10 @@ namespace Vertigo.Player
         {
             //TODO: Fix this or find another solution
             
-            *//*if (Vector3.Distance(_itemSlot.transform.position, transform.position) > 8)
-            {
+            /*if (Vector3.Distance(_itemSlot.transform.position, transform.position) > 8)
+           // {
                 ReleaseCurrentItem();
-            }*//*
+          //  }*/
         }
 
         private void RaycastHands()
