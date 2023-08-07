@@ -80,6 +80,11 @@ namespace Vertigo.Player.Interactables.Weapons
             _isShooting = false;
         }
 
+        public Transform GetTransform() 
+        {
+            return _view.transform;
+        }
+
         public void ReloadBullets(int bulletsBeingReloaded)
         {
             _currentMagazineSize += bulletsBeingReloaded;

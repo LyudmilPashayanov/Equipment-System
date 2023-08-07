@@ -6,20 +6,20 @@ namespace Vertigo.Player.Interactables
     /// <summary>
     /// Base class for all items in the game. 
     /// </summary>
-    public abstract class ItemController
+    public interface IUsableItem
     {
-        public virtual void StartUse() { }
-        public virtual void StopUse() { }
-        public virtual void ToggleItem() { }
-        public abstract void Release();
-        public abstract void SetParent(Transform parent, bool worldPosStays=false);
-
-        public abstract void AddThrowForce(Vector3 throwDirection, float force);
-
-        public abstract int GetUsagesLeft();
+        public void StartUse();
+        public void StopUse();
+        public void ToggleItem();
+        public void Release();
+        public void SetParent(Transform parent, bool worldPosStays=false);
+        public void AddThrowForce(Vector3 throwDirection, float force);
+        public void Destroy();
+        public int GetUsagesLeft();
+        
     }
 
-    public abstract class ItemController<TView> : ItemController where TView : IItemView
+    public abstract class ItemController<TView> : IUsableItem where TView : IItemView
     {
         #region Variables
         protected TView _view;
@@ -32,37 +32,44 @@ namespace Vertigo.Player.Interactables
             _view = view;
             _view.OnUpdate += ViewUpdate;
         }
-
-        protected virtual void Update()
-        { }
-
         private void ViewUpdate()
         {
             Update();
         }
-        public override void StartUse()
+
+        protected virtual void Update() { }
+
+        public virtual void StartUse()
         {
-            base.StartUse();
             _usagesLeft--;
         }
-        public override void Release()
+
+        public virtual void Release()
         { 
             _view.Release();
         }
 
-        public override void SetParent(Transform parent, bool worldPosStays = false)
+        public virtual void SetParent(Transform parent, bool worldPosStays = false)
         {
             _view.ParentItem(parent, worldPosStays);
         }
 
-        public override void AddThrowForce(Vector3 throwDirection, float force)
+        public virtual void AddThrowForce(Vector3 throwDirection, float force)
         {
             _view.ApplyThrowForce(throwDirection, force);
         }
-        public override int GetUsagesLeft() 
+
+        public virtual int GetUsagesLeft() 
         {
             return _usagesLeft;
         }
+        public virtual void Destroy()
+        {
+            _view.Destroy();
+        }
+        public virtual void StopUse() { }
+        public virtual void ToggleItem() { }
+  
 
         #endregion
     }

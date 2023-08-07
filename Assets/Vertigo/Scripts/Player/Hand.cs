@@ -127,7 +127,7 @@ namespace Vertigo.Player
             }
         }
         
-        protected void ApplyThrowForceToItem(ItemController item)
+        protected void ApplyThrowForceToItem(IUsableItem item)
         {
             Vector3 throwDirection = Quaternion.Euler(0f, transform.parent.rotation.eulerAngles.y, 0f) * GetMovementDirection();
             item.AddThrowForce(throwDirection, _handForce);
@@ -174,7 +174,7 @@ namespace Vertigo.Player
         {
             if (IsHandBusy())
             {
-                ItemController uneqippedItem = _equipmentManager.UnequipHandSlot(_handSide);
+                IUsableItem uneqippedItem = _equipmentManager.UnequipHandSlot(_handSide);
                 ApplyThrowForceToItem(uneqippedItem);
             }
 /*            else if (_isInteracting)

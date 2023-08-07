@@ -33,7 +33,7 @@ public abstract class HatView : ItemView
         _flashingSequence.Append(_meshRenderer.material.DOColor(_originalColor, 0.2f));
     }
 
-    public override ItemController GrabItem()
+    public override IUsableItem GrabItem()
     {
         base.GrabItem();
         _onHeadCollider.enabled = false;

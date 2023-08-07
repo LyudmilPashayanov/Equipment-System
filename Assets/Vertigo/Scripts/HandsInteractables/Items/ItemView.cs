@@ -10,10 +10,11 @@ namespace Vertigo.Player.Interactables
 
     public interface IItemView
     {
-        public void InitController();
-        public void ParentItem(Transform parent, bool worldPosStays);
+        void InitController();
+        void ParentItem(Transform parent, bool worldPosStays);
         void Release();
         void ApplyThrowForce(Vector3 throwDirection, float handForce);
+        void Destroy();
 
         public event Action OnUpdate;
     }
@@ -24,7 +25,7 @@ namespace Vertigo.Player.Interactables
         private const float PICK_UP_DURATION = 0.5f;
 
         [SerializeField] protected Rigidbody _rb;
-        public ItemController Controller;
+        public IUsableItem Controller;
 
         private Sequence _pickUpSequence;
         public event Action OnUpdate;
@@ -33,7 +34,7 @@ namespace Vertigo.Player.Interactables
         #region Functionality
         public abstract void InitController();
 
-        private void Awake()
+        public virtual void Awake()
         {
             InitController();
         }
@@ -58,7 +59,7 @@ namespace Vertigo.Player.Interactables
             transform.SetParent(parent, worldPosStays);
         }
 
-        public override ItemController GrabItem()
+        public override IUsableItem GrabItem()
         {
             return Controller;
         }
@@ -79,6 +80,11 @@ namespace Vertigo.Player.Interactables
         public void ApplyThrowForce(Vector3 throwDirection, float force)
         {
             _rb.AddForce(throwDirection * force, ForceMode.Impulse);
+        }
+
+        public virtual void Destroy()
+        {
+            Destroy(gameObject);
         }
 
         #endregion

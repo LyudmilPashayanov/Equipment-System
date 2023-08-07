@@ -15,15 +15,14 @@ namespace Vertigo.Player.Interactables.Weapons
         [SerializeField] private AmmoClipModel _model;
         [SerializeField] private AudioSource _ammoClipAudioSource;
         private Color _originalColor;
-
         #endregion
 
         #region Functionality
-        private void Awake()
+        private void Start()
         {
             _originalColor = _meshRenderer.material.color;
         }
-
+        
         public override void InitController()
         {
             Controller = new AmmoClipController(this, _model);

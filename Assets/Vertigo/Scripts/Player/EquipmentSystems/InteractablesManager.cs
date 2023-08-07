@@ -15,13 +15,13 @@ namespace Vertigo.Player
         #endregion
 
         #region Functionality
-        public void EquipHandSlot(IHand handSide, ItemController item)
+        public void EquipHandSlot(IHand handSide, IUsableItem item)
         {
             if(_headSlot.GetEquippedItem() == item) 
             {
                 _headSlot.UnequipItem();
             }
-            if(item is ItemController interactableItem) 
+            if(item is IUsableItem interactableItem) 
             {
                 switch (handSide.GetHandSide())
                 {
@@ -40,9 +40,9 @@ namespace Vertigo.Player
            
         }
 
-        public ItemController UnequipHandSlot(HandSide handSide)
+        public IUsableItem UnequipHandSlot(HandSide handSide)
         {
-            ItemController itemToReturn = null;
+            IUsableItem itemToReturn = null;
             switch (handSide)
             {
                 case HandSide.right:
@@ -65,12 +65,11 @@ namespace Vertigo.Player
         public void UseItem(IHand handUser)
         {
             HandSide handSide = handUser.GetHandSide();
-            ItemController currentlyUsedItem = GetItemFromHandSlot(handSide);
+            IUsableItem currentlyUsedItem = GetItemFromHandSlot(handSide);
 
             currentlyUsedItem.StartUse();
             if(currentlyUsedItem.GetUsagesLeft() == 0) 
             {
-                Debug.Log("USAGES LEFT ARE 0 - RELEASING THE ITEM");
                 handUser.ReleaseCurrentItem();
             }
 
@@ -86,7 +85,7 @@ namespace Vertigo.Player
             void TryCombineItems()
             {
                 ICombinableItem currentItem = currentlyUsedItem as ICombinableItem;
-                ItemController otherHandItem = handSide == HandSide.right ? _leftHandSlot.GetEquippedItem() : _rightHandSlot.GetEquippedItem();
+                IUsableItem otherHandItem =  handSide == HandSide.right ? _leftHandSlot.GetEquippedItem() : _rightHandSlot.GetEquippedItem();
                 currentItem.TryCombineWithItemInOtherHand(otherHandItem);
             }
 
@@ -105,13 +104,13 @@ namespace Vertigo.Player
 
         public void StopUse(HandSide handSide)
         {
-            ItemController currentlyUsedItem = GetItemFromHandSlot(handSide);
+            IUsableItem currentlyUsedItem = GetItemFromHandSlot(handSide);
             currentlyUsedItem.StopUse();
         }
 
         public void ToggleItem(HandSide handSide)
         {
-            ItemController currentlyUsedItem = GetItemFromHandSlot(handSide);
+            IUsableItem currentlyUsedItem = GetItemFromHandSlot(handSide);
             currentlyUsedItem.ToggleItem();
         }
         public bool CheckIfHandSlotTaken(HandSide handSide)
@@ -119,7 +118,7 @@ namespace Vertigo.Player
             return GetItemFromHandSlot(handSide) != null;
         }
 
-        private ItemController GetItemFromHandSlot(HandSide handSide) 
+        private IUsableItem GetItemFromHandSlot(HandSide handSide) 
         {
             return handSide == HandSide.right ? _rightHandSlot.GetEquippedItem() : _leftHandSlot.GetEquippedItem();
         }

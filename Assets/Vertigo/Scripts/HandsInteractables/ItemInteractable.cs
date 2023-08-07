@@ -8,14 +8,14 @@ namespace Vertigo.Player.Interactables
     /// 
     public interface IInteractable
     {
-        public abstract ItemController GrabItem();
+        public abstract IUsableItem GrabItem();
         public abstract void Release();
     }
 
     public abstract class ItemInteractable : MonoBehaviour, IInteractable
     {
         [SerializeField] protected Collider _interactableCollider;
-        public abstract ItemController GrabItem();
+        public abstract IUsableItem GrabItem();
         public abstract void Release();
     }
 

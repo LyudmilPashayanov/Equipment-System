@@ -17,14 +17,14 @@ namespace Vertigo.Player.Interactables.Weapons
         #endregion
         #region Functionality
 
-        public void TryCombineWithItemInOtherHand(ItemController otherItem)
+        public void TryCombineWithItemInOtherHand(IUsableItem otherItem)
         {
             if (_usable)
             {
                 if (otherItem is GunController)
                 {
                     GunController gun = (GunController)otherItem;
-                    // _view.ReloadAnimation(_model.reloadTime, gun.transform, () => ReloadGun(gun));
+                     _view.ReloadAnimation(_model.reloadTime, gun.GetTransform(), () => ReloadGun(gun));
                     _view.PlayReloadSound();
                     _usable = false;
                 }
@@ -38,7 +38,7 @@ namespace Vertigo.Player.Interactables.Weapons
         private void ReloadGun(GunController gun)
         {
             gun.ReloadBullets(_model.ammoCount);
-           // TODO: _view.Destory()? OR  UnityEngine.Object.Destroy(_view.gameObject);
+            Destroy();
         }
         #endregion
     }
