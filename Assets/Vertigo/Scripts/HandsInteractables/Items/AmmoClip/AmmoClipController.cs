@@ -30,6 +30,7 @@ namespace Vertigo.Player.Interactables.Weapons
                     _view.ReloadAnimation(_model.reloadTime, gun.GetTransform(), () => ReloadGun(gun));
                     AudioManager.Instance.PlayOneShot(_model.gunReloadAudio);
                     _usable = false;
+                    _usagesLeft--;
                 }
                 else
                 {
@@ -43,6 +44,9 @@ namespace Vertigo.Player.Interactables.Weapons
             gun.ReloadBullets(_model.ammoCount);
             Destroy();
         }
+
+        public override void StartUse()
+        { }
         #endregion
     }
 }
