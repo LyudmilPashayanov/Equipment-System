@@ -28,7 +28,7 @@ namespace Vertigo.Player
         private const float RAY_DISTANCE = 3.9f;
         [SerializeField] private HandSide _handSide;
         [SerializeField] private HandMovement _handMovement;
-        [SerializeField] private InteractablesManager _equipmentManager;
+        [SerializeField] private InteractablesManager _interactablesSystem;
 
         [SerializeField] private InputActionReference _inputUse;
         [SerializeField] private InputActionReference _inputEquip;
@@ -135,7 +135,7 @@ namespace Vertigo.Player
 
         private bool IsHandBusy()
         {
-            return _equipmentManager.CheckIfHandSlotTaken(_handSide);            
+            return _interactablesSystem.CheckIfHandSlotAvailable(_handSide);            
         }
         #endregion
 
@@ -153,7 +153,7 @@ namespace Vertigo.Player
                 IInteractable _interactable;
                 if (_rayHitObject != null && _rayHitObject.TryGetComponent(out _interactable))
                 {
-                    _equipmentManager.EquipHandSlot(this, _interactable.GrabItem());
+                    _interactablesSystem.OccupyHandSlot(this, _interactable);
                     /*if (_interactable is ItemInteractable item)
                     {
                         ItemController itemController = item.Grab(this);
@@ -174,16 +174,12 @@ namespace Vertigo.Player
         {
             if (IsHandBusy())
             {
-                IUsableItem uneqippedItem = _equipmentManager.UnequipHandSlot(_handSide);
-                ApplyThrowForceToItem(uneqippedItem);
+                IUsableItem uneqippedItem = _interactablesSystem.FreeHandSlot(_handSide);
+                if (uneqippedItem != null)
+                {
+                    ApplyThrowForceToItem(uneqippedItem);
+                }
             }
-/*            else if (_isInteracting)
-            {
-                StopInteracting?.Invoke();
-                StopInteracting = null;
-                _isInteracting = false;
-            }*/
-
         }
         private void StartUse(InputAction.CallbackContext context)
         {
@@ -194,7 +190,7 @@ namespace Vertigo.Player
             }
             if (IsHandBusy())
             {
-                _equipmentManager.UseItem(this);
+                _interactablesSystem.UseItem(this);
             }
         }
 
@@ -207,7 +203,7 @@ namespace Vertigo.Player
             }
             if (IsHandBusy())
             {
-                _equipmentManager.StopUse(_handSide);
+                _interactablesSystem.StopUse(_handSide);
             }
         }
 
@@ -216,7 +212,7 @@ namespace Vertigo.Player
             _modifierPressed = true;
             if (IsHandBusy())
             {
-                _equipmentManager.ToggleItem(_handSide);
+                _interactablesSystem.ToggleItem(_handSide);
             }
         }
         #endregion

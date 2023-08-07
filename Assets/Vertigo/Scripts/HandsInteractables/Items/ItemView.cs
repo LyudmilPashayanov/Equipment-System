@@ -59,7 +59,7 @@ namespace Vertigo.Player.Interactables
             transform.SetParent(parent, worldPosStays);
         }
 
-        public override IUsableItem GrabItem()
+        public override IUsableItem GetUsableItem()
         {
             return Controller;
         }

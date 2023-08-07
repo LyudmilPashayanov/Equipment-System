@@ -3,8 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.XR;
-using Vertigo.Audio;
 
 namespace Vertigo.Player.Interactables
 {
@@ -20,7 +18,7 @@ namespace Vertigo.Player.Interactables
     /// Lever Component which can be used for any type of functionality as an Input Device. 
     /// Just AddListener() and it will Invoke your added event, when the player pulls the lever.
     /// </summary>
-    public class LeverController :MonoBehaviour//: IInteractable
+    public class LeverController : StaticInteractable
     {
         #region Variables
         private const float GOAL_VALUE = 155;
@@ -37,7 +35,7 @@ namespace Vertigo.Player.Interactables
 
         private float _leverMovementSpeed = 5f;
 
-        private Hand _holderHand;
+        private IHand _holderHand;
         private bool _grabbed;
 
         private float _handsMovementY;
@@ -58,32 +56,31 @@ namespace Vertigo.Player.Interactables
             if (_grabbed)
             {
                 MoveLever();
-                //CheckRangeFromHand, if far away- unequip
+                //TODO: CheckRangeFromHand, if far away- unequip
             }
         }
 
         public void SetEnabled(bool enable) 
         {
-            //_InteractableCollider.enabled = enable;        
+            _interactableCollider.enabled = enable;        
         }
 
         private void MoveLever() 
         {
             _handsMovementY = Time.deltaTime * _leverMovementSpeed * _holderHand.GetMovementDirection(false).z;
             _xRotation -= _handsMovementY;
-            _xRotation = Mathf.Clamp(_xRotation, RELEASED_VALUE, GOAL_VALUE+20);
+            _xRotation = Mathf.Clamp(_xRotation, RELEASED_VALUE, GOAL_VALUE + 20);
             _handlePivot.transform.localRotation = Quaternion.Euler(_xRotation, 0, 0);
             SetColorOnValueChange();
             SetStateOnValueChange();
         }
 
         // Should be in the View
-        /*public override IInteractable Grab(Hand hand)
+        public override void RegisterHand(IHand hand)
         {
             _holderHand = hand;
             _grabbed = true;
             SetEnabled(false);
-            return this;
         }
 
         public override void Release()
@@ -92,7 +89,7 @@ namespace Vertigo.Player.Interactables
             _holderHand = null;
             SetEnabled(true);
             OnLeverRelease();
-        }*/
+        }
 
         private void SetColorOnValueChange() 
         {

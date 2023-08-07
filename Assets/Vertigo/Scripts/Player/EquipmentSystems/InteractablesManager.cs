@@ -9,50 +9,78 @@ namespace Vertigo.Player
     public class InteractablesManager : MonoBehaviour
     {
         #region Variables
-        [SerializeField] private ItemSlot _leftHandSlot;
-        [SerializeField] private ItemSlot _rightHandSlot;
-        [SerializeField] private ItemSlot _headSlot;
+        [SerializeField] private ItemSlot _leftHandItemSlot;
+        [SerializeField] private ItemSlot _rightHandItemSlot;
+        [SerializeField] private ItemSlot _headItemSlot;
+        private IInteractable _rightHandInteractable;
+        private IInteractable _leftHandInteractable;
         #endregion
 
         #region Functionality
-        public void EquipHandSlot(IHand handSide, IUsableItem item)
+        public void OccupyHandSlot(IHand handOperator, IInteractable interactable)
         {
-            if(_headSlot.GetEquippedItem() == item) 
+            if (interactable is ItemInteractable itemInteractable)
             {
-                _headSlot.UnequipItem();
-            }
-            if(item is IUsableItem interactableItem) 
-            {
-                switch (handSide.GetHandSide())
+                IUsableItem usableItem = itemInteractable.GetUsableItem();
+                if (_headItemSlot.GetEquippedItem() == usableItem)
+                {
+                    _headItemSlot.UnequipItem();
+                }
+                switch (handOperator.GetHandSide())
                 {
                     case HandSide.right:
-                        _rightHandSlot.Equip(interactableItem);
+                        _rightHandItemSlot.Equip(usableItem);
                         break;
                     case HandSide.left:
-                        _leftHandSlot.Equip(interactableItem);
+                        _leftHandItemSlot.Equip(usableItem);
                         break;
                 }
             }
-            /*  else if( item is StaticObjectInteractable staticObjectInteractableItem) 
+            else if (interactable is StaticInteractable staticInteractable)
             {
-                staticObjectInteractableItem.grab
-            }*/
-           
+                staticInteractable.RegisterHand(handOperator);
+                switch (handOperator.GetHandSide())
+                {
+                    case HandSide.right:
+                        _rightHandInteractable = staticInteractable;
+                        break;
+                    case HandSide.left:
+                        _leftHandInteractable = staticInteractable;
+                        break;
+                }
+            }
         }
 
-        public IUsableItem UnequipHandSlot(HandSide handSide)
+        public IUsableItem FreeHandSlot(HandSide handSide)
         {
             IUsableItem itemToReturn = null;
             switch (handSide)
             {
                 case HandSide.right:
-                    itemToReturn = _rightHandSlot.UnequipItem();
+                    if (_rightHandInteractable != null)
+                    {
+                        _rightHandInteractable.Release();
+                        _rightHandInteractable = null;
+                    }
+                    else if (_rightHandItemSlot.IsAvailable == false)
+                    {
+                        itemToReturn = _rightHandItemSlot.UnequipItem();
+                        itemToReturn.Release();
+                    }
                     break;
                 case HandSide.left:
-                    itemToReturn = _leftHandSlot.UnequipItem();
+                    if (_leftHandInteractable != null)
+                    {
+                        _leftHandInteractable.Release();
+                        _leftHandInteractable = null;
+                    }
+                    else if (_leftHandItemSlot.IsAvailable == false)
+                    {
+                        itemToReturn = _leftHandItemSlot.UnequipItem();
+                        itemToReturn.Release();
+                    }
                     break;
             }
-            itemToReturn.Release();
             return itemToReturn;
         }
 
@@ -68,7 +96,7 @@ namespace Vertigo.Player
             IUsableItem currentlyUsedItem = GetItemFromHandSlot(handSide);
 
             currentlyUsedItem.StartUse();
-            if(currentlyUsedItem.GetUsagesLeft() == 0) 
+            if (currentlyUsedItem.GetUsagesLeft() == 0)
             {
                 handUser.ReleaseCurrentItem();
             }
@@ -77,7 +105,8 @@ namespace Vertigo.Player
             {
                 TryCombineItems();
             }
-            else if (currentlyUsedItem is HatController)
+
+            if (currentlyUsedItem is HatController)
             {
                 TryEquipHat();
             }
@@ -85,19 +114,19 @@ namespace Vertigo.Player
             void TryCombineItems()
             {
                 ICombinableItem currentItem = currentlyUsedItem as ICombinableItem;
-                IUsableItem otherHandItem =  handSide == HandSide.right ? _leftHandSlot.GetEquippedItem() : _rightHandSlot.GetEquippedItem();
+                IUsableItem otherHandItem = handSide == HandSide.right ? _leftHandItemSlot.GetEquippedItem() : _rightHandItemSlot.GetEquippedItem();
                 currentItem.TryCombineWithItemInOtherHand(otherHandItem);
             }
 
             void TryEquipHat()
             {
                 HatController hat = currentlyUsedItem as HatController;
-                bool canEquipOnHead = _headSlot.GetEquippedItem() == null;
+                bool canEquipOnHead = _headItemSlot.IsAvailable;
                 hat.TryEquipOnHead(canEquipOnHead);
                 if (canEquipOnHead)
                 {
-                    UnequipHandSlot(handSide);
-                    _headSlot.Equip(hat);
+                    FreeHandSlot(handSide);
+                    _headItemSlot.Equip(hat);
                 }
             }
         }
@@ -113,14 +142,24 @@ namespace Vertigo.Player
             IUsableItem currentlyUsedItem = GetItemFromHandSlot(handSide);
             currentlyUsedItem.ToggleItem();
         }
-        public bool CheckIfHandSlotTaken(HandSide handSide)
+
+        public bool CheckIfHandSlotAvailable(HandSide handSide)
         {
-            return GetItemFromHandSlot(handSide) != null;
+            if(handSide == HandSide.right) 
+            {
+                return _rightHandInteractable != null && _rightHandItemSlot.IsAvailable;
+            }
+            else if (handSide == HandSide.left) 
+            {
+                return _leftHandInteractable != null && _leftHandItemSlot.IsAvailable;
+
+            }
+            return false;
         }
 
-        private IUsableItem GetItemFromHandSlot(HandSide handSide) 
+        private IUsableItem GetItemFromHandSlot(HandSide handSide)
         {
-            return handSide == HandSide.right ? _rightHandSlot.GetEquippedItem() : _leftHandSlot.GetEquippedItem();
+            return handSide == HandSide.right ? _rightHandItemSlot.GetEquippedItem() : _leftHandItemSlot.GetEquippedItem();
         }
         #endregion
     }
