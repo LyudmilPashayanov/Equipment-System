@@ -1,7 +1,4 @@
 # Equipment system
-## Vertigo technical assignment
-The "Equipment system" project was a technical assignment created for Vertigo Games. Its aim is to assess my technical knowledge.
-
 # Version 2.0 Notes
 - Introduced Item Slots.
 - Better design and more flexible and decoupled functionality between Hand, Inventory and ItemSlots.
